@@ -20,6 +20,8 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import NavbarText from '~/locales/navbar'
+import getLanguageLabel from "~/utils/getLanguageLabel";
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -40,15 +42,17 @@ const company = [
   { name: 'Blog', href: '#' },
 ]
 
-export default function Navbar() {
+export default function Navbar({ lang }: { lang: string }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const label = getLanguageLabel(NavbarText, lang);
 
   return (
       <header className="bg-white">
         <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
           <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
+            <a href="/" className="-m-1.5 p-1.5">
+              <span className="sr-only">{lang}</span>
               <img alt="" src="/favicon.svg" className="h-8 w-auto" />
             </a>
           </div>
@@ -64,8 +68,8 @@ export default function Navbar() {
           </div>
           <PopoverGroup className="hidden lg:flex lg:gap-x-12">
             <Popover className="relative">
-              <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-                Product
+              <PopoverButton className="px-2 py-1 rounded-md flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50 focus:outline-none">
+                {label.article}
                 <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
               </PopoverButton>
 
@@ -107,16 +111,16 @@ export default function Navbar() {
               </PopoverPanel>
             </Popover>
 
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-              Features
+            <a href="/photos/all/1" className="text-sm font-semibold leading-6 text-gray-900">
+              {label.photography}
             </a>
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-              Marketplace
+            <a href="/thoughts/1" className="text-sm font-semibold leading-6 text-gray-900">
+              {label.thoughts}
             </a>
 
             <Popover className="relative">
               <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-                Company
+                {label.about}
                 <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
               </PopoverButton>
 

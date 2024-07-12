@@ -1,5 +1,5 @@
-import {LoaderFunctionArgs, MetaFunction, json} from "@remix-run/cloudflare";
-import {redirect, useLoaderData} from "@remix-run/react";
+import {json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
+import {useOutletContext} from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -13,18 +13,15 @@ export const meta: MetaFunction = () => {
 
 export function loader({ params }: LoaderFunctionArgs) {
   const lang = params.lang;
-  if (!lang) {
-    return redirect("/en", { status: 302 });
-  }
   return json({ lang });
 }
 
 export default function Index() {
-  const { lang } = useLoaderData<typeof loader>();
+  const { lang } = useOutletContext<{lang: string}>();
 
   return (
       <div className = "font-sans p-4">
-        <h1 className = "text-3xl">This page's language is {lang}</h1>
+        <h1 className = "text-3xl">This page&apos;s language is {lang}</h1>
         <ul className = "list-disc mt-4 pl-6 space-y-2">
           <li>
             <a
