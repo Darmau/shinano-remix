@@ -32,7 +32,6 @@ export function Layout({children, lang}: { children: React.ReactNode, lang: stri
   return (
       <html lang = {lang}>
       <head>
-        <title>Remix App</title>
         <meta charSet = "utf-8"/>
         <meta name = "viewport" content = "width=device-width, initial-scale=1"/>
         <Meta/>
@@ -52,7 +51,7 @@ export default function App() {
   return (
       <Layout lang = {lang}>
         <Navbar lang = {lang}/>
-        <Outlet context = {lang}/>
+        <Outlet context = {{lang}}/>
       </Layout>
   )
 }

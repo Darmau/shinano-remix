@@ -13,7 +13,6 @@ export const meta: MetaFunction = () => {
 
 export function loader({ params }: LoaderFunctionArgs) {
   const lang = params.lang;
-  console.log('This page\'s language is', lang);
   return json({ lang });
 }
 
