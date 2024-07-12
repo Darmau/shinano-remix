@@ -40,15 +40,15 @@ const company = [
   { name: 'Blog', href: '#' },
 ]
 
-export default function Navbar() {
+export default function Navbar({ lang }: { lang: string }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
       <header className="bg-white">
         <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
           <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
+            <a href="/" className="-m-1.5 p-1.5">
+              <span className="sr-only">{lang}</span>
               <img alt="" src="/favicon.svg" className="h-8 w-auto" />
             </a>
           </div>
@@ -65,7 +65,7 @@ export default function Navbar() {
           <PopoverGroup className="hidden lg:flex lg:gap-x-12">
             <Popover className="relative">
               <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-                Product
+                Product: {lang}
                 <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
               </PopoverButton>
 
