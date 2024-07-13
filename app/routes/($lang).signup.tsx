@@ -4,7 +4,7 @@ import type {ActionFunctionArgs} from '@remix-run/cloudflare'
 import {createSupabaseServerClient} from '~/utils/supabase.server'
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import SignupText from "~/locales/signup";
-import {CheckIcon} from "@heroicons/react/24/outline";
+import {CheckIcon} from '@heroicons/react/24/outline'
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
   const lang = params.lang;
@@ -23,6 +23,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
   const {supabase, headers} = createSupabaseServerClient(request);
   const formData = await request.formData();
   const email = formData.get('email') as string;
+  const name = formData.get('name') as string;
   const lang = formData.get('lang') as string;
   const origin = formData.get('origin') as string;
 
@@ -30,6 +31,9 @@ export const action = async ({request}: ActionFunctionArgs) => {
     email: email,
     options: {
       emailRedirectTo: `${origin}/${lang}/auth/confirm`,
+      data: {
+        name
+      }
     },
   })
 
@@ -40,7 +44,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
   return json({status: 'success', message: 'Email sended'}, {headers});
 }
 
-const SignIn = () => {
+const SignUP = () => {
   const actionData = useActionData<typeof action>();
 
   return (
@@ -48,14 +52,14 @@ const SignIn = () => {
         {actionData?.status === 'success' ? (
             <EmailSended/>
         ) : (
-            <SignInForm/>
+            <SignUpForm/>
         )}
         {actionData?.status === 'error' && <p className = "error">{actionData.message}</p>}
       </main>
   );
 }
 
-const SignInForm = () => {
+const SignUpForm = () => {
   const {lang, origin} = useLoaderData<typeof loader>();
   const label = getLanguageLabel(SignupText, lang!);
 
@@ -70,6 +74,21 @@ const SignInForm = () => {
         <div className = "mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className = "bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <Form method = "POST" className = "space-y-6">
+              <div>
+                <label htmlFor = "name" className = "block text-sm font-medium leading-6 text-gray-900">
+                  {label.username}
+                </label>
+                <div className = "mt-2">
+                  <input
+                      id = "name"
+                      name = "name"
+                      type = "text"
+                      required
+                      autoComplete = "username"
+                      className = "block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
 
               <div>
                 <label htmlFor = "email" className = "block text-sm font-medium leading-6 text-gray-900">
@@ -166,18 +185,18 @@ const EmailSended = () => {
 
   return (
       <div
-          className="my-24"
+          className = "my-24"
       >
         <div>
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-            <CheckIcon aria-hidden="true" className="h-6 w-6 text-green-600" />
+          <div className = "mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+            <CheckIcon aria-hidden = "true" className = "h-6 w-6 text-green-600"/>
           </div>
-          <div className="mt-3 text-center sm:mt-5">
-            <h3 className="text-base font-semibold leading-6 text-gray-900">
+          <div className = "mt-3 text-center sm:mt-5">
+            <h3 className = "text-base font-semibold leading-6 text-gray-900">
               {label.email_sent}
             </h3>
-            <div className="mt-2">
-              <p className="text-sm text-gray-500">
+            <div className = "mt-2">
+              <p className = "text-sm text-gray-500">
                 {label.email_check}
               </p>
             </div>
@@ -188,4 +207,4 @@ const EmailSended = () => {
   )
 }
 
-export default SignIn
+export default SignUP

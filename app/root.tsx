@@ -3,13 +3,12 @@ import "./tailwind.css";
 import Navbar from "~/components/Navbar";
 import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createBrowserClient, createServerClient, parseCookieHeader} from "@supabase/ssr";
-import {createSupabaseServerClient} from "~/utils/supabase.server";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const lang = url.pathname.split('/')[1];
 
-  if (!['zh-CN', 'en', 'jp'].includes(lang)) {
+  if (!['zh-CN', 'en', 'jp'].includes(lang) && url.pathname === '/signout') {
     // 检测浏览器语言
     const acceptLanguage = request.headers.get("Accept-Language");
     let detectedLang = 'zh-CN';
@@ -43,10 +42,10 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
 
   return json({
     lang,
+    isLogged: user !== null,
     env: {
       SUPABASE_URL: process.env.SUPABASE_URL!,
       SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
-      DOMAIN: process.env.DOMAIN!
     },
     supabase,
     session,
@@ -68,7 +67,7 @@ export default function App() {
         <Links/>
       </head>
       <body>
-      <Navbar lang = {lang}/>
+      <Navbar lang = {lang} user = {user} />
       <Outlet context = {{lang, supabase, session, user, env}}/>
       <ScrollRestoration/>
       <Scripts/>

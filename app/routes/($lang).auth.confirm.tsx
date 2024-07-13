@@ -12,7 +12,7 @@ export const loader = async ({ request }: ActionFunctionArgs) => {
     if (error) {
       return redirect('/login')
     }
-    return redirect('/zh-CN/article/nana', {
+    return redirect('/', {
       headers,
     })
   }
