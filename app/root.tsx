@@ -46,6 +46,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
     env: {
       SUPABASE_URL: process.env.SUPABASE_URL!,
       SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
+      DOMAIN: process.env.DOMAIN!
     },
     supabase,
     session,
@@ -54,9 +55,9 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
 };
 
 export default function App() {
-  const {lang, env, session, supabase, user} = useLoaderData<typeof loader>();
+  const {lang, env, session, user} = useLoaderData<typeof loader>();
 
-  // const supabase = createBrowserClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY)
+  const supabase = createBrowserClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY)
 
   return (
       <html lang = {lang}>
@@ -68,7 +69,7 @@ export default function App() {
       </head>
       <body>
       <Navbar lang = {lang}/>
-      <Outlet context = {{lang, supabase, session, user}}/>
+      <Outlet context = {{lang, supabase, session, user, env}}/>
       <ScrollRestoration/>
       <Scripts/>
       </body>

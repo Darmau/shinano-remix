@@ -1,29 +1,36 @@
 import {json, LoaderFunctionArgs} from '@remix-run/cloudflare'
-import {Form, redirect, useActionData, useLoaderData, useLocation} from '@remix-run/react'
+import {Form, redirect, useActionData, useLoaderData} from '@remix-run/react'
 import type { ActionFunctionArgs } from '@remix-run/cloudflare'
 import { createSupabaseServerClient } from '~/utils/supabase.server'
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const lang = params.lang;
   const { supabase, headers } = createSupabaseServerClient(request);
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (session) {
+  if (user) {
     return redirect('/', { headers });
   }
 
-  return json({ lang }, { headers });
+  const origin = new URL(request.url);
+  return json({ lang, origin }, { headers });
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const { supabase, headers } = createSupabaseServerClient(request);
   const formData = await request.formData();
   const email = formData.get('email') as string;
+  const name = formData.get('name') as string;
+  const lang = formData.get('lang') as string;
+  const origin = formData.get('origin') as string;
 
   const { error } = await supabase.auth.signInWithOtp({
     email: email,
     options: {
-      emailRedirectTo: `http://localhost:5173/zh-CN/auth/confirm`,
+      emailRedirectTo: `${origin}/${lang}/auth/confirm`,
+      data: {
+        name
+      }
     },
   })
 
@@ -36,7 +43,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 const SignIn = () => {
 
-  const { lang } = useLoaderData<typeof loader>();
+  const { lang, origin } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
   return (
@@ -45,18 +52,25 @@ const SignIn = () => {
         {actionData?.status === 'success' ? (
             <p>魔法链接已发送！请检查您的邮箱。</p>
         ) : (
-            <Form method="post">
+            <Form method = "post">
               <input
-                  className="border"
-                  type="email"
-                  name="email"
+                  className = "border"
+                  type = "email"
+                  name = "email"
                   required
               />
-              <input type="hidden" name="lang" value={lang} />
-              <button type="submit">发送魔法链接</button>
+              <input
+                  className = "border"
+                  type = "text"
+                  name = "name"
+                  required
+              />
+              <input type = "hidden" name = "lang" value = {lang}/>
+              <input type = "hidden" name = "origin" value = {origin}/>
+              <button type = "submit">发送魔法链接</button>
             </Form>
         )}
-        {actionData?.status === 'error' && <p className="error">{actionData.message}</p>}
+        {actionData?.status === 'error' && <p className = "error">{actionData.message}</p>}
       </div>
   );
 }

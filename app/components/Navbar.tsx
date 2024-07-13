@@ -23,6 +23,8 @@ import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/
 import NavbarText from '~/locales/navbar'
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import {Link} from "@remix-run/react";
+import {createSupabaseServerClient} from "~/utils/supabase.server";
+import {LoaderFunctionArgs} from "@remix-run/cloudflare";
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -42,6 +44,7 @@ const company = [
   { name: 'Press', href: '#' },
   { name: 'Blog', href: '#' },
 ]
+
 
 export default function Navbar({ lang }: { lang: string }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)

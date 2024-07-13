@@ -1,6 +1,5 @@
 import {json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
-import {redirect, useLoaderData, useOutletContext} from "@remix-run/react";
-import {createSupabaseServerClient} from "~/utils/supabase.server";
+import {useOutletContext} from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
