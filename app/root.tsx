@@ -2,6 +2,8 @@ import {Links, Meta, Outlet, redirect, Scripts, ScrollRestoration, useLoaderData
 import "./tailwind.css";
 import Navbar from "~/components/Navbar";
 import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {createBrowserClient, createServerClient, parseCookieHeader} from "@supabase/ssr";
+import {createSupabaseServerClient} from "~/utils/supabase.server";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -24,10 +26,37 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
     return redirect(`/${detectedLang}${url.pathname}`);
   }
 
-  return json({lang});
+  const supabase = createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
+    global: {
+      fetch
+    },
+    cookies: {
+      getAll() {
+        return parseCookieHeader(request.headers.get('Cookie') ?? '');
+      }
+    }
+  });
+
+  const {data: {session}} = await supabase.auth.getSession();
+
+  const {data: {user}} = await supabase.auth.getUser()
+
+  return json({
+    lang,
+    env: {
+      SUPABASE_URL: process.env.SUPABASE_URL!,
+      SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
+    },
+    supabase,
+    session,
+    user
+  });
 };
 
-export function Layout({children, lang}: { children: React.ReactNode, lang: string }) {
+export default function App() {
+  const {lang, env, session, supabase, user} = useLoaderData<typeof loader>();
+
+  // const supabase = createBrowserClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY)
 
   return (
       <html lang = {lang}>
@@ -38,20 +67,11 @@ export function Layout({children, lang}: { children: React.ReactNode, lang: stri
         <Links/>
       </head>
       <body>
-      {children}
+      <Navbar lang = {lang}/>
+      <Outlet context = {{lang, supabase, session, user}}/>
       <ScrollRestoration/>
       <Scripts/>
       </body>
       </html>
-  );
-}
-
-export default function App() {
-  const {lang} = useLoaderData<typeof loader>();
-  return (
-      <Layout lang = {lang}>
-        <Navbar lang = {lang}/>
-        <Outlet context = {{lang}}/>
-      </Layout>
   )
 }
