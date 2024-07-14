@@ -8,7 +8,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const lang = url.pathname.split('/')[1];
 
-  if (!['zh-CN', 'en', 'jp'].includes(lang) && url.pathname === '/signout') {
+  if (!['zh-CN', 'en', 'jp'].includes(lang) && url.pathname !== '/signout') {
     // 检测浏览器语言
     const acceptLanguage = request.headers.get("Accept-Language");
     let detectedLang = 'zh-CN';
