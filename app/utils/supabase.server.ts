@@ -1,9 +1,9 @@
-import { createServerClient, parseCookieHeader, serializeCookieHeader } from '@supabase/ssr';
+import {createServerClient, parseCookieHeader, serializeCookieHeader} from '@supabase/ssr';
 
-export function createSupabaseServerClient(request: Request) {
+export function createRemoteClient(request: Request) {
   const headers = new Headers();
 
-  const supabase = createServerClient(
+  return createServerClient(
       process.env.SUPABASE_URL!,
       process.env.SUPABASE_ANON_KEY!,
       {
@@ -12,13 +12,11 @@ export function createSupabaseServerClient(request: Request) {
             return parseCookieHeader(request.headers.get('Cookie') ?? '')
           },
           setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value, options }) =>
+            cookiesToSet.forEach(({name, value, options}) =>
                 headers.append('Set-Cookie', serializeCookieHeader(name, value, options))
             )
           },
         },
       }
   );
-
-  return { supabase, headers };
 }
