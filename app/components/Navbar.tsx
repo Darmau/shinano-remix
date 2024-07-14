@@ -22,6 +22,10 @@ import {
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import NavbarText from '~/locales/navbar'
 import getLanguageLabel from "~/utils/getLanguageLabel";
+import {Link, useLoaderData} from "@remix-run/react";
+import {loader} from "~/root";
+import Profile from "~/components/Profile";
+import { User } from '@supabase/supabase-js';
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -42,9 +46,9 @@ const company = [
   { name: 'Blog', href: '#' },
 ]
 
-export default function Navbar({ lang }: { lang: string }) {
+export default function Navbar({ lang, user }: { lang: string, user: User | null}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
+  const { isLogged } = useLoaderData<typeof loader>();
   const label = getLanguageLabel(NavbarText, lang);
 
   return (
@@ -141,20 +145,35 @@ export default function Navbar({ lang }: { lang: string }) {
             </Popover>
           </PopoverGroup>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-              Log in <span aria-hidden="true">&rarr;</span>
-            </a>
+            {isLogged ? ( <Profile user = {user!} /> ) : (
+              <div className = "flex flex-1 items-center justify-end gap-x-6">
+                  <Link
+                      to = "/login"
+                      className = "hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-gray-900"
+                  >
+                    {label.login}
+                  </Link>
+                  <Link
+                      to = "/signup"
+                      className = "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    {label.signup}
+                  </Link>
+                </div>
+            )}
           </div>
         </nav>
-        <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
-          <div className="fixed inset-0 z-10" />
-          <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-            <div className="flex items-center justify-between">
-              <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
+        <Dialog open = {mobileMenuOpen} onClose = {setMobileMenuOpen} className = "lg:hidden">
+          <div className = "fixed inset-0 z-10"/>
+          <DialogPanel
+              className = "fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+          >
+            <div className = "flex items-center justify-between">
+              <a href = "/" className = "-m-1.5 p-1.5">
+                <span className = "sr-only">Your Company</span>
                 <img
-                    alt=""
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                    alt = ""
+                    src = "https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                     className="h-8 w-auto"
                 />
               </a>
@@ -190,13 +209,13 @@ export default function Navbar({ lang }: { lang: string }) {
                   </Disclosure>
 
                   <a
-                      href="#"
+                      href="/"
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     Features
                   </a>
                   <a
-                      href="#"
+                      href="/"
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     Marketplace
@@ -221,13 +240,19 @@ export default function Navbar({ lang }: { lang: string }) {
                     </DisclosurePanel>
                   </Disclosure>
                 </div>
-                <div className="py-6">
-                  <a
-                      href="#"
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                <div className="flex gap-4 justify-between my-8">
+                  <Link
+                      to="/signup"
+                      className="flex-1 text-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    Log in
-                  </a>
+                    {label.signup}
+                  </Link>
+                  <Link
+                      to="/login"
+                      className="flex-1 text-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >
+                    {label.login}
+                  </Link>
                 </div>
               </div>
             </div>
