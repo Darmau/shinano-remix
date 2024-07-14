@@ -1,6 +1,5 @@
 import {json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import {useLoaderData, useOutletContext} from "@remix-run/react";
-import {User} from "@supabase/supabase-js";
 import {createRemoteClient} from "~/utils/supabase.server";
 
 export const meta: MetaFunction = () => {
@@ -22,7 +21,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  const { lang, user } = useOutletContext<{lang: string, user: User}>();
+  const { lang } = useOutletContext<{lang: string}>();
   const { data } = useLoaderData<typeof loader>();
 
   return (
