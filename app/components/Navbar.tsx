@@ -148,13 +148,13 @@ export default function Navbar({ lang, user }: { lang: string, user: User | null
             {isLogged ? ( <Profile user = {user!} /> ) : (
               <div className = "flex flex-1 items-center justify-end gap-x-6">
                   <Link
-                      to = "/login"
+                      to = {`${lang}/login`}
                       className = "hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-gray-900"
                   >
                     {label.login}
                   </Link>
                   <Link
-                      to = "/signup"
+                      to = {`${lang}/signup`}
                       className = "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     {label.signup}
@@ -242,13 +242,13 @@ export default function Navbar({ lang, user }: { lang: string, user: User | null
                 </div>
                 <div className="flex gap-4 justify-between my-8">
                   <Link
-                      to="/signup"
+                      to={`${lang}/signup`}
                       className="flex-1 text-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     {label.signup}
                   </Link>
                   <Link
-                      to="/login"
+                      to={`${lang}/login`}
                       className="flex-1 text-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
                     {label.login}

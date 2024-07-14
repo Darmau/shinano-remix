@@ -1,6 +1,6 @@
-import type { ActionFunctionArgs } from '@remix-run/cloudflare'
-import { redirect } from '@remix-run/cloudflare'
-import { createSupabaseServerClient } from '~/utils/supabase.server'
+import type {ActionFunctionArgs} from '@remix-run/cloudflare'
+import {redirect} from '@remix-run/cloudflare'
+import {createSupabaseServerClient} from '~/utils/supabase.server'
 
 export const loader = async ({ request }: ActionFunctionArgs) => {
   const url = new URL(request.url)
