@@ -23,9 +23,8 @@ import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/
 import NavbarText from '~/locales/navbar'
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import {Link, useLoaderData} from "@remix-run/react";
-import {loader} from "~/root";
-import Profile from "~/components/Profile";
-import { User } from '@supabase/supabase-js';
+import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {getLang} from "~/utils/getLang";
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -46,9 +45,17 @@ const company = [
   { name: 'Blog', href: '#' },
 ]
 
-export default function Navbar({ lang, user }: { lang: string, user: User | null}) {
+export const loader = async ({request}: LoaderFunctionArgs) => {
+  const lang = getLang(request);
+
+  return json({
+    lang
+  })
+}
+
+export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { isLogged } = useLoaderData<typeof loader>();
+  const { lang } = useLoaderData<typeof loader>();
   const label = getLanguageLabel(NavbarText, lang);
 
   return (
@@ -145,22 +152,20 @@ export default function Navbar({ lang, user }: { lang: string, user: User | null
             </Popover>
           </PopoverGroup>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            {isLogged ? ( <Profile user = {user!} /> ) : (
-              <div className = "flex flex-1 items-center justify-end gap-x-6">
-                  <Link
-                      to = "/login"
-                      className = "hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-gray-900"
-                  >
-                    {label.login}
-                  </Link>
-                  <Link
-                      to = "/signup"
-                      className = "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    {label.signup}
-                  </Link>
-                </div>
-            )}
+            <div className = "flex flex-1 items-center justify-end gap-x-6">
+                <Link
+                    to = {`${lang}/login`}
+                    className = "hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-gray-900"
+                >
+                  {label.login}
+                </Link>
+                <Link
+                    to = {`${lang}/signup`}
+                    className = "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  {label.signup}
+                </Link>
+              </div>
           </div>
         </nav>
         <Dialog open = {mobileMenuOpen} onClose = {setMobileMenuOpen} className = "lg:hidden">
@@ -242,13 +247,13 @@ export default function Navbar({ lang, user }: { lang: string, user: User | null
                 </div>
                 <div className="flex gap-4 justify-between my-8">
                   <Link
-                      to="/signup"
+                      to={`${lang}/signup`}
                       className="flex-1 text-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     {label.signup}
                   </Link>
                   <Link
-                      to="/login"
+                      to={`${lang}/login`}
                       className="flex-1 text-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
                     {label.login}
