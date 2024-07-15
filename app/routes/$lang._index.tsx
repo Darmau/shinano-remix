@@ -22,12 +22,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function Index() {
   const { lang } = useOutletContext<{lang: string}>();
-  const { data } = useLoaderData<typeof loader>();
 
   return (
       <div className = "font-sans p-4">
         <h1 className = "text-3xl">这是首页{lang}</h1>
-        <p>{JSON.stringify(data)}</p>
       </div>
   );
 }

@@ -14,6 +14,7 @@ import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createBrowserClient} from "@supabase/ssr";
 import {useEffect, useState} from "react";
 import {supabaseServerClient} from "~/utils/supabase.server";
+import {getLang} from "~/utils/getLang";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -22,16 +23,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
 
   if (!['zh', 'en', 'jp'].includes(lang) && multiLangContent.includes(lang)) {
     // 检测浏览器语言
-    const acceptLanguage = request.headers.get("Accept-Language");
-    let detectedLang = 'zh';
-
-    if (acceptLanguage) {
-      if (acceptLanguage.includes('zh')) {
-        detectedLang = 'zh';
-      } else if (acceptLanguage.includes('ja')) {
-        detectedLang = 'jp';
-      } else if (acceptLanguage.includes('en')) detectedLang = 'en';
-    }
+    const detectedLang = getLang(request)
 
     // 重定向到正确的语言路径
     return redirect(`/${detectedLang}${url.pathname}`);

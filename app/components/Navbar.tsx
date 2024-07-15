@@ -35,11 +35,8 @@ const products = [
 ]
 
 const company = [
-  { name: 'About us', href: '#' },
-  { name: 'Careers', href: '#' },
-  { name: 'Support', href: '#' },
-  { name: 'Press', href: '#' },
-  { name: 'Blog', href: '#' },
+  { name: 'About us', href: '/about' },
+  { name: 'Contact', href: '/contact' },
 ]
 
 export const loader = ({request}: LoaderFunctionArgs) => {
@@ -107,15 +104,15 @@ export default function Navbar() {
               </PopoverPanel>
             </Popover>
 
-            <a href="/photos/all/1" className="text-sm font-semibold leading-6 text-gray-900">
+            <a href="/photos/all/1" className="px-2 py-1 rounded-md text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50 focus:outline-none">
               {label.photography}
             </a>
-            <a href="/thoughts/1" className="text-sm font-semibold leading-6 text-gray-900">
-              {label.thoughts}
+            <a href="/thoughts/1" className="px-2 py-1 rounded-md text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50 focus:outline-none">
+              {label.thought}
             </a>
 
             <Popover className="relative">
-              <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
+              <PopoverButton className="px-2 py-1 rounded-md flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50 focus:outline-none">
                 {label.about}
                 <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
               </PopoverButton>
@@ -181,7 +178,7 @@ export default function Navbar() {
                 <div className="space-y-2 py-6">
                   <Disclosure as="div" className="-mx-3">
                     <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                      Product
+                      {label.article}
                       <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
                     </DisclosureButton>
                     <DisclosurePanel className="mt-2 space-y-2">
@@ -202,18 +199,18 @@ export default function Navbar() {
                       href="/"
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
-                    Features
+                    {label.photography}
                   </a>
                   <a
                       href="/"
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
-                    Marketplace
+                    {label.thought}
                   </a>
 
                   <Disclosure as="div" className="-mx-3">
                     <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                      Company
+                      {label.about}
                       <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
                     </DisclosureButton>
                     <DisclosurePanel className="mt-2 space-y-2">

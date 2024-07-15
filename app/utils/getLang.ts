@@ -1,12 +1,14 @@
+import { match } from '@formatjs/intl-localematcher'
+import Negotiator from 'negotiator'
+
+const locales = ['zh', 'en', 'jp']
+const defaultLocale = 'zh'
+
 export function getLang (request: Request) {
   const url = new URL(request.url);
-  const lang = url.pathname.split('/')[1];
+  const acceptLanguage = request.headers.get('Accept-Language') || '';
+  const headers = { 'accept-language': acceptLanguage };
+  const languages = new Negotiator({ headers }).languages()
 
-  if (!langs.includes(lang)) {
-    return 'zh'
-  }
-
-  return lang;
+  return match(languages, locales, defaultLocale)
 }
-
-const langs = ['zh', 'en', 'jp'];
