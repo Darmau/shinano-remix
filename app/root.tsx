@@ -11,10 +11,10 @@ import {
 import "./tailwind.css";
 import Navbar from "~/components/Navbar";
 import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
-import {createBrowserClient} from "@supabase/ssr";
-import {useEffect, useState} from "react";
-import {supabaseServerClient} from "~/utils/supabase.server";
 import {getLang} from "~/utils/getLang";
+import {supabaseServerClient} from "~/utils/supabase.server";
+import {useEffect, useState} from "react";
+import {createBrowserClient} from "@supabase/ssr";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -29,33 +29,29 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
     return redirect(`/${detectedLang}${url.pathname}`);
   }
 
+  const response = new Response()
+
+  const supabase = supabaseServerClient(request);
+  const { data: {session}} = await supabase.auth.getSession();
+
   const env = {
-        SUPABASE_URL: process.env.SUPABASE_URL!,
-        SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
-      }
-
-  const supabase = supabaseServerClient(request)
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    SUPABASE_URL: process.env.SUPABASE_URL!,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
+  }
 
   return json({
     lang,
-    env,
-    session
-  });
+    session,
+    env
+  }, { headers: response.headers });
 };
 
 export default function App() {
-  const {lang, env, session} = useLoaderData<typeof loader>();
+  const {lang, session, env} = useLoaderData<typeof loader>();
   const { revalidate } = useRevalidator()
+  const [supabase] = useState(() => createBrowserClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY))
 
-  const [supabase] = useState(() =>
-      createBrowserClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY)
-  )
-
-  const serverAccessToken = session?.access_token;
+  const serverAccessToken = session?.access_token
 
   useEffect(() => {
     const {
@@ -81,8 +77,8 @@ export default function App() {
         <Links/>
       </head>
       <body>
-      <Navbar lang = {lang} />
-      <Outlet context = {{supabase}}/>
+      <Navbar lang = {lang} session = {session} />
+      <Outlet context={{ supabase, session }} />
       <ScrollRestoration/>
       <Scripts/>
       </body>

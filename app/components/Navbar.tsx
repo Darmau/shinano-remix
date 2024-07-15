@@ -22,10 +22,11 @@ import {
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import NavbarText from '~/locales/navbar'
 import getLanguageLabel from "~/utils/getLanguageLabel";
-import {Link, useLoaderData} from "@remix-run/react";
+import {Link} from "@remix-run/react";
 import {json} from "@remix-run/cloudflare";
 import Profile from "~/components/Profile";
 import {supabaseBrowserClient} from "~/utils/supabase.client";
+import {Session} from "@supabase/supabase-js";
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -52,9 +53,13 @@ export const loader = async () => {
   })
 }
 
-export default function Navbar({lang}: {lang: string}) {
+interface Props {
+  lang: string
+  session?: Session | null
+}
+
+export default function Navbar({lang, session}: Props) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { user } = useLoaderData<typeof loader>();
   const label = getLanguageLabel(NavbarText, lang)
 
   return (
@@ -139,8 +144,8 @@ export default function Navbar({lang}: {lang: string}) {
             </Popover>
           </PopoverGroup>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            {user ? (
-                <Profile user={user} />
+            {session ? (
+                <Profile session={session} />
                 ) : (
                 <div className = "flex flex-1 items-center justify-end gap-x-6">
                   <Link
