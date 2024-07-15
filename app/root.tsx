@@ -81,8 +81,8 @@ export default function App() {
         <Links/>
       </head>
       <body>
-      <Navbar />
-      <Outlet context = {{lang, supabase}}/>
+      <Navbar lang = {lang} />
+      <Outlet context = {{supabase}}/>
       <ScrollRestoration/>
       <Scripts/>
       </body>

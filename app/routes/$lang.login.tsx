@@ -1,47 +1,37 @@
-import {useLoaderData, useOutletContext} from "@remix-run/react";
-import {SupabaseClient} from "@supabase/supabase-js";
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
-import {useState} from "react";
+import {Form, redirect, useLoaderData} from "@remix-run/react";
+import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {supabaseServerClient} from "~/utils/supabase.server";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({request, params}: LoaderFunctionArgs) {
   const origin = new URL(request.url).origin;
   const lang = params.lang;
 
-  return json({ origin, lang });
+  return json({origin, lang});
+}
+
+export async function action({request}: ActionFunctionArgs) {
+  const {origin} = useLoaderData<typeof loader>();
+  const formData = await request.formData();
+  const email = formData.get('email') as string;
+  const supabase = supabaseServerClient(request);
+
+  const {error} = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: origin,
+    },
+  })
+
+  if (error) {
+    return json({error: error.message}, {status: 400});
+  }
+
+  return redirect('/');
 }
 
 export default function Login() {
-  const { supabase } = useOutletContext<{ supabase: SupabaseClient }>()
-  const { origin } = useLoaderData<typeof loader>();
-  const [email, setEmail] = useState('');
-
-  const handleEmailLogin = async () => {
-    await supabase.auth.signInWithOtp({
-      email: 'jon@supabase.com',
-      options: {
-        emailRedirectTo: origin,
-      }
-    })
-  }
-
-  const handleGitHubLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'github',
-      options: {
-        redirectTo: origin,
-      },
-    })
-  }
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-  }
-
   return (
-      <main className="bg-zinc-50">
-        <button onClick = {handleEmailLogin}>Email Login</button>
-        <button onClick = {handleGitHubLogin}>GitHub Login</button>
-        <button onClick = {handleLogout}>Logout</button>
+      <main className = "bg-zinc-50">
         <div className = "flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
           <div className = "sm:mx-auto sm:w-full sm:max-w-md">
             <img
@@ -56,7 +46,7 @@ export default function Login() {
 
           <div className = "mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
             <div className = "bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-              <form action = "#" method = "POST" className = "space-y-6">
+              <Form method = "POST" className = "space-y-6">
                 <div>
                   <label htmlFor = "email" className = "block text-sm font-medium leading-6 text-gray-900">
                     Email address
@@ -74,22 +64,6 @@ export default function Login() {
                 </div>
 
                 <div>
-                  <label htmlFor = "password" className = "block text-sm font-medium leading-6 text-gray-900">
-                    Password
-                  </label>
-                  <div className = "mt-2">
-                    <input
-                        id = "password"
-                        name = "password"
-                        type = "password"
-                        required
-                        autoComplete = "current-password"
-                        className = "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-
-                <div>
                   <button
                       type = "submit"
                       className = "flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -97,7 +71,7 @@ export default function Login() {
                     Sign in
                   </button>
                 </div>
-              </form>
+              </Form>
 
               <div>
                 <div className = "relative mt-10">
