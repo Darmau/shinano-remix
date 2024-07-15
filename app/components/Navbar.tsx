@@ -19,7 +19,7 @@ import {
   SquaresPlusIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import NavbarText from '~/locales/navbar'
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import {Link, useLoaderData} from "@remix-run/react";
@@ -33,10 +33,7 @@ const products = [
   { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
   { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
 ]
-const callsToAction = [
-  { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-  { name: 'Contact sales', href: '#', icon: PhoneIcon },
-]
+
 const company = [
   { name: 'About us', href: '#' },
   { name: 'Careers', href: '#' },
@@ -45,7 +42,7 @@ const company = [
   { name: 'Blog', href: '#' },
 ]
 
-export const loader = async ({request}: LoaderFunctionArgs) => {
+export const loader = ({request}: LoaderFunctionArgs) => {
   const lang = getLang(request);
 
   return json({
@@ -55,8 +52,8 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { lang } = useLoaderData<typeof loader>();
-  const label = getLanguageLabel(NavbarText, lang);
+  const { lang } = useLoaderData<typeof loader>()
+  const label = getLanguageLabel(NavbarText, lang)
 
   return (
       <header className="bg-white">
@@ -105,18 +102,6 @@ export default function Navbar() {
                           <p className="mt-1 text-gray-600">{item.description}</p>
                         </div>
                       </div>
-                  ))}
-                </div>
-                <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                  {callsToAction.map((item) => (
-                      <a
-                          key={item.name}
-                          href={item.href}
-                          className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
-                      >
-                        <item.icon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
-                        {item.name}
-                      </a>
                   ))}
                 </div>
               </PopoverPanel>
@@ -200,7 +185,7 @@ export default function Navbar() {
                       <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
                     </DisclosureButton>
                     <DisclosurePanel className="mt-2 space-y-2">
-                      {[...products, ...callsToAction].map((item) => (
+                      {[...products].map((item) => (
                           <DisclosureButton
                               key={item.name}
                               as="a"

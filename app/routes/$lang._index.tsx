@@ -1,6 +1,6 @@
 import {json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import {useLoaderData, useOutletContext} from "@remix-run/react";
-import {createRemoteClient} from "~/utils/supabase.server";
+import {supabaseServerClient} from "~/utils/supabase.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -13,7 +13,7 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const supabase = createRemoteClient(request);
+  const supabase = supabaseServerClient(request);
 
   const {data} = await supabase.from('photo').select();
 

@@ -1,6 +1,6 @@
 import {createServerClient, parseCookieHeader, serializeCookieHeader} from '@supabase/ssr';
 
-export function createRemoteClient(request: Request) {
+export function supabaseServerClient(request: Request) {
   const headers = new Headers();
 
   return createServerClient(

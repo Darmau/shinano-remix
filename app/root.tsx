@@ -11,22 +11,23 @@ import {
 import "./tailwind.css";
 import Navbar from "~/components/Navbar";
 import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
-import {createBrowserClient, createServerClient, parseCookieHeader, serializeCookieHeader} from "@supabase/ssr";
+import {createBrowserClient} from "@supabase/ssr";
 import {useEffect, useState} from "react";
+import {supabaseServerClient} from "~/utils/supabase.server";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const lang = url.pathname.split('/')[1];
   const multiLangContent = ['', 'article', 'articles', 'photography', 'photographies', 'thought', 'about', 'contact', 'signup', 'login']
 
-  if (!['zh-CN', 'en', 'jp'].includes(lang) && multiLangContent.includes(lang)) {
+  if (!['zh', 'en', 'jp'].includes(lang) && multiLangContent.includes(lang)) {
     // 检测浏览器语言
     const acceptLanguage = request.headers.get("Accept-Language");
-    let detectedLang = 'zh-CN';
+    let detectedLang = 'zh';
 
     if (acceptLanguage) {
       if (acceptLanguage.includes('zh')) {
-        detectedLang = 'zh-CN';
+        detectedLang = 'zh';
       } else if (acceptLanguage.includes('ja')) {
         detectedLang = 'jp';
       } else if (acceptLanguage.includes('en')) detectedLang = 'en';
@@ -41,22 +42,7 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
         SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
       }
 
-  const response = new Response()
-  const headers = new Headers();
-
-  const supabase = createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return parseCookieHeader(request.headers.get('Cookie') ?? '')
-          },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({name, value, options}) =>
-                headers.append('Set-Cookie', serializeCookieHeader(name, value, options))
-            )
-          },
-        },
-      })
+  const supabase = supabaseServerClient(request)
 
   const {
     data: { session },
@@ -66,8 +52,6 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
     lang,
     env,
     session
-  }, {
-    headers: response.headers
   });
 };
 

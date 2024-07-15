@@ -1,5 +1,5 @@
 export default {
-  "zh-CN": {
+  "zh": {
     "title": "输入邮箱一键登录",
     "email": "邮箱",
     "username": "用户名",

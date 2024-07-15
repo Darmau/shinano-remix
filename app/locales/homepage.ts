@@ -1,5 +1,5 @@
 export default {
-  "zh-CN": {},
+  "zh": {},
 
   "en": {},
 
