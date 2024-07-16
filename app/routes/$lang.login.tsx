@@ -19,7 +19,7 @@ export async function action({request}: ActionFunctionArgs) {
   const {error} = await supabase.auth.signInWithOtp({
     email,
     options: {
-      emailRedirectTo: url.origin,
+      emailRedirectTo: `${url.origin}/auth/confirm`,
     },
   })
 

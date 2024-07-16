@@ -22,10 +22,9 @@ import {
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import NavbarText from '~/locales/navbar'
 import getLanguageLabel from "~/utils/getLanguageLabel";
-import {Link} from "@remix-run/react";
-import {json} from "@remix-run/cloudflare";
+import {Link, useOutletContext} from "@remix-run/react";
 import Profile from "~/components/Profile";
-import {supabaseBrowserClient} from "~/utils/supabase.client";
+import {OutletContext} from "~/types";
 import {Session} from "@supabase/supabase-js";
 
 const products = [
@@ -41,24 +40,7 @@ const company = [
   { name: 'Contact', href: '/contact' },
 ]
 
-export const loader = async () => {
-  const supabase = supabaseBrowserClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  return json({
-    user,
-  })
-}
-
-interface Props {
-  lang: string
-  session?: Session | null
-}
-
-export default function Navbar({lang, session}: Props) {
+export default function Navbar({lang, session}: {lang: string, session: Session | null}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const label = getLanguageLabel(NavbarText, lang)
 
@@ -145,7 +127,7 @@ export default function Navbar({lang, session}: Props) {
           </PopoverGroup>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             {session ? (
-                <Profile session={session} />
+                <h3>登录成功！</h3>
                 ) : (
                 <div className = "flex flex-1 items-center justify-end gap-x-6">
                   <Link

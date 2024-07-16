@@ -77,8 +77,8 @@ export default function App() {
         <Links/>
       </head>
       <body>
-      <Navbar lang = {lang} session = {session} />
-      <Outlet context={{ supabase, session }} />
+      <Navbar lang={lang} session={session}  />
+      <Outlet context={{ lang, supabase, session }} />
       <ScrollRestoration/>
       <Scripts/>
       </body>
