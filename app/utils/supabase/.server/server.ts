@@ -1,9 +1,9 @@
 import {createServerClient, parseCookieHeader, serializeCookieHeader} from '@supabase/ssr';
 
-export function supabaseServerClient(request: Request) {
+export function createClient(request: Request) {
   const headers = new Headers();
 
-  return createServerClient(
+  const supabase = createServerClient(
       process.env.SUPABASE_URL!,
       process.env.SUPABASE_ANON_KEY!,
       {
@@ -19,4 +19,5 @@ export function supabaseServerClient(request: Request) {
         },
       }
   );
+  return { supabase, headers }
 }

@@ -1,20 +1,8 @@
-import {
-  Links,
-  Meta,
-  Outlet,
-  redirect,
-  Scripts,
-  ScrollRestoration,
-  useLoaderData,
-  useRevalidator
-} from "@remix-run/react";
+import {Links, Meta, Outlet, redirect, Scripts, ScrollRestoration, useLoaderData} from "@remix-run/react";
 import "./tailwind.css";
 import Navbar from "~/components/Navbar";
 import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {getLang} from "~/utils/getLang";
-import {supabaseServerClient} from "~/utils/supabase.server";
-import {useEffect, useState} from "react";
-import {createBrowserClient} from "@supabase/ssr";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -31,42 +19,13 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
 
   const response = new Response()
 
-  const supabase = supabaseServerClient(request);
-  const { data: {session}} = await supabase.auth.getSession();
-
-  const env = {
-    SUPABASE_URL: process.env.SUPABASE_URL!,
-    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
-  }
-
   return json({
-    lang,
-    session,
-    env
-  }, { headers: response.headers });
+    lang
+  }, {headers: response.headers});
 };
 
 export default function App() {
-  const {lang, session, env} = useLoaderData<typeof loader>();
-  const { revalidate } = useRevalidator()
-  const [supabase] = useState(() => createBrowserClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY))
-
-  const serverAccessToken = session?.access_token
-
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event !== 'INITIAL_SESSION' && session?.access_token !== serverAccessToken) {
-        // server and client are out of sync.
-        revalidate()
-      }
-    })
-
-    return () => {
-      subscription.unsubscribe()
-    }
-  }, [serverAccessToken, supabase, revalidate])
+  const {lang} = useLoaderData<typeof loader>();
 
   return (
       <html lang = {lang}>
@@ -77,8 +36,8 @@ export default function App() {
         <Links/>
       </head>
       <body>
-      <Navbar lang={lang} session={session}  />
-      <Outlet context={{ lang, supabase, session }} />
+      <Navbar lang = {lang} />
+      <Outlet context = {{lang}}/>
       <ScrollRestoration/>
       <Scripts/>
       </body>

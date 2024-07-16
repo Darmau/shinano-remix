@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import {
   Dialog,
   DialogPanel,
@@ -19,13 +19,10 @@ import {
   SquaresPlusIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import {ChevronDownIcon} from '@heroicons/react/20/solid'
 import NavbarText from '~/locales/navbar'
 import getLanguageLabel from "~/utils/getLanguageLabel";
-import {Link, useOutletContext} from "@remix-run/react";
-import Profile from "~/components/Profile";
-import {OutletContext} from "~/types";
-import {Session} from "@supabase/supabase-js";
+import {Link} from "@remix-run/react";
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -40,7 +37,7 @@ const company = [
   { name: 'Contact', href: '/contact' },
 ]
 
-export default function Navbar({lang, session}: {lang: string, session: Session | null}) {
+export default function Navbar({lang}: {lang: string}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const label = getLanguageLabel(NavbarText, lang)
 
@@ -126,24 +123,20 @@ export default function Navbar({lang, session}: {lang: string, session: Session 
             </Popover>
           </PopoverGroup>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            {session ? (
-                <h3>登录成功！</h3>
-                ) : (
-                <div className = "flex flex-1 items-center justify-end gap-x-6">
-                  <Link
-                      to = {`${lang}/login`}
-                      className = "hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-gray-900"
-                  >
-                    {label.login}
-                  </Link>
-                  <Link
-                      to = {`${lang}/signup`}
-                      className = "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    {label.signup}
-                  </Link>
-                </div>
-            )}
+            <div className = "flex flex-1 items-center justify-end gap-x-6">
+              <Link
+                  to = {`${lang}/login`}
+                  className = "hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-gray-900"
+              >
+                {label.login}
+              </Link>
+              <Link
+                  to = {`${lang}/signup`}
+                  className = "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                {label.signup}
+              </Link>
+            </div>
           </div>
         </nav>
         <Dialog open = {mobileMenuOpen} onClose = {setMobileMenuOpen} className = "lg:hidden">
