@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import {
   Dialog,
   DialogPanel,
@@ -19,12 +19,10 @@ import {
   SquaresPlusIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import {ChevronDownIcon} from '@heroicons/react/20/solid'
 import NavbarText from '~/locales/navbar'
 import getLanguageLabel from "~/utils/getLanguageLabel";
-import {Link, useLoaderData} from "@remix-run/react";
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
-import {getLang} from "~/utils/getLang";
+import {Link} from "@remix-run/react";
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -33,30 +31,15 @@ const products = [
   { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
   { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
 ]
-const callsToAction = [
-  { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-  { name: 'Contact sales', href: '#', icon: PhoneIcon },
-]
+
 const company = [
-  { name: 'About us', href: '#' },
-  { name: 'Careers', href: '#' },
-  { name: 'Support', href: '#' },
-  { name: 'Press', href: '#' },
-  { name: 'Blog', href: '#' },
+  { name: 'About us', href: '/about' },
+  { name: 'Contact', href: '/contact' },
 ]
 
-export const loader = async ({request}: LoaderFunctionArgs) => {
-  const lang = getLang(request);
-
-  return json({
-    lang
-  })
-}
-
-export default function Navbar() {
+export default function Navbar({lang}: {lang: string}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { lang } = useLoaderData<typeof loader>();
-  const label = getLanguageLabel(NavbarText, lang);
+  const label = getLanguageLabel(NavbarText, lang)
 
   return (
       <header className="bg-white">
@@ -107,30 +90,18 @@ export default function Navbar() {
                       </div>
                   ))}
                 </div>
-                <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                  {callsToAction.map((item) => (
-                      <a
-                          key={item.name}
-                          href={item.href}
-                          className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
-                      >
-                        <item.icon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
-                        {item.name}
-                      </a>
-                  ))}
-                </div>
               </PopoverPanel>
             </Popover>
 
-            <a href="/photos/all/1" className="text-sm font-semibold leading-6 text-gray-900">
+            <a href="/photos/all/1" className="px-2 py-1 rounded-md text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50 focus:outline-none">
               {label.photography}
             </a>
-            <a href="/thoughts/1" className="text-sm font-semibold leading-6 text-gray-900">
-              {label.thoughts}
+            <a href="/thoughts/1" className="px-2 py-1 rounded-md text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50 focus:outline-none">
+              {label.thought}
             </a>
 
             <Popover className="relative">
-              <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
+              <PopoverButton className="px-2 py-1 rounded-md flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50 focus:outline-none">
                 {label.about}
                 <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
               </PopoverButton>
@@ -153,19 +124,19 @@ export default function Navbar() {
           </PopoverGroup>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <div className = "flex flex-1 items-center justify-end gap-x-6">
-                <Link
-                    to = {`${lang}/login`}
-                    className = "hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-gray-900"
-                >
-                  {label.login}
-                </Link>
-                <Link
-                    to = {`${lang}/signup`}
-                    className = "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  {label.signup}
-                </Link>
-              </div>
+              <Link
+                  to = {`${lang}/login`}
+                  className = "hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-gray-900"
+              >
+                {label.login}
+              </Link>
+              <Link
+                  to = {`${lang}/signup`}
+                  className = "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                {label.signup}
+              </Link>
+            </div>
           </div>
         </nav>
         <Dialog open = {mobileMenuOpen} onClose = {setMobileMenuOpen} className = "lg:hidden">
@@ -196,11 +167,11 @@ export default function Navbar() {
                 <div className="space-y-2 py-6">
                   <Disclosure as="div" className="-mx-3">
                     <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                      Product
+                      {label.article}
                       <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
                     </DisclosureButton>
                     <DisclosurePanel className="mt-2 space-y-2">
-                      {[...products, ...callsToAction].map((item) => (
+                      {[...products].map((item) => (
                           <DisclosureButton
                               key={item.name}
                               as="a"
@@ -217,18 +188,18 @@ export default function Navbar() {
                       href="/"
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
-                    Features
+                    {label.photography}
                   </a>
                   <a
                       href="/"
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
-                    Marketplace
+                    {label.thought}
                   </a>
 
                   <Disclosure as="div" className="-mx-3">
                     <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                      Company
+                      {label.about}
                       <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
                     </DisclosureButton>
                     <DisclosurePanel className="mt-2 space-y-2">

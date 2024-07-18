@@ -9,77 +9,54 @@ import {
   useRevalidator
 } from "@remix-run/react";
 import "./tailwind.css";
-import Navbar from "~/components/Navbar";
 import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
-import {createBrowserClient, createServerClient, parseCookieHeader, serializeCookieHeader} from "@supabase/ssr";
+import {getLang} from "~/utils/getLang";
+import {createClient} from "~/utils/supabase/server";
 import {useEffect, useState} from "react";
+import {createBrowserClient} from "@supabase/ssr";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const lang = url.pathname.split('/')[1];
   const multiLangContent = ['', 'article', 'articles', 'photography', 'photographies', 'thought', 'about', 'contact', 'signup', 'login']
 
-  if (!['zh-CN', 'en', 'jp'].includes(lang) && multiLangContent.includes(lang)) {
+  if (!['zh', 'en', 'jp'].includes(lang) && multiLangContent.includes(lang)) {
     // 检测浏览器语言
-    const acceptLanguage = request.headers.get("Accept-Language");
-    let detectedLang = 'zh-CN';
-
-    if (acceptLanguage) {
-      if (acceptLanguage.includes('zh')) {
-        detectedLang = 'zh-CN';
-      } else if (acceptLanguage.includes('ja')) {
-        detectedLang = 'jp';
-      } else if (acceptLanguage.includes('en')) detectedLang = 'en';
-    }
+    const detectedLang = getLang(request)
 
     // 重定向到正确的语言路径
     return redirect(`/${detectedLang}${url.pathname}`);
   }
 
   const env = {
-        SUPABASE_URL: process.env.SUPABASE_URL!,
-        SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
-      }
+    SUPABASE_URL: process.env.SUPABASE_URL!,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
+  };
 
-  const response = new Response()
-  const headers = new Headers();
-
-  const supabase = createServerClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return parseCookieHeader(request.headers.get('Cookie') ?? '')
-          },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({name, value, options}) =>
-                headers.append('Set-Cookie', serializeCookieHeader(name, value, options))
-            )
-          },
-        },
-      })
+  const response = new Response();
+  const {supabase} = createClient(request);
 
   const {
     data: { session },
-  } = await supabase.auth.getSession()
+  } = await supabase.auth.getSession();
 
   return json({
     lang,
     env,
     session
-  }, {
-    headers: response.headers
-  });
+  }, {headers: response.headers});
 };
 
 export default function App() {
   const {lang, env, session} = useLoaderData<typeof loader>();
+
   const { revalidate } = useRevalidator()
 
   const [supabase] = useState(() =>
       createBrowserClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY)
   )
 
-  const serverAccessToken = session?.access_token;
+  const serverAccessToken = session?.access_token
 
   useEffect(() => {
     const {
@@ -105,7 +82,6 @@ export default function App() {
         <Links/>
       </head>
       <body>
-      <Navbar />
       <Outlet context = {{lang, supabase}}/>
       <ScrollRestoration/>
       <Scripts/>

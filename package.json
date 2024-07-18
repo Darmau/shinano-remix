@@ -13,6 +13,7 @@
     "typegen": "wrangler types"
   },
   "dependencies": {
+    "@formatjs/intl-localematcher": "^0.5.4",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
     "@remix-run/cloudflare": "^2.10.2",
@@ -21,12 +22,14 @@
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.44.3",
     "isbot": "^4.1.0",
+    "negotiator": "^0.6.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240512.0",
     "@remix-run/dev": "^2.10.2",
+    "@types/negotiator": "^0.6.3",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
@@ -39,6 +42,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.38",
+    "supabase": "^1.183.5",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.1.6",
     "vite": "^5.1.0",

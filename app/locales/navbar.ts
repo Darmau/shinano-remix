@@ -1,5 +1,5 @@
-export default {
-  "zh-CN": {
+const NavbarText = {
+  "zh": {
     "article": "文章",
     "photography": "摄影",
     "thought": "碎片",
@@ -29,3 +29,4 @@ export default {
     "search": "検索",
   },
 }
+ export default NavbarText;
