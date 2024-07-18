@@ -54,6 +54,7 @@ export async function action({request}: ActionFunctionArgs) {
   if (intent === 'email') {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    const lang = formData.get("lang") as string;
 
     const {error} = await supabase.auth.signInWithPassword({
       email,
@@ -65,7 +66,7 @@ export async function action({request}: ActionFunctionArgs) {
       return json({success: false, error: error.message}, {headers});
     }
 
-    return redirect('/', {headers})
+    return redirect(`/${lang}`, {headers})
   } else if (intent === 'github') {
     const {data, error} = await supabase.auth.signInWithOAuth({
       provider: "github",
