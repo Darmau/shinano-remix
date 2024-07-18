@@ -2,7 +2,9 @@ export default {
   "zh": {
     "title": "输入邮箱一键登录",
     "email": "邮箱",
+    "password": "密码",
     "username": "用户名",
+    "sign_in": "登录",
     "submit": "发送登录链接",
     "oauth": "社交账号登录",
     "email_sent": "邮件已发送",
@@ -12,7 +14,9 @@ export default {
   "en": {
     "title": "Sign in with email",
     "email": "Email",
+    "password": "Password",
     "username": "Username",
+    "sign_in": "Sign in",
     "submit": "Send magic link",
     "oauth": "Or continue with",
     "email_sent": "Email sent",
@@ -22,7 +26,9 @@ export default {
   "jp": {
     "title": "メールアドレスでログイン",
     "email": "メールアドレス",
+    "password": "パスワード",
     "username": "ユーザー名",
+    "sign_in": "ログイン",
     "submit": "ログインリンクを送信",
     "oauth": "または以下のアカウントでログイン",
     "email_sent": "メールが送信されました",

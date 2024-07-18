@@ -13,8 +13,8 @@ export async function loader({request}: LoaderFunctionArgs) {
     const {supabase} = createClient(request);
 
     const {error} = await supabase.auth.verifyOtp({
-      type,
       token_hash,
+      type,
     })
 
     if (!error) {
@@ -23,5 +23,5 @@ export async function loader({request}: LoaderFunctionArgs) {
   }
 
   // return the user to an error page with instructions
-  return redirect('/auth/auth-code-error', {headers})
+  return redirect('/signup', {headers})
 }

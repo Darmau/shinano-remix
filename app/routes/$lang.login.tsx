@@ -28,15 +28,17 @@ export default function Login() {
           </div>
 
           <div className = "mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-            {!actionResponse?.success ? (
-                <Form method = "POST" className = "bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-                  <EmailLogin lang = {lang}/>
+            <Form method = "POST" className = "bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+              <EmailLogin lang = {lang}/>
 
-                  <GithubLogin lang = {lang}/>
-                </Form>
-            ) : (
-                <div>Please check your Email</div>
-            )}
+              {actionResponse?.error && (
+                  <div className = "mt-6">
+                    <p className = "text-sm text-red-600">{actionResponse.error}</p>
+                  </div>
+              )}
+
+              <GithubLogin lang = {lang}/>
+            </Form>
           </div>
         </div>
       </main>
@@ -50,14 +52,12 @@ export async function action({request}: ActionFunctionArgs) {
   const {supabase, headers} = createClient(request)
 
   if (intent === 'email') {
-    const origin = request.headers.get('origin')
     const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
-    const {error} = await supabase.auth.signInWithOtp({
+    const {error} = await supabase.auth.signInWithPassword({
       email,
-      options: {
-        emailRedirectTo: `${origin}/auth/callback`,
-      },
+      password,
     });
 
     if (error) {
@@ -65,9 +65,7 @@ export async function action({request}: ActionFunctionArgs) {
       return json({success: false, error: error.message}, {headers});
     }
 
-    return json({
-      success: true,
-    }, {headers});
+    return redirect('/', {headers})
   } else if (intent === 'github') {
     const {data, error} = await supabase.auth.signInWithOAuth({
       provider: "github",
@@ -84,10 +82,6 @@ export async function action({request}: ActionFunctionArgs) {
     if (data.url) {
       return redirect(data.url, {headers});
     }
-
-    return json({
-      success: true,
-    }, {headers});
   }
 
   throw () => {
