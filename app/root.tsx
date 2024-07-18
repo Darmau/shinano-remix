@@ -11,7 +11,7 @@ import {
   useRouteError
 } from "@remix-run/react";
 import "./tailwind.css";
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {getLang} from "~/utils/getLang";
 import {createClient} from "~/utils/supabase/server";
 import {useEffect, useState} from "react";
