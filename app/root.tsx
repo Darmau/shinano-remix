@@ -14,6 +14,7 @@ import {getLang} from "~/utils/getLang";
 import {createClient} from "~/utils/supabase/server";
 import {useEffect, useState} from "react";
 import {createBrowserClient} from "@supabase/ssr";
+import Navbar from "~/components/Navbar";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -82,9 +83,10 @@ export default function App() {
         <Links/>
       </head>
       <body>
-      <Outlet context = {{lang, supabase}}/>
-      <ScrollRestoration/>
-      <Scripts/>
+        <Navbar lang={lang} />
+        <Outlet context = {{lang, supabase}}/>
+        <ScrollRestoration/>
+        <Scripts/>
       </body>
       </html>
   )
