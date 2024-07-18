@@ -2,7 +2,7 @@ import {redirect, type LoaderFunctionArgs} from '@remix-run/cloudflare'
 import {type EmailOtpType} from '@supabase/supabase-js'
 import {createClient} from "~/utils/supabase/server";
 
-export async function loader({request}: LoaderFunctionArgs) {
+export async function loader({request, context}: LoaderFunctionArgs) {
   const requestUrl = new URL(request.url)
   const token_hash = requestUrl.searchParams.get('token_hash')
   const type = requestUrl.searchParams.get('type') as EmailOtpType | null
@@ -10,7 +10,7 @@ export async function loader({request}: LoaderFunctionArgs) {
   const headers = new Headers()
 
   if (token_hash && type) {
-    const {supabase} = createClient(request);
+    const {supabase} = createClient(request, context);
 
     const {error} = await supabase.auth.verifyOtp({
       token_hash,
