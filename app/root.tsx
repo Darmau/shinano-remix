@@ -37,7 +37,7 @@ export const loader = async ({request, context}: LoaderFunctionArgs) => {
   };
 
   const response = new Response();
-  const {supabase} = createClient(request);
+  const {supabase} = createClient(request, context);
 
   const {
     data: { session },
