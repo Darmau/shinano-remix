@@ -1,8 +1,19 @@
-import {Links, Meta, Outlet, redirect, Scripts, ScrollRestoration, useLoaderData} from "@remix-run/react";
+import {
+  Links,
+  Meta,
+  Outlet,
+  redirect,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+  useRevalidator
+} from "@remix-run/react";
 import "./tailwind.css";
-import Navbar from "~/components/Navbar";
 import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {getLang} from "~/utils/getLang";
+import {createClient} from "~/utils/supabase/server";
+import {useEffect, useState} from "react";
+import {createBrowserClient} from "@supabase/ssr";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -17,15 +28,50 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
     return redirect(`/${detectedLang}${url.pathname}`);
   }
 
-  const response = new Response()
+  const env = {
+    SUPABASE_URL: process.env.SUPABASE_URL!,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
+  };
+
+  const response = new Response();
+  const {supabase} = createClient(request);
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
   return json({
-    lang
+    lang,
+    env,
+    session
   }, {headers: response.headers});
 };
 
 export default function App() {
-  const {lang} = useLoaderData<typeof loader>();
+  const {lang, env, session} = useLoaderData<typeof loader>();
+
+  const { revalidate } = useRevalidator()
+
+  const [supabase] = useState(() =>
+      createBrowserClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY)
+  )
+
+  const serverAccessToken = session?.access_token
+
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event !== 'INITIAL_SESSION' && session?.access_token !== serverAccessToken) {
+        // server and client are out of sync.
+        revalidate()
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [serverAccessToken, supabase, revalidate])
 
   return (
       <html lang = {lang}>
@@ -36,8 +82,7 @@ export default function App() {
         <Links/>
       </head>
       <body>
-      <Navbar lang = {lang} />
-      <Outlet context = {{lang}}/>
+      <Outlet context = {{lang, supabase}}/>
       <ScrollRestoration/>
       <Scripts/>
       </body>

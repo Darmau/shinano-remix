@@ -1,6 +1,6 @@
 import {Form, redirect, useActionData, useOutletContext} from "@remix-run/react";
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
-import {supabaseServerClient} from "~/utils/supabase/.server/server";
+import {supabaseServerClient} from "~/utils/supabase/server";
 import {OutletContext} from "~/types";
 
 
