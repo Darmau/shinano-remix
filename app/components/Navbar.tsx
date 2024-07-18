@@ -23,6 +23,7 @@ import {ChevronDownIcon} from '@heroicons/react/20/solid'
 import NavbarText from '~/locales/navbar'
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import {Link} from "@remix-run/react";
+import Profile from "~/components/Profile";
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -42,13 +43,13 @@ export default function Navbar({lang}: {lang: string}) {
   const label = getLanguageLabel(NavbarText, lang)
 
   return (
-      <header className="bg-white">
+      <header className="relative isolate z-10">
         <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
-          <div className="flex lg:flex-1">
-            <a href="/" className="-m-1.5 p-1.5">
-              <span className="sr-only">{lang}</span>
+          <div className="hidden lg:flex">
+            <Link to="/" className="-m-1.5 p-1.5">
+              <span className="sr-only">Logo</span>
               <img alt="" src="/favicon.svg" className="h-8 w-auto" />
-            </a>
+            </Link>
           </div>
           <div className="flex lg:hidden">
             <button
@@ -56,7 +57,7 @@ export default function Navbar({lang}: {lang: string}) {
                 onClick={() => setMobileMenuOpen(true)}
                 className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
             >
-              <span className="sr-only">Open main menu</span>
+              <span className="sr-only">{label.open_menu}</span>
               <Bars3Icon aria-hidden="true" className="h-6 w-6" />
             </button>
           </div>
@@ -122,22 +123,7 @@ export default function Navbar({lang}: {lang: string}) {
               </PopoverPanel>
             </Popover>
           </PopoverGroup>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <div className = "flex flex-1 items-center justify-end gap-x-6">
-              <Link
-                  to = {`${lang}/login`}
-                  className = "hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-gray-900"
-              >
-                {label.login}
-              </Link>
-              <Link
-                  to = {`${lang}/signup`}
-                  className = "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                {label.signup}
-              </Link>
-            </div>
-          </div>
+          <Profile lang={lang}/>
         </nav>
         <Dialog open = {mobileMenuOpen} onClose = {setMobileMenuOpen} className = "lg:hidden">
           <div className = "fixed inset-0 z-10"/>
@@ -216,19 +202,8 @@ export default function Navbar({lang}: {lang: string}) {
                     </DisclosurePanel>
                   </Disclosure>
                 </div>
-                <div className="flex gap-4 justify-between my-8">
-                  <Link
-                      to={`${lang}/signup`}
-                      className="flex-1 text-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    {label.signup}
-                  </Link>
-                  <Link
-                      to={`${lang}/login`}
-                      className="flex-1 text-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  >
-                    {label.login}
-                  </Link>
+                <div className="pt-8">
+                  <Profile lang={lang}/>
                 </div>
               </div>
             </div>

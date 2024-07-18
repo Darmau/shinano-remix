@@ -7,6 +7,7 @@ const NavbarText = {
     "login": "登录",
     "signup": "注册",
     "search": "搜索",
+    "open_menu": "打开菜单",
   },
 
   "en": {
@@ -17,6 +18,7 @@ const NavbarText = {
     "login": "Login",
     "signup": "Signup",
     "search": "Search",
+    "open_menu": "Open Menu",
   },
 
   "jp": {
@@ -27,6 +29,7 @@ const NavbarText = {
     "login": "ログイン",
     "signup": "登録する",
     "search": "検索",
+    "open_menu": "メニューを開く",
   },
 }
  export default NavbarText;

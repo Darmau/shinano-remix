@@ -1,5 +1,5 @@
 import {
-  isRouteErrorResponse,
+  isRouteErrorResponse, Link,
   Links,
   Meta,
   Outlet,
@@ -7,7 +7,8 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useRevalidator, useRouteError
+  useRevalidator,
+  useRouteError
 } from "@remix-run/react";
 import "./tailwind.css";
 import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
@@ -17,7 +18,7 @@ import {useEffect, useState} from "react";
 import {createBrowserClient} from "@supabase/ssr";
 import Navbar from "~/components/Navbar";
 
-export const loader = async ({request}: LoaderFunctionArgs) => {
+export const loader = async ({request, context}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const lang = url.pathname.split('/')[1];
   const multiLangContent = ['', 'article', 'articles', 'photography', 'photographies', 'thought', 'about', 'contact', 'signup', 'login']
@@ -31,12 +32,12 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
   }
 
   const env = {
-    SUPABASE_URL: process.env.SUPABASE_URL!,
-    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
+    SUPABASE_URL: context.cloudflare.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: context.cloudflare.env.SUPABASE_ANON_KEY,
   };
 
   const response = new Response();
-  const {supabase} = createClient(request);
+  const {supabase} = createClient(request, context);
 
   const {
     data: { session },
@@ -98,21 +99,40 @@ export function ErrorBoundary() {
 
   if (isRouteErrorResponse(error)) {
     return (
-        <div>
-          <h1>
-            {error.status} {error.statusText}
-          </h1>
-          <p>{error.data}</p>
-        </div>
-    );
+        <main className = "grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+          <div className = "text-center">
+            <p className = "text-base font-semibold text-indigo-600">{error.status}</p>
+            <h1 className = "mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">{error.statusText}</h1>
+            <p className = "mt-6 text-base leading-7 text-gray-600">{error.data}</p>
+            <div className = "mt-10 flex items-center justify-center gap-x-6">
+              <Link
+                  to="/"
+                  className = "rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Home
+              </Link>
+            </div>
+          </div>
+        </main>
+  )
+    ;
   } else if (error instanceof Error) {
     return (
-        <div>
-          <h1>Error</h1>
-          <p>{error.message}</p>
-          <p>The stack trace is:</p>
-          <pre>{error.stack}</pre>
-        </div>
+        <main className = "grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+          <div className = "text-center">
+            <p className = "text-base font-semibold text-indigo-600">{error.name}</p>
+            <h1 className = "mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">{error.message}</h1>
+            <p className = "mt-6 text-base leading-7 text-gray-600">{error.stack}</p>
+            <div className = "mt-10 flex items-center justify-center gap-x-6">
+              <Link
+                  to = "/"
+                  className = "rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Home
+              </Link>
+            </div>
+          </div>
+        </main>
     );
   } else {
     return <h1>Unknown Error</h1>;
