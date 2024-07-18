@@ -52,11 +52,11 @@ export default function Signup() {
   )
 }
 
-export async function action({request}: ActionFunctionArgs) {
+export async function action({request, context}: ActionFunctionArgs) {
   const formData = await request.formData()
   const intent = formData.get("intent") as string;
 
-  const {supabase, headers} = createClient(request)
+  const {supabase, headers} = createClient(request, context)
 
   if (intent === 'email') {
     const username = formData.get("username") as string;
