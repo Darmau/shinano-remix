@@ -1,11 +1,12 @@
 import {createServerClient, parseCookieHeader, serializeCookieHeader} from '@supabase/ssr';
+import {AppLoadContext} from "@remix-run/cloudflare";
 
-export function createClient(request: Request) {
+export function createClient(request: Request, context: AppLoadContext) {
   const headers = new Headers();
 
   const supabase = createServerClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_ANON_KEY!,
+      context.cloudflare.env.SUPABASE_URL!,
+      context.cloudflare.env.SUPABASE_ANON_KEY!,
       {
         cookies: {
           getAll() {

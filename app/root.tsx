@@ -11,14 +11,14 @@ import {
   useRouteError
 } from "@remix-run/react";
 import "./tailwind.css";
-import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {getLang} from "~/utils/getLang";
 import {createClient} from "~/utils/supabase/server";
 import {useEffect, useState} from "react";
 import {createBrowserClient} from "@supabase/ssr";
 import Navbar from "~/components/Navbar";
 
-export const loader = async ({request}: LoaderFunctionArgs) => {
+export const loader = async ({request, context}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const lang = url.pathname.split('/')[1];
   const multiLangContent = ['', 'article', 'articles', 'photography', 'photographies', 'thought', 'about', 'contact', 'signup', 'login']
@@ -32,12 +32,12 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
   }
 
   const env = {
-    SUPABASE_URL: process.env.SUPABASE_URL!,
-    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
+    SUPABASE_URL: context.cloudflare.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: context.cloudflare.env.SUPABASE_ANON_KEY,
   };
 
   const response = new Response();
-  const {supabase} = createClient(request);
+  const {supabase} = createClient(request, context);
 
   const {
     data: { session },
