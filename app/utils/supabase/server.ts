@@ -5,8 +5,8 @@ export function createClient(request: Request, context: AppLoadContext) {
   const headers = new Headers();
 
   const supabase = createServerClient(
-      context.cloudflare.env.SUPABASE_URL!,
-      context.cloudflare.env.SUPABASE_ANON_KEY!,
+      context.cloudflare.env.SUPABASE_URL,
+      context.cloudflare.env.SUPABASE_ANON_KEY,
       {
         cookies: {
           getAll() {
