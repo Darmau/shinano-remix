@@ -5,6 +5,7 @@ import InstagramIcon from "~/icons/Instagram";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import FooterText from "~/locales/footer";
 import {Link} from "@remix-run/react";
+import RSSIcon from "~/icons/RSS";
 
 const navigation = {
   blog: [
@@ -20,30 +21,32 @@ const navigation = {
   ],
   social: [
     {
-      name: 'Instagram',
-      href: '#',
-      icon: (props: React.SVGProps<SVGSVGElement>) => <InstagramIcon {...props} />,
-    },
-    {
-      name: 'X',
-      href: '#',
-      icon: (props: React.SVGProps<SVGSVGElement>) => <TwitterIcon {...props} />,
-    },
-    {
       name: 'GitHub',
-      href: '#',
+      href: 'https://github.com/darmau',
       icon: (props: React.SVGProps<SVGSVGElement>) => <GithubIcon {...props} />,
     },
     {
+      name: 'X',
+      href: 'https://x.com/darmaulee',
+      icon: (props: React.SVGProps<SVGSVGElement>) => <TwitterIcon {...props} />,
+    },
+    {
+      name: 'Instagram',
+      href: 'https://www.instagram.com/ridamoe',
+      icon: (props: React.SVGProps<SVGSVGElement>) => <InstagramIcon {...props} />,
+    },
+    {
       name: 'YouTube',
-      href: '#',
+      href: 'https://www.youtube.com/@darmau',
       icon: (props: React.SVGProps<SVGSVGElement>) => <YoutubeIcon {...props} />,
     },
   ],
 }
 
 export default function Footer({lang}: {lang: string}) {
-  const label = getLanguageLabel(FooterText, lang)
+  const label = getLanguageLabel(FooterText, lang);
+  const currentYear = new Date().getFullYear();
+
   return (
       <footer aria-labelledby="footer-heading" className="bg-white">
         <h2 id="footer-heading" className="sr-only">
@@ -117,15 +120,19 @@ export default function Footer({lang}: {lang: string}) {
           </div>
           <div className="mt-8 border-t border-gray-900/10 pt-8 md:flex md:items-center md:justify-between">
             <div className="flex space-x-6 md:order-2">
+              <Link to={`${lang}/rss`} className="text-gray-400 hover:text-gray-500">
+                <span className="sr-only">RSS</span>
+                <RSSIcon className="h-6 w-6" />
+              </Link>
               {navigation.social.map((item) => (
-                  <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
+                  <a key={item.name} href={item.href} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-gray-500">
                     <span className="sr-only">{item.name}</span>
                     <item.icon aria-hidden="true" className="h-6 w-6" />
                   </a>
               ))}
             </div>
             <p className="mt-8 text-xs leading-5 text-gray-500 md:order-1 md:mt-0">
-              &copy; 2020 Your Company, Inc. All rights reserved.
+              &copy; 2019 - {currentYear} Design and Develop by 李大毛. All rights reserved.
             </p>
           </div>
         </div>

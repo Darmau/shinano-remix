@@ -85,9 +85,11 @@ export default function App() {
         <Meta/>
         <Links/>
       </head>
-      <body>
+      <body className="min-h-screen flex flex-col">
         <Navbar lang={lang} />
-        <Outlet context = {{lang, supabase}}/>
+        <main className="flex-1">
+          <Outlet context = {{lang, supabase}}/>
+        </main>
         <Footer lang={lang} />
         <ScrollRestoration/>
         <Scripts/>

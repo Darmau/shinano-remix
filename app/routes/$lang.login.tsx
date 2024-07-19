@@ -19,7 +19,7 @@ export default function Login() {
   const actionResponse = useActionData<typeof action>()
 
   return (
-      <main className = "bg-zinc-50">
+      <div className = "bg-zinc-50">
         <div className = "flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
           <div className = "sm:mx-auto sm:w-full sm:max-w-md">
             <h2 className = "mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-zinc-900">
@@ -42,7 +42,7 @@ export default function Login() {
             </Form>
           </div>
         </div>
-      </main>
+      </div>
   )
 }
 
