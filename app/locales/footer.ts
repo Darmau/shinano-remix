@@ -9,11 +9,6 @@ const FooterText = {
     "about_me": "关于作者",
     "tech_stack": "技术栈",
     "stats": "统计",
-    "subscribe_title": "订阅本站更新",
-    "subscribe_description": "只会在有推荐文章时发送邮件，一般文章不会。但也可能懒得发。",
-    "subscribe_button": "订阅",
-    "subscribe_placeholder": "输入邮箱",
-    "email_sent": "邮件已发送！请查收。",
   },
 
   "en": {
@@ -26,11 +21,6 @@ const FooterText = {
     "about_me": "About Me",
     "tech_stack": "Tech Stack",
     "stats": "Stats",
-    "subscribe_title": "Subscribe to updates",
-    "subscribe_description": "Only send emails when there are recommended articles, usually not for general articles. But I may be too lazy to send.",
-    "subscribe_button": "Subscribe",
-    "subscribe_placeholder": "Enter email",
-    "email_sent": "Email sent! Please check your inbox.",
   },
 
   "jp": {
@@ -43,11 +33,6 @@ const FooterText = {
     "about_me": "著者について",
     "tech_stack": "技術スタック",
     "stats": "統計",
-    "subscribe_title": "更新を購読する",
-    "subscribe_description": "おすすめの記事があるときだけメールを送信します。通常の記事には送信しませんが、送信するのが面倒な場合もあります。",
-    "subscribe_button": "購読",
-    "subscribe_placeholder": "メールアドレスを入力",
-    "email_sent": "メールが送信されました！受信箱を確認してください。",
   },
 }
 export default FooterText;
