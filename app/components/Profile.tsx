@@ -2,12 +2,12 @@
 
 import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
-import {Form, Link, useLoaderData} from "@remix-run/react";
+import {Link, useLoaderData} from "@remix-run/react";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import NavbarText from "~/locales/navbar";
 
-export const loader = async ({request}: LoaderFunctionArgs) => {
-  const { supabase } = createClient(request);
+export const loader = async ({request, context}: LoaderFunctionArgs) => {
+  const { supabase } = createClient(request, context);
   const { data: {session}} = await supabase.auth.getSession();
   return json({
     session

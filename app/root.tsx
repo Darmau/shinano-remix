@@ -88,7 +88,7 @@ export default function App() {
       </head>
       <body className="min-h-screen flex flex-col">
         <Navbar lang={lang} />
-        <main className="flex-1">
+        <main className="flex-1 w-full">
           <Outlet context = {{lang, supabase}}/>
         </main>
         <Footer lang={lang} />
