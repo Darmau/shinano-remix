@@ -16,7 +16,7 @@ export async function loader({request, params}: LoaderFunctionArgs) {
 export default function Login() {
   const {lang} = useLoaderData<typeof loader>();
   const label = getLanguageLabel(SignupText, lang);
-  const actionResponse = useActionData<typeof action>()
+  const actionResponse = useActionData<typeof action>();
 
   return (
       <div className = "bg-zinc-50">

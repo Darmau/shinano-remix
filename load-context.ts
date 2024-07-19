@@ -9,6 +9,8 @@ import { type PlatformProxy } from "wrangler";
 interface Env {
     SUPABASE_URL: string;
     SUPABASE_ANON_KEY: string;
+    RESEND_KEY: string;
+  RESEND_AUDIENCE_ID: string;
 }
 
 type Cloudflare = Omit<PlatformProxy<Env>, "dispose">;
