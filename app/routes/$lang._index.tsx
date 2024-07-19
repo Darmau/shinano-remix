@@ -19,10 +19,11 @@ export const meta: MetaFunction = ({ params }) => {
 
 
 export default function Index() {
-  const { articles } = useLoaderData<typeof loader>();
+  const { prefix, articles } = useLoaderData<typeof loader>();
+
   return (
       <div className="mx-auto flex flex-col max-w-7xl px-6 lg:px-8">
-        <ArticleSection articles={articles} />
+        <ArticleSection articles={articles} prefix={prefix} />
       </div>
   );
 }
@@ -48,9 +49,10 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       abstract,
       is_featured,
       is_premium,
+      topic,
+      published_at,
       cover (alt, storage_key),
-      category (title, slug)
-     `)
+      category (title, slug)`)
     .filter('lang', 'eq', language.id)
     .filter('is_draft', 'eq', false)
     .limit(9)
@@ -59,7 +61,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
 
 
   return {
-    articles: articleData
+    articles: articleData,
+    prefix: context.cloudflare.env.IMG_PREFIX
   }
 
 }

@@ -1,24 +1,13 @@
-interface Article {
-  id: number,
-  title: string | null,
-  slug: string | null,
-  subtitle: string | null,
-  abstract: string | null,
-  is_featured: boolean | null,
-  is_premium: boolean | null,
-  cover: {
-    alt: string,
-    storage_key: string
-  } | null,
-  category: {
-    title: string,
-    slug: string
-  } | null
-}
+import {Article} from "~/types/Article";
+import ArticleCard from "~/components/HomeArticleCard";
 
-export default function ArticleSection({articles}: { articles: Article[] }) {
-
+export default function ArticleSection({articles, prefix}: { prefix: string, articles: Article[] | null }) {
+  if (!articles) return null;
   return (
-      <div>{JSON.stringify(articles)}</div>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">
+        {articles.map(article => (
+            <ArticleCard key={article.id} article={article} prefix={prefix} />
+        ))}
+      </div>
   )
 }
