@@ -50,7 +50,7 @@ export default function Footer({lang}: {lang: string}) {
   const actionResponse = useActionData<typeof action>();
 
   return (
-      <footer aria-labelledby="footer-heading" className="bg-white">
+      <footer aria-labelledby="footer-heading" className="bg-white border-t">
         <h2 id="footer-heading" className="sr-only">
           Footer
         </h2>
