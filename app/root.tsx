@@ -11,12 +11,14 @@ import {
   useRouteError
 } from "@remix-run/react";
 import "./tailwind.css";
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {getLang} from "~/utils/getLang";
 import {createClient} from "~/utils/supabase/server";
 import {useEffect, useState} from "react";
 import {createBrowserClient} from "@supabase/ssr";
 import Navbar from "~/components/Navbar";
+import Footer from "~/components/Footer";
+import {Resend} from "resend";
 
 export const loader = async ({request, context}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -84,9 +86,12 @@ export default function App() {
         <Meta/>
         <Links/>
       </head>
-      <body>
+      <body className="min-h-screen flex flex-col">
         <Navbar lang={lang} />
-        <Outlet context = {{lang, supabase}}/>
+        <main className="flex-1">
+          <Outlet context = {{lang, supabase}}/>
+        </main>
+        <Footer lang={lang} />
         <ScrollRestoration/>
         <Scripts/>
       </body>
@@ -137,4 +142,23 @@ export function ErrorBoundary() {
   } else {
     return <h1>Unknown Error</h1>;
   }
+}
+
+// 提交订阅表单
+export async function action({request, context}: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const email = formData.get("email-address") as string;
+
+  const resend = new Resend(context.cloudflare.env.RESEND_KEY);
+
+  const result = await resend.contacts.create({
+    email: email,
+    audienceId: context.cloudflare.env.RESEND_AUDIENCE_ID,
+  });
+
+  if (result.error) {
+    return json({success: false, message: result.error.message});
+  }
+
+  return json({success: true, message: null});
 }
