@@ -1,7 +1,16 @@
 export default {
-  "zh": {},
+  "zh": {
+    "title": "可可托海没有海",
+    "description": "未定"
+  },
 
-  "en": {},
+  "en": {
+    "title": "Keketuohai No Sea",
+    "description": "TBD"
+  },
 
-  "jp": {},
+  "jp": {
+    "title": "ケケトハイは海がありません",
+    "description": "未定"
+  },
 }

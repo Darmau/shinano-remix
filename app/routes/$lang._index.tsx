@@ -1,12 +1,16 @@
 import {MetaFunction} from "@remix-run/cloudflare";
 import {useOutletContext} from "@remix-run/react";
+import getLanguageLabel from "~/utils/getLanguageLabel";
+import HomepageText from "~/locales/homepage";
 
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction = ({ params }) => {
+  const lang = params.lang as string;
+  const label = getLanguageLabel(HomepageText, lang);
   return [
-    {title: "New Remix App"},
+    {title: label.title},
     {
       name: "description",
-      content: "Welcome to Remix on Cloudflare!",
+      content: label.description,
     },
   ];
 };
