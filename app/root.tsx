@@ -1,5 +1,6 @@
 import {
-  isRouteErrorResponse, Link,
+  isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
@@ -11,14 +12,13 @@ import {
   useRouteError
 } from "@remix-run/react";
 import "./tailwind.css";
-import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {getLang} from "~/utils/getLang";
 import {createClient} from "~/utils/supabase/server";
 import {useEffect, useState} from "react";
 import {createBrowserClient} from "@supabase/ssr";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
-import {Resend} from "resend";
 
 export const loader = async ({request, context}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -42,7 +42,7 @@ export const loader = async ({request, context}: LoaderFunctionArgs) => {
   const {supabase} = createClient(request, context);
 
   const {
-    data: { session },
+    data: {session},
   } = await supabase.auth.getSession();
 
   return json({
@@ -55,7 +55,7 @@ export const loader = async ({request, context}: LoaderFunctionArgs) => {
 export default function App() {
   const {lang, env, session} = useLoaderData<typeof loader>();
 
-  const { revalidate } = useRevalidator()
+  const {revalidate} = useRevalidator()
 
   const [supabase] = useState(() =>
       createBrowserClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY)
@@ -65,7 +65,7 @@ export default function App() {
 
   useEffect(() => {
     const {
-      data: { subscription },
+      data: {subscription},
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event !== 'INITIAL_SESSION' && session?.access_token !== serverAccessToken) {
         // server and client are out of sync.
@@ -86,14 +86,14 @@ export default function App() {
         <Meta/>
         <Links/>
       </head>
-      <body className="min-h-screen flex flex-col">
-        <Navbar lang={lang} />
-        <main className="flex-1">
-          <Outlet context = {{lang, supabase}}/>
-        </main>
-        <Footer lang={lang} />
-        <ScrollRestoration/>
-        <Scripts/>
+      <body className = "min-h-screen flex flex-col">
+      <Navbar lang = {lang}/>
+      <main className = "flex-1 w-full max-w-8xl mx-auto">
+        <Outlet context = {{lang, supabase}}/>
+      </main>
+      <Footer lang = {lang}/>
+      <ScrollRestoration/>
+      <Scripts/>
       </body>
       </html>
   )
@@ -104,6 +104,15 @@ export function ErrorBoundary() {
 
   if (isRouteErrorResponse(error)) {
     return (
+        <html lang = "en">
+        <head>
+          <title>Error</title>
+          <meta charSet = "utf-8"/>
+          <meta name = "viewport" content = "width=device-width, initial-scale=1"/>
+          <Meta/>
+          <Links/>
+        </head>
+        <body className = "min-h-screen flex flex-col">
         <main className = "grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
           <div className = "text-center">
             <p className = "text-base font-semibold text-indigo-600">{error.status}</p>
@@ -111,7 +120,7 @@ export function ErrorBoundary() {
             <p className = "mt-6 text-base leading-7 text-gray-600">{error.data}</p>
             <div className = "mt-10 flex items-center justify-center gap-x-6">
               <Link
-                  to="/"
+                  to = "/"
                   className = "rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Home
@@ -119,10 +128,22 @@ export function ErrorBoundary() {
             </div>
           </div>
         </main>
-  )
-    ;
+        <Scripts/>
+        </body>
+        </html>
+    )
+        ;
   } else if (error instanceof Error) {
     return (
+        <html lang = "en">
+        <head>
+          <title>Error</title>
+          <meta charSet = "utf-8"/>
+          <meta name = "viewport" content = "width=device-width, initial-scale=1"/>
+          <Meta/>
+          <Links/>
+        </head>
+        <body className = "min-h-screen flex flex-col">
         <main className = "grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
           <div className = "text-center">
             <p className = "text-base font-semibold text-indigo-600">{error.name}</p>
@@ -138,27 +159,12 @@ export function ErrorBoundary() {
             </div>
           </div>
         </main>
-    );
+        <Scripts/>
+        </body>
+        </html>
+    )
+        ;
   } else {
     return <h1>Unknown Error</h1>;
   }
-}
-
-// 提交订阅表单
-export async function action({request, context}: ActionFunctionArgs) {
-  const formData = await request.formData();
-  const email = formData.get("email-address") as string;
-
-  const resend = new Resend(context.cloudflare.env.RESEND_KEY);
-
-  const result = await resend.contacts.create({
-    email: email,
-    audienceId: context.cloudflare.env.RESEND_AUDIENCE_ID,
-  });
-
-  if (result.error) {
-    return json({success: false, message: result.error.message});
-  }
-
-  return json({success: true, message: null});
 }
