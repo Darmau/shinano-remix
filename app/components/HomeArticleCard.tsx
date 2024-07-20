@@ -13,16 +13,18 @@ export default function ArticleCard({article, prefix, lang, type = 'default'}: {
             to = {`/article/${article.slug}`}
             className={`grid gap-4 grid-cols-1 ${type === 'featured' && 'h-full md:grid-cols-2'}`}
         >
-          <div className = {`w-full ${type === 'default' && 'aspect-[5/3]'} rounded-md lg:rounded-2xl overflow-hidden`}>
-            {article.cover && (
+          {article.cover && (
+              <div
+                  className = {`w-full ${type === 'default' && 'aspect-[5/3]'} rounded-md lg:rounded-2xl overflow-hidden`}
+              >
                 <img
-                    className="object-cover w-full h-full group-hover:scale-105  transition-transform duration-300"
+                    className = "object-cover w-full h-full group-hover:scale-105  transition-transform duration-300"
                     src = {`${prefix}/cdn-cgi/image/format=auto,width=640/${article.cover.storage_key}`}
                     alt = {article.cover.alt || ''}
                 />
-            )}
-          </div>
-          <div className="space-y-2">
+              </div>
+          )}
+          <div className = "space-y-2">
             <div className = "text-violet-800 font-medium text-sm">
               <span>{article.category!.title}</span>
               ·

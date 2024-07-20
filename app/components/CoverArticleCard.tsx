@@ -28,15 +28,15 @@ export default function CoverArticleCard({article, prefix}: { article: Article, 
               )}
             </div>
           </div>
-          <div className = "absolute top-0 left-0 h-full w-full z-0">
-            {article.cover && (
+          {article.cover && (
+              <div className = "absolute top-0 left-0 h-full w-full z-0">
                 <img
                     className = "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     src = {`${prefix}/cdn-cgi/image/format=auto,width=960/${article.cover.storage_key}`}
                     alt = {article.cover.alt || ''}
                 />
-            )}
-          </div>
+              </div>
+          )}
         </Link>
 
       </article>

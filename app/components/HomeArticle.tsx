@@ -15,7 +15,6 @@ export default function ArticleSection({articles, prefix, lang}: { prefix: strin
           <h2 className="px-2 lg:px-4 text-2xl font-medium text-zinc-800 mb-6">{label.hero_title}</h2>
           <div className = "grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2">
             <CoverArticleCard
-                key = {articles[0].id}
                 article = {articles[0]}
                 prefix = {prefix}
             />
