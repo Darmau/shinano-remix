@@ -2,18 +2,18 @@ import {Article} from "~/types/Article";
 import {Link} from "@remix-run/react";
 import getDate from "~/utils/getDate";
 
-export default function ArticleCard({article, prefix, lang, type = 'default'}: { article: Article, prefix: string, lang: string, type?: string }) {
+export default function CoverArticleCard({article, prefix, lang}: { article: Article, prefix: string, lang: string }) {
 
   return (
       <article
           title={article.abstract || ''}
-          className={`group p-2 lg:p-4 rounded-md lg:rounded-3xl cursor-pointer transition-transform duration-300 hover:bg-zinc-100`}
+          className={`row-span-2 group p-2 lg:p-4 rounded-md lg:rounded-3xl cursor-pointer transition-transform duration-300 hover:bg-zinc-100`}
       >
         <Link
             to = {`/article/${article.slug}`}
-            className={`grid gap-4 grid-cols-1 ${type === 'featured' && 'h-full md:grid-cols-2'}`}
+            className="gap-4 h-full flex flex-col gap-4"
         >
-          <div className = {`w-full ${type === 'default' && 'aspect-[5/3]'} rounded-md lg:rounded-2xl overflow-hidden`}>
+          <div className = {`w-full h-full aspect-[3/2] md:aspect-[3/1] rounded-md lg:rounded-2xl overflow-hidden`}>
             {article.cover && (
                 <img
                     className="object-cover w-full h-full group-hover:scale-105  transition-transform duration-300"
@@ -30,6 +30,9 @@ export default function ArticleCard({article, prefix, lang, type = 'default'}: {
             </div>
             <h3 className = "text-xl font-medium">{article.title}</h3>
             <h4 className = "text-base text-zinc-500 line-clamp-2">{article.subtitle}</h4>
+            {article.abstract && (
+                <p>{article.abstract}</p>
+            )}
             <div className = "flex flex-wrap gap-2 pt-2">
               {article.topic && (
                   article.topic.map((topic, index) => (
