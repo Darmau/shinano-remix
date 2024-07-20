@@ -1,8 +1,7 @@
 import {Article} from "~/types/Article";
 import {Link} from "@remix-run/react";
-import getDate from "~/utils/getDate";
 
-export default function CoverArticleCard({article, prefix, lang}: { article: Article, prefix: string, lang: string }) {
+export default function CoverArticleCard({article, prefix}: { article: Article, prefix: string }) {
 
   return (
       <article
@@ -11,40 +10,32 @@ export default function CoverArticleCard({article, prefix, lang}: { article: Art
       >
         <Link
             to = {`/article/${article.slug}`}
-            className="gap-4 h-full flex flex-col gap-4"
+            className = "relative gap-4 min-h-80 h-full flex flex-col rounded-md lg:rounded-2xl overflow-hidden"
         >
-          <div className = {`w-full h-full aspect-[3/2] md:aspect-[3/1] rounded-md lg:rounded-2xl overflow-hidden`}>
-            {article.cover && (
-                <img
-                    className="object-cover w-full h-full group-hover:scale-105  transition-transform duration-300"
-                    src = {`${prefix}/cdn-cgi/image/format=auto,width=640/${article.cover.storage_key}`}
-                    alt = {article.cover.alt || ''}
-                />
-            )}
-          </div>
-          <div className="space-y-2">
-            <div className = "text-violet-800 font-medium text-sm">
-              <span>{article.category!.title}</span>
-              ·
-              <span>{getDate(article.published_at, lang)}</span>
-            </div>
-            <h3 className = "text-xl font-medium">{article.title}</h3>
-            <h4 className = "text-base text-zinc-500 line-clamp-2">{article.subtitle}</h4>
-            {article.abstract && (
-                <p>{article.abstract}</p>
-            )}
-            <div className = "flex flex-wrap gap-2 pt-2">
+          <div className = "mt-auto p-4 space-y-3 z-10 py-8 lg:mb-0 bg-black/20 group-hover:backdrop-blur transition-all duration-300">
+            <h3 className = "text-white text-3xl font-medium">{article.title}</h3>
+            <h4 className = "text-base text-white lg:line-clamp-2">{article.subtitle}</h4>
+            <div className = "hidden lg:flex flex-wrap gap-2 pt-2">
               {article.topic && (
                   article.topic.map((topic, index) => (
                       <span
                           key = {index}
-                          className = "inline-flex items-center rounded-md bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-600 group-hover:bg-zinc-200"
+                          className = "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white border border-white"
                       >
                       {topic}
                     </span>
                   ))
               )}
             </div>
+          </div>
+          <div className = "absolute top-0 left-0 h-full w-full z-0">
+            {article.cover && (
+                <img
+                    className = "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    src = {`${prefix}/cdn-cgi/image/format=auto,width=960/${article.cover.storage_key}`}
+                    alt = {article.cover.alt || ''}
+                />
+            )}
           </div>
         </Link>
 

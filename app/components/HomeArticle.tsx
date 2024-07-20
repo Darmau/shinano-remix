@@ -18,7 +18,6 @@ export default function ArticleSection({articles, prefix, lang}: { prefix: strin
                 key = {articles[0].id}
                 article = {articles[0]}
                 prefix = {prefix}
-                lang = {lang}
             />
             {articles.slice(1, 3).map(article => (
                 <ArticleCard
