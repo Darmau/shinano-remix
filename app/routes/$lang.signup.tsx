@@ -7,14 +7,7 @@ import EmailSignup from "~/components/EmailSignup";
 import {createClient} from "~/utils/supabase/server";
 
 
-export async function loader({request, params, context}: LoaderFunctionArgs) {
-  const { supabase } = createClient(request, context);
-  const { data: session } = await supabase.auth.getSession();
-
-  if (session) {
-    return redirect('/')
-  }
-
+export async function loader({request, params}: LoaderFunctionArgs) {
   const origin = new URL(request.url).origin;
   const lang = params.lang as string;
 
