@@ -6,7 +6,14 @@ import SignupText from '~/locales/signup'
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import {createClient} from "~/utils/supabase/server";
 
-export async function loader({request, params}: LoaderFunctionArgs) {
+export async function loader({request, params, context}: LoaderFunctionArgs) {
+  const { supabase } = createClient(request, context);
+  const { data: session } = await supabase.auth.getSession();
+
+  if (session) {
+    return redirect('/')
+  }
+
   const origin = new URL(request.url).origin;
   const lang = params.lang as string;
 
