@@ -64,7 +64,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       id,
       title,
       slug,
-      cover (alt, storage_key),
+      cover (alt, storage_key, width, height),
       published_at,
       language!inner (lang)
    `)

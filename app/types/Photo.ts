@@ -4,7 +4,10 @@ export interface Photo {
   slug: string,
   cover: {
     alt: string | null,
-    storage_key: string
+    storage_key: string,
+    width: number,
+    height: number
   },
   published_at: string,
+  href: string
 }
