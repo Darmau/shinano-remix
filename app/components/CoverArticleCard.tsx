@@ -1,42 +1,52 @@
 import {Article} from "~/types/Article";
 import {Link} from "@remix-run/react";
+import getDate from "~/utils/getDate";
 
-export default function CoverArticleCard({article, prefix}: { article: Article, prefix: string }) {
+export default function CoverArticleCard({article, prefix, lang, isTop}: { article: Article, prefix: string, lang: string, isTop: boolean }) {
 
   return (
       <article
-          title={article.abstract || ''}
-          className={`row-span-2 group p-2 lg:p-4 rounded-md lg:rounded-3xl cursor-pointer transition-transform duration-300 hover:bg-zinc-100`}
+          className = "group w-full"
       >
         <Link
-            to = {`/article/${article.slug}`}
-            className = "relative gap-4 min-h-80 h-full flex flex-col rounded-md lg:rounded-2xl overflow-hidden"
+            to = {`/${lang}/article/${article.slug}`}
+            className = {`gap-4 flex flex-col ${isTop ? 'lg:grid lg:grid-cols-2' : 'sm:flex-row-reverse'}`}
         >
-          <div className = "mt-auto p-4 space-y-3 z-10 py-8 lg:mb-0 bg-black/20 group-hover:backdrop-blur transition-all duration-300">
-            <h3 className = "text-white text-3xl font-medium">{article.title}</h3>
-            <h4 className = "text-base text-white lg:line-clamp-2">{article.subtitle}</h4>
-            <div className = "hidden lg:flex flex-wrap gap-2 pt-2">
-              {article.topic && (
-                  article.topic.map((topic, index) => (
-                      <span
-                          key = {index}
-                          className = "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium text-white border border-white"
-                      >
-                      {topic}
-                    </span>
-                  ))
-              )}
-            </div>
-          </div>
           {article.cover && (
-              <div className = "absolute top-0 left-0 h-full w-full z-0">
+              <div className = {`${isTop ? 'sm:aspect-[3/1] lg:aspect-[3/2]' : 'sm:grow-0 sm:max-w-48'} w-full rounded-md overflow-hidden aspect-[3/2]`}>
                 <img
                     className = "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    src = {`${prefix}/cdn-cgi/image/format=auto,width=960/${article.cover.storage_key}`}
+                    src = {`${prefix}/cdn-cgi/image/format=auto,width=720/${article.cover.storage_key}`}
                     alt = {article.cover.alt || ''}
+                    height = "320"
+                    width = "960"
                 />
               </div>
           )}
+          <div className = "flex flex-col gap-4 sm:grow">
+            <div className = "text-zinc-400 text-sm">
+              <span className = "text-violet-700 font-medium">{article.category.title}</span>
+              &nbsp;·&nbsp;
+              <span>{getDate(article.published_at, lang)}</span>
+            </div>
+            <h3 className = {`${isTop? 'text-4xl' : 'text-2xl'} font-medium text-zinc-800 group-hover:text-violet-900`}>{article.title}</h3>
+            <h4 className = "text-base text-zinc-500 leading-7">{article.subtitle}</h4>
+            {article.topic && (
+                <div className = "flex flex-wrap gap-2 pt-2">
+                  {article.topic.map((topic, index) => (
+                      <span
+                          key = {index}
+                          className = "inline-flex items-center rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600"
+                      >
+                      {topic}
+                    </span>
+                  ))}
+                </div>
+            )}
+            {isTop && article.abstract && (
+                <p className="bg-zinc-100 p-2 rounded-md text-zinc-600 mt-2 lg:p-4">{article.abstract}</p>
+            )}
+          </div>
         </Link>
 
       </article>
