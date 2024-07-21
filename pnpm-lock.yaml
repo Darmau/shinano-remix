@@ -44,6 +44,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-photo-album:
+        specifier: ^3.0.0-rc.6
+        version: 3.0.0-rc.6(@types/react@18.3.3)(react@18.3.1)
       resend:
         specifier: ^3.4.0
         version: 3.4.0
@@ -3327,6 +3330,16 @@ packages:
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+
+  react-photo-album@3.0.0-rc.6:
+    resolution: {integrity: sha512-JTWbFNPiWLo0Ys84Y6QLqV+9g1Hvj7NdEN2s9byS20B/PvKXOl4/J9mtArYPLFKwOy+nK8aZN3bhxswVeOKB/A==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@types/react': '>=18'
+      react: '>=18'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   react-promise-suspense@0.3.4:
     resolution: {integrity: sha512-I42jl7L3Ze6kZaq+7zXWSunBa3b1on5yfvUW6Eo/3fFOj6dZ5Bqmcd264nJbTK/gn1HjjILAjSwnZbV4RpSaNQ==}
@@ -7774,6 +7787,12 @@ snapshots:
       scheduler: 0.23.2
 
   react-is@16.13.1: {}
+
+  react-photo-album@3.0.0-rc.6(@types/react@18.3.3)(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+    optionalDependencies:
+      '@types/react': 18.3.3
 
   react-promise-suspense@0.3.4:
     dependencies:

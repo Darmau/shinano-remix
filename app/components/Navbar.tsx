@@ -46,7 +46,7 @@ export default function Navbar({lang}: {lang: string}) {
       <header className="relative isolate z-10">
         <nav aria-label="Global" className="mx-auto flex max-w-8xl items-center justify-between p-6 lg:px-8">
           <div className="hidden lg:flex">
-            <Link to="/" className="-m-1.5 p-1.5">
+            <Link to={`/${lang}`} className="-m-1.5 p-1.5">
               <span className="sr-only">Logo</span>
               <img alt="" src="/favicon.svg" className="h-8 w-auto" />
             </Link>

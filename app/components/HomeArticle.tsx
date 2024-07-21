@@ -10,31 +10,23 @@ export default function ArticleSection({articles, prefix, lang}: { prefix: strin
   const label = getLanguageLabel(HomepageText, lang);
 
   return (
-      <div className="space-y-16 my-4 lg:my-16">
+      <div className="space-y-16 my-4 lg:space-y-20 lg:my-16">
         <div>
-          <h2 className="px-2 lg:px-4 text-2xl font-medium text-zinc-800 mb-6">{label.hero_title}</h2>
-          <div className = "grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-2">
-            <CoverArticleCard
-                key = {articles[0].id}
-                article = {articles[0]}
-                prefix = {prefix}
-            />
-            {articles.slice(1, 3).map(article => (
-                <ArticleCard
-                    key = {article.id}
-                    article = {article}
-                    prefix = {prefix}
-                    lang = {lang}
-                    type="featured"
-                />
-            ))}
+          <h2 className="text-2xl font-medium text-zinc-800 mb-6">{label.hero_title}</h2>
+          <div className="flex flex-col gap-12">
+            <CoverArticleCard article = {articles[0]} lang={lang} prefix={prefix} isTop={true} />
+            <div className="flex flex-col gap-12 lg:gap-8 lg:flex-row">
+              {articles.slice(1, 3).map((article) => (
+                  <CoverArticleCard key = {article.id} article = {article} lang={lang} prefix={prefix} isTop={false} />
+              ))}
+            </div>
           </div>
         </div>
         <div>
-          <h2 className="px-2 lg:px-4 text-2xl font-medium text-zinc-800 mb-6">{label.recent_article}</h2>
-          <div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <h2 className="text-2xl font-medium text-zinc-800 mb-6">{label.recent_article}</h2>
+          <div className = "grid gap-12 grid-cols-1 md:grid-cols-2 lg:gap-8 lg:grid-cols-3">
             {articles.slice(3, 10).map(article => (
-                <ArticleCard key = {article.id} article = {article} prefix = {prefix} lang={lang} type="default"/>
+                <ArticleCard key = {article.id} article = {article} lang={lang} />
             ))}
           </div>
         </div>
