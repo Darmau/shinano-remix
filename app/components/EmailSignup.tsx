@@ -1,10 +1,10 @@
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import SignupText from '~/locales/signup'
 import {useContext} from "react";
-import {Language} from "~/root";
+import {Config} from "~/root";
 
 export default function EmailSignup () {
-  const lang = useContext(Language);
+  const {lang} = useContext(Config);
   const label = getLanguageLabel(SignupText, lang);
   return (
       <div className = "space-y-6">

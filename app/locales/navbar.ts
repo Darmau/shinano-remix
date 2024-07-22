@@ -1,35 +1,73 @@
-const NavbarText = {
-  "zh": {
-    "article": "文章",
-    "photography": "摄影",
-    "thought": "碎片",
-    "about": "关于",
-    "login": "登录",
-    "signup": "注册",
-    "search": "搜索",
-    "open_menu": "打开菜单",
-  },
-
-  "en": {
-    "article": "Article",
-    "photography": "Photography",
-    "thought": "Thought",
-    "about": "About",
-    "login": "Login",
-    "signup": "Signup",
-    "search": "Search",
-    "open_menu": "Open Menu",
-  },
-
-  "jp": {
-    "article": "記事",
-    "photography": "写真",
-    "thought": "アイデア",
-    "about": "について",
-    "login": "ログイン",
-    "signup": "登録する",
-    "search": "検索",
-    "open_menu": "メニューを開く",
-  },
+interface NavItem {
+  name: string;
+  link: string;
 }
- export default NavbarText;
+
+// 定义整个Navbar对象的类型
+type NavbarType = {
+  [key: string]: NavItem[];
+}
+
+const Navbar: NavbarType = {
+  "zh": [
+    {
+      "name": "文章",
+      "link": "/zh"
+    },
+    {
+      "name": "摄影",
+      "link": "/zh/albums/featured/1"
+    },
+    {
+      "name": "想法",
+      "link": "/zh/thoughts/all/1"
+    },
+    {
+      "name": "关于",
+      "link": "/zh/about"
+    }
+  ],
+  "en": [
+    {
+      "name": "Articles",
+      "link": "/"
+    },
+    {
+      "name": "Photography",
+      "link": "/albums/featured/1"
+    },
+    {
+      "name": "Thoughts",
+      "link": "/thoughts/all/1"
+    },
+    {
+      "name": "About",
+      "link": "/about"
+    }
+  ],
+  "jp": [
+    {
+      "name": "記事",
+      "link": "/jp"
+    },
+    {
+      "name": "写真",
+      "link": "/jp/albums/featured/1"
+    },
+    {
+      "name": "思考",
+      "link": "/jp/thoughts/all/1"
+    },
+    {
+      "name": "について",
+      "link": "/jp/about"
+    }
+  ]
+}
+
+export default function NavbarItems(lang: string) {
+  if (!Navbar[lang]) {
+    return Navbar['zh'];
+  }
+  return Navbar[lang];
+}
