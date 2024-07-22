@@ -1,7 +1,10 @@
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import SignupText from '~/locales/signup'
+import {useContext} from "react";
+import {Language} from "~/root";
 
-export default function GithubLogin ({lang}: {lang: string}) {
+export default function GithubLogin () {
+  const lang = useContext(Language);
   const label = getLanguageLabel(SignupText, lang);
   return (
       <div>

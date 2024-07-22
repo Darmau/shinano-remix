@@ -4,12 +4,15 @@ import {Photo} from "~/types/Photo";
 import { RowsPhotoAlbum } from "react-photo-album";
 import { UnstableSSR as SSR } from "react-photo-album/ssr";
 import "react-photo-album/rows.css";
+import {useContext} from "react";
+import {Language} from "~/root";
 
-export default function PhotoSection({photos, prefix, lang}: {
+export default function PhotoSection({photos, prefix}: {
   prefix: string,
-  photos: Photo[] | null,
-  lang: string
+  photos: Photo[] | null
 }) {
+  const lang = useContext(Language);
+
   if (!photos) return null;
 
   const label = getLanguageLabel(HomepageText, lang);

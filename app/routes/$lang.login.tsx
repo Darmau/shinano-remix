@@ -31,7 +31,7 @@ export default function Login() {
 
           <div className = "mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
             <Form method = "POST" className = "bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-              <EmailLogin lang = {lang}/>
+              <EmailLogin />
 
               {actionResponse?.error && (
                   <div className = "mt-6">
@@ -39,7 +39,7 @@ export default function Login() {
                   </div>
               )}
 
-              <GithubLogin lang = {lang}/>
+              <GithubLogin />
             </Form>
           </div>
         </div>

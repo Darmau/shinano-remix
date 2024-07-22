@@ -34,7 +34,7 @@ export default function Signup() {
               {actionResponse?.success ? (
                   <p className = "text-center text-green-600">{label.email_check}</p>
               ) : (
-                  <EmailSignup lang = {lang}/>
+                  <EmailSignup />
               )}
 
               {actionResponse?.error && (
@@ -43,7 +43,7 @@ export default function Signup() {
                   </div>
               )}
 
-              <GithubLogin lang = {lang}/>
+              <GithubLogin />
             </Form>
           </div>
         </div>
