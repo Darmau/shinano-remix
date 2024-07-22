@@ -22,12 +22,12 @@ export const meta: MetaFunction = ({ params }) => {
 
 
 export default function Index() {
-  const { prefix, articles, photos } = useLoaderData<typeof loader>();
+  const { articles, photos } = useLoaderData<typeof loader>();
 
   return (
       <div className="w-full flex flex-col px-4 lg:px-8">
-        <ArticleSection articles={articles} prefix={prefix} />
-        <PhotoSection photos={photos} prefix={prefix} />
+        <ArticleSection articles={articles} />
+        <PhotoSection photos={photos} />
       </div>
   );
 }

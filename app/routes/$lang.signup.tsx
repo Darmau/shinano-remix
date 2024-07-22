@@ -6,7 +6,7 @@ import SignupText from "~/locales/signup";
 import EmailSignup from "~/components/EmailSignup";
 import {createClient} from "~/utils/supabase/server";
 import {useContext} from "react";
-import {Language} from "~/root";
+import {Config} from "~/root";
 
 export async function loader({request}: LoaderFunctionArgs) {
   const origin = new URL(request.url).origin;
@@ -15,7 +15,7 @@ export async function loader({request}: LoaderFunctionArgs) {
 }
 
 export default function Signup() {
-  const lang = useContext(Language);
+  const {lang} = useContext(Config);
   const label = getLanguageLabel(SignupText, lang);
   const actionResponse = useActionData<typeof action>()
 

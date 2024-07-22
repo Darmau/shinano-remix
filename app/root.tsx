@@ -36,6 +36,7 @@ export const loader = async ({request, context}: LoaderFunctionArgs) => {
   const env = {
     SUPABASE_URL: context.cloudflare.env.SUPABASE_URL,
     SUPABASE_ANON_KEY: context.cloudflare.env.SUPABASE_ANON_KEY,
+    PREFIX: context.cloudflare.env.IMG_PREFIX
   };
 
   const response = new Response();
@@ -52,7 +53,11 @@ export const loader = async ({request, context}: LoaderFunctionArgs) => {
   }, {headers: response.headers});
 };
 
-export const Language = createContext('zh');
+export const Config = createContext({
+  lang: 'zh',
+  prefix: ''
+});
+
 
 export default function App() {
   const {lang, env, session} = useLoaderData<typeof loader>();
@@ -89,13 +94,13 @@ export default function App() {
         <Links/>
       </head>
       <body className = "min-h-screen flex flex-col">
-      <Language.Provider value = {lang}>
+      <Config.Provider value = {{ lang: lang, prefix: env.PREFIX}}>
         <Navbar/>
         <main className = "flex-1 w-full max-w-8xl mx-auto">
           <Outlet context = {{supabase}}/>
         </main>
         <Footer />
-      </Language.Provider>
+      </Config.Provider>
       <ScrollRestoration/>
       <Scripts/>
       </body>

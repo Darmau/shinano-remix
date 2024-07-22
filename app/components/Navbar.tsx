@@ -1,15 +1,5 @@
 import {useContext, useState} from 'react'
-import {
-  Dialog,
-  DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Popover,
-  PopoverButton,
-  PopoverGroup,
-  PopoverPanel,
-} from '@headlessui/react'
+import {Dialog, DialogPanel, Popover, PopoverButton, PopoverGroup, PopoverPanel,} from '@headlessui/react'
 import {
   ArrowPathIcon,
   Bars3Icon,
@@ -20,11 +10,10 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import {ChevronDownIcon} from '@heroicons/react/20/solid'
-import NavbarText from '~/locales/navbar'
-import getLanguageLabel from "~/utils/getLanguageLabel";
+import NavbarItems from '~/locales/navbar'
 import {Link} from "@remix-run/react";
 import Profile from "~/components/Profile";
-import {Language} from "~/root";
+import {Config} from "~/root";
 
 const products = [
   {name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon},
@@ -40,9 +29,9 @@ const company = [
 ]
 
 export default function Navbar() {
-  const lang = useContext(Language);
+  const {lang} = useContext(Config);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const label = getLanguageLabel(NavbarText, lang)
+  const navbarItems = NavbarItems[lang];
 
   return (
       <header className = "relative isolate z-10">
@@ -167,64 +156,7 @@ export default function Navbar() {
             <div className = "mt-6 flow-root">
               <div className = "-my-6 divide-y divide-gray-500/10">
                 <div className = "space-y-2 py-6">
-                  <Disclosure as = "div" className = "-mx-3">
-                    <DisclosureButton
-                        className = "group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                    >
-                      {label.article}
-                      <ChevronDownIcon
-                          aria-hidden = "true" className = "h-5 w-5 flex-none group-data-[open]:rotate-180"
-                      />
-                    </DisclosureButton>
-                    <DisclosurePanel className = "mt-2 space-y-2">
-                      {[...products].map((item) => (
-                          <DisclosureButton
-                              key = {item.name}
-                              as = "a"
-                              href = {item.href}
-                              className = "block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                          >
-                            {item.name}
-                          </DisclosureButton>
-                      ))}
-                    </DisclosurePanel>
-                  </Disclosure>
-
-                  <a
-                      href = "/"
-                      className = "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    {label.photography}
-                  </a>
-                  <a
-                      href = "/"
-                      className = "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    {label.thought}
-                  </a>
-
-                  <Disclosure as = "div" className = "-mx-3">
-                    <DisclosureButton
-                        className = "group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                    >
-                      {label.about}
-                      <ChevronDownIcon
-                          aria-hidden = "true" className = "h-5 w-5 flex-none group-data-[open]:rotate-180"
-                      />
-                    </DisclosureButton>
-                    <DisclosurePanel className = "mt-2 space-y-2">
-                      {company.map((item) => (
-                          <DisclosureButton
-                              key = {item.name}
-                              as = "a"
-                              href = {item.href}
-                              className = "block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                          >
-                            {item.name}
-                          </DisclosureButton>
-                      ))}
-                    </DisclosurePanel>
-                  </Disclosure>
+                  {}
                 </div>
                 <div className = "pt-8">
                   <Profile />

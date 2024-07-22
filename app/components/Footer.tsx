@@ -6,7 +6,7 @@ import getLanguageLabel from "~/utils/getLanguageLabel";
 import FooterText from "~/locales/footer";
 import {Link} from "@remix-run/react";
 import RSSIcon from "~/icons/RSS";
-import {Language} from "~/root";
+import {Config} from "~/root";
 import {useContext} from "react";
 
 const navigation = {
@@ -46,7 +46,7 @@ const navigation = {
 }
 
 export default function Footer() {
-  const lang = useContext(Language);
+  const {lang} = useContext(Config);
   const label = getLanguageLabel(FooterText, lang);
   const currentYear = new Date().getFullYear();
 

@@ -4,10 +4,10 @@ import getLanguageLabel from "~/utils/getLanguageLabel";
 import HomepageText from "~/locales/homepage";
 import CoverArticleCard from "~/components/CoverArticleCard";
 import {useContext} from "react";
-import {Language} from "~/root";
+import {Config} from "~/root";
 
-export default function ArticleSection({articles, prefix}: { prefix: string, articles: Article[] | null }) {
-  const lang = useContext(Language);
+export default function ArticleSection({articles}: { articles: Article[] | null }) {
+  const {lang, prefix} = useContext(Config);
   if (!articles) return null;
 
   const label = getLanguageLabel(HomepageText, lang);
@@ -17,10 +17,10 @@ export default function ArticleSection({articles, prefix}: { prefix: string, art
         <div>
           <h2 className="text-2xl font-medium text-zinc-800 mb-6">{label.hero_title}</h2>
           <div className="flex flex-col gap-12">
-            <CoverArticleCard article = {articles[0]} prefix={prefix} isTop={true} />
+            <CoverArticleCard article = {articles[0]} isTop={true} />
             <div className="flex flex-col gap-12 lg:gap-8 lg:flex-row">
               {articles.slice(1, 3).map((article) => (
-                  <CoverArticleCard key = {article.id} article = {article} prefix={prefix} isTop={false} />
+                  <CoverArticleCard key = {article.id} article = {article} isTop={false} />
               ))}
             </div>
           </div>

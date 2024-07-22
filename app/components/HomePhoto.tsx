@@ -5,13 +5,12 @@ import { RowsPhotoAlbum } from "react-photo-album";
 import { UnstableSSR as SSR } from "react-photo-album/ssr";
 import "react-photo-album/rows.css";
 import {useContext} from "react";
-import {Language} from "~/root";
+import {Config} from "~/root";
 
-export default function PhotoSection({photos, prefix}: {
-  prefix: string,
+export default function PhotoSection({photos}: {
   photos: Photo[] | null
 }) {
-  const lang = useContext(Language);
+  const {lang, prefix} = useContext(Config);
 
   if (!photos) return null;
 
