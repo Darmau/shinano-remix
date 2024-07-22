@@ -1,22 +1,21 @@
-import {Form, redirect, useActionData, useLoaderData} from "@remix-run/react";
+import {Form, redirect, useActionData} from "@remix-run/react";
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import GithubLogin from "~/components/GithubLogin";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import SignupText from "~/locales/signup";
 import EmailSignup from "~/components/EmailSignup";
 import {createClient} from "~/utils/supabase/server";
+import {useContext} from "react";
+import {Language} from "~/root";
 
-
-export async function loader({request, params}: LoaderFunctionArgs) {
+export async function loader({request}: LoaderFunctionArgs) {
   const origin = new URL(request.url).origin;
-  const lang = params.lang as string;
 
-  return json({origin, lang});
+  return json({origin});
 }
 
-
 export default function Signup() {
-  const {lang} = useLoaderData<typeof loader>();
+  const lang = useContext(Language);
   const label = getLanguageLabel(SignupText, lang);
   const actionResponse = useActionData<typeof action>()
 
@@ -27,7 +26,7 @@ export default function Signup() {
             <h2 className = "mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-zinc-900">
               {label.sign_up_title}
             </h2>
-            <p className="mt-6 text-center text-base text-zinc-500">{label.sign_up_description}</p>
+            <p className = "mt-6 text-center text-base text-zinc-500">{label.sign_up_description}</p>
           </div>
 
           <div className = "mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
