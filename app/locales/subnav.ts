@@ -30,7 +30,7 @@ const Subnav: SubnavType = {
       },
       {
         "name": "归档",
-        "link": `/zh/articles/archive/${year}/1`
+        "link": `/zh/articles/archive`
       }
     ],
     "photography": [
@@ -46,7 +46,7 @@ const Subnav: SubnavType = {
     "thought": [
       {
         "name": "最新",
-        "link": "/zh/thoughts/all/1"
+        "link": "/zh/thoughts/1"
       }
     ],
     "about": [
@@ -100,7 +100,7 @@ const Subnav: SubnavType = {
     "thought": [
       {
         "name": "Latest",
-        "link": "/en/thoughts/all/1"
+        "link": "/en/thoughts/1"
       }
     ],
     "about": [
@@ -154,7 +154,7 @@ const Subnav: SubnavType = {
     "thought": [
       {
         "name": "最新",
-        "link": "/jp/thoughts/all/1"
+        "link": "/jp/thoughts/1"
       }
     ],
     "about": [
@@ -193,6 +193,10 @@ function pathMap(path: string) {
     case 'rss':
       return 'about';
     case 'contact':
+      return 'about';
+    case 'login':
+      return 'about';
+    case 'signup':
       return 'about';
     default:
       return '';
