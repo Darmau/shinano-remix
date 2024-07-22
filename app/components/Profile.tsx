@@ -3,7 +3,7 @@ import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Link, useLoaderData} from "@remix-run/react";
 import getLanguageLabel from "~/utils/getLanguageLabel";
-import NavbarText from "~/locales/navbar";
+import ProfileText from "~/locales/profile";
 import {useContext} from "react";
 import {Config} from "~/root";
 
@@ -18,7 +18,7 @@ export const loader = async ({request, context}: LoaderFunctionArgs) => {
 export default function Profile() {
   const {lang} = useContext(Config);
   const { session } = useLoaderData<typeof loader>();
-  const label = getLanguageLabel(NavbarText, lang)
+  const label = getLanguageLabel(ProfileText, lang)
 
   if (!session) {
     return (

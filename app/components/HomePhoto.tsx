@@ -1,8 +1,6 @@
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import HomepageText from "~/locales/homepage";
 import {Photo} from "~/types/Photo";
-import { RowsPhotoAlbum } from "react-photo-album";
-import { UnstableSSR as SSR } from "react-photo-album/ssr";
 import "react-photo-album/rows.css";
 import {useContext} from "react";
 import {Config} from "~/root";
@@ -31,9 +29,7 @@ export default function PhotoSection({photos}: {
   return (
       <div className = "my-8 lg:my-16">
         <h2 className = "px-2 lg:px-4 text-2xl font-medium text-zinc-800 mb-6">{label.photo_title}</h2>
-        <SSR breakpoints = {[640, 768, 1024, 1280]}>
-          <RowsPhotoAlbum photos={AlbumPhotos} defaultContainerWidth={1376} />
-        </SSR>
+        <p>待更新</p>
       </div>
   )
 }
