@@ -5,6 +5,8 @@ import ArticleSection from "~/components/HomeArticle";
 import {createClient} from "~/utils/supabase/server";
 import {useLoaderData} from "@remix-run/react";
 import PhotoSection from "~/components/HomePhoto";
+import {Article} from "~/types/Article";
+import {Photo} from "~/types/Photo";
 
 export const meta: MetaFunction = ({ params }) => {
   const lang = params.lang as string;
@@ -20,12 +22,12 @@ export const meta: MetaFunction = ({ params }) => {
 
 
 export default function Index() {
-  const { prefix, articles, photos, lang } = useLoaderData<typeof loader>();
+  const { prefix, articles, photos } = useLoaderData<typeof loader>();
 
   return (
       <div className="w-full flex flex-col px-4 lg:px-8">
-        <ArticleSection articles={articles} prefix={prefix} lang={lang} />
-        <PhotoSection photos={photos} prefix={prefix} lang={lang} />
+        <ArticleSection articles={articles} prefix={prefix} />
+        <PhotoSection photos={photos} prefix={prefix} />
       </div>
   );
 }
@@ -55,7 +57,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     .filter('is_draft', 'eq', false)
     .limit(9)
     .order('is_top', {ascending: false})
-    .order('published_at', {ascending: false});
+    .order('published_at', {ascending: false})
+    .returns<Article[]>();
 
   // 获取摄影作品
   const {data: photographyData} = await supabase
@@ -73,6 +76,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     .limit(12)
     .order('is_top', {ascending: false})
     .order('published_at', {ascending: false})
+    .returns<Photo[]>();
 
   return {
     articles: articleData,

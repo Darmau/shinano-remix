@@ -1,8 +1,11 @@
 import {Article} from "~/types/Article";
 import {Link} from "@remix-run/react";
 import getDate from "~/utils/getDate";
+import {useContext} from "react";
+import {Language} from "~/root";
 
-export default function CoverArticleCard({article, prefix, lang, isTop}: { article: Article, prefix: string, lang: string, isTop: boolean }) {
+export default function CoverArticleCard({article, prefix, isTop}: { article: Article, prefix: string, isTop: boolean }) {
+  const lang = useContext(Language);
 
   return (
       <article
