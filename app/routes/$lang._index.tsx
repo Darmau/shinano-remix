@@ -7,6 +7,7 @@ import {useLoaderData} from "@remix-run/react";
 import PhotoSection from "~/components/HomePhoto";
 import {Article} from "~/types/Article";
 import {Photo} from "~/types/Photo";
+import Subnav from "~/components/Subnav";
 
 export const meta: MetaFunction = ({ params }) => {
   const lang = params.lang as string;
@@ -25,15 +26,18 @@ export default function Index() {
   const { articles, photos } = useLoaderData<typeof loader>();
 
   return (
-      <div className="w-full flex flex-col px-4 lg:px-8">
-        <ArticleSection articles={articles} />
-        <PhotoSection photos={photos} />
-      </div>
+      <>
+        <Subnav active="article" />
+        <div className = "w-full max-w-8xl mx-auto flex flex-col px-4 lg:px-8">
+          <ArticleSection articles = {articles}/>
+          <PhotoSection photos = {photos}/>
+        </div>
+      </>
   );
 }
 
 export async function loader({request, context, params}: LoaderFunctionArgs) {
-  const { supabase } = createClient(request, context);
+  const {supabase} = createClient(request, context);
   const lang = params.lang as string;
 
   // 获取指定语言的文章，is_top为true的排第一，剩下按published_at倒序排列

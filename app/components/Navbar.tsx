@@ -1,11 +1,11 @@
 import {useContext, useState} from 'react'
-import {Dialog, DialogPanel,} from '@headlessui/react'
+import {Dialog, DialogPanel, Popover, PopoverButton, PopoverPanel,} from '@headlessui/react'
 import {Bars3Icon, XMarkIcon,} from '@heroicons/react/24/outline'
 import NavbarItems from '~/locales/navbar'
 import {Link, useLocation} from "@remix-run/react";
 import Profile from "~/components/Profile";
 import {Config} from "~/root";
-import SubNavItems from "~/locales/subnav";
+import TranslateIcon from "~/icons/Translate";
 
 
 export default function Navbar() {
@@ -14,19 +14,48 @@ export default function Navbar() {
   const navbarItems = NavbarItems(lang);
 
   const location = useLocation();
-  const current = location.pathname.split('/')[2] ?? 'articles';
-
-  const subnavItems = SubNavItems(lang, current);
 
   return (
       <header className = "relative isolate z-10">
         <nav aria-label = "Global" className = "border-b">
           <div className="max-w-8xl mx-auto flex items-center justify-between p-6 lg:px-8">
-            <div className = "hidden lg:flex">
+            <div className = "hidden lg:flex lg:gap-2 lg:items-center">
               <Link to = {`/${lang}`} className = "-m-1.5 p-1.5">
                 <span className = "sr-only">Logo</span>
                 <img alt = "" src = "/favicon.svg" className = "h-8 w-auto"/>
               </Link>
+              <Popover>
+                <PopoverButton className="block data-[active]:text-violet-700 data-[hover]:text-violet-700">
+                  <TranslateIcon className="size-6 text-gray-900"/>
+                </PopoverButton>
+                <PopoverPanel
+                  transition
+                  anchor="bottom"
+                  className="z-20 shadow-2xl divide-y divide-zinc-100 rounded-md bg-white text-sm transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+                >
+                  <Link
+                      reloadDocument
+                      to="/zh"
+                      className="block p-4 w-32 transition hover:bg-zinc-50"
+                  >
+                    中文
+                  </Link>
+                  <Link
+                      reloadDocument
+                      to="/en"
+                      className="block p-4 w-32 transition hover:bg-zinc-50"
+                  >
+                    English
+                  </Link>
+                  <Link
+                      reloadDocument
+                      to="/jp"
+                      className="block p-4 w-32 transition hover:bg-zinc-50"
+                  >
+                    日本語
+                  </Link>
+                </PopoverPanel>
+              </Popover>
             </div>
             <div className = "flex lg:hidden">
               <button
@@ -57,19 +86,6 @@ export default function Navbar() {
             <Profile/>
           </div>
         </nav>
-        <div className = "flex gap-8 justify-center p-4 border-b">
-          {subnavItems.map((item, index) => {
-            return (
-                <Link
-                    className={`text-sm hover:text-violet-700 hover:font-medium ${location.pathname === item.link ? 'font-bold text-zinc-700' : 'text-zinc-500'}`}
-                    to = {item.link}
-                    key = {index}
-                >
-                  {item.name}
-                </Link>
-            )
-          })}
-        </div>
         <Dialog open = {mobileMenuOpen} onClose = {setMobileMenuOpen} className = "lg:hidden">
           <div className = "fixed inset-0 z-10"/>
           <DialogPanel

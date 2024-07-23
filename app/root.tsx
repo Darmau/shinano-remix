@@ -23,7 +23,7 @@ import Footer from "~/components/Footer";
 export const loader = async ({request, context}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const lang = url.pathname.split('/')[1];
-  const multiLangContent = ['', 'article', 'articles', 'photography', 'photographies', 'thought', 'about', 'contact', 'signup', 'login']
+  const multiLangContent = ['', 'article', 'articles', 'album', 'albums', 'thoughts', 'thought', 'about', 'contact', 'site', 'rss', 'signup', 'login']
 
   if (!['zh', 'en', 'jp'].includes(lang) && multiLangContent.includes(lang)) {
     // 检测浏览器语言
@@ -54,7 +54,7 @@ export const loader = async ({request, context}: LoaderFunctionArgs) => {
 };
 
 export const Config = createContext({
-  lang: 'zh',
+  lang: '',
   prefix: ''
 });
 
@@ -96,7 +96,7 @@ export default function App() {
       <body className = "min-h-screen flex flex-col">
       <Config.Provider value = {{ lang: lang, prefix: env.PREFIX}}>
         <Navbar/>
-        <main className = "flex-1 w-full max-w-8xl mx-auto">
+        <main className = "flex-1 w-full">
           <Outlet context = {{supabase}}/>
         </main>
         <Footer />

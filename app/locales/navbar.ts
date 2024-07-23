@@ -20,7 +20,7 @@ const Navbar: NavbarType = {
     },
     {
       "name": "想法",
-      "link": "/zh/thoughts/all/1"
+      "link": "/zh/thoughts/1"
     },
     {
       "name": "关于",
@@ -38,7 +38,7 @@ const Navbar: NavbarType = {
     },
     {
       "name": "Thoughts",
-      "link": "/thoughts/all/1"
+      "link": "/thoughts/1"
     },
     {
       "name": "About",
@@ -56,7 +56,7 @@ const Navbar: NavbarType = {
     },
     {
       "name": "思考",
-      "link": "/jp/thoughts/all/1"
+      "link": "/jp/thoughts/1"
     },
     {
       "name": "について",
