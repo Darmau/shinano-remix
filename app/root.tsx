@@ -90,7 +90,7 @@ export default function App() {
         <Meta/>
         <Links/>
       </head>
-      <body className = "min-h-screen flex flex-col">
+      <body className = "min-h-screen flex flex-col relative">
         <Navbar lang={lang}/>
         <main className = "flex-1 w-full">
           <Outlet context = {{supabase, lang, prefix}}/>

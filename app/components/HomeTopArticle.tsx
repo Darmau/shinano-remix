@@ -2,38 +2,42 @@ import {Article} from "~/types/Article";
 import {Link, useOutletContext} from "@remix-run/react";
 import getDate from "~/utils/getDate";
 
-export default function CoverArticleCard({article, isTop}: { article: Article, isTop: boolean }) {
+export default function HomeTopArticle({article, isTop, classList}: { article: Article, isTop: boolean, classList?: string }) {
   const {lang, prefix} = useOutletContext<{lang: string, prefix: string}>();
 
   return (
       <article
-          className = "group w-full"
+          className = {classList}
       >
         <Link
             to = {`/${lang}/article/${article.slug}`}
-            className = {`gap-4 flex flex-col ${isTop ? 'lg:grid lg:grid-cols-2' : 'sm:flex-row-reverse'}`}
+            className = {`gap-4 flex flex-col lg:gap-6
+              ${isTop ? 'lg:flex-col' : 'lg:flex-row'}
+            `}
         >
           {article.cover && (
-              <div className = {`${isTop ? 'sm:aspect-[3/1] lg:aspect-[3/2]' : 'sm:grow-0 sm:max-w-48'} w-full rounded-md overflow-hidden aspect-[3/2]`}>
+              <div className = {`aspect-[5/3] sm:aspect-[3/1] w-full rounded-md overflow-hidden ${isTop ? '' : 'md:aspect-[3/2] lg:grow-0 lg:max-w-48'}`}>
                 <img
                     className = "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    src = {`${prefix}/cdn-cgi/image/format=auto,width=720/${article.cover.storage_key}`}
+                    src = {`${prefix}/cdn-cgi/image/format=auto,width=360/${article.cover.storage_key}`}
+                    srcSet={`${isTop ? `${prefix}/cdn-cgi/image/format=auto,width=960/${article.cover.storage_key}`
+                    : `${prefix}/cdn-cgi/image/format=auto,width=360/${article.cover.storage_key}`}`}
                     alt = {article.cover.alt || ''}
                     height = "320"
                     width = "960"
                 />
               </div>
           )}
-          <div className = "flex flex-col gap-4 sm:grow">
+          <div className = "flex flex-col gap-3 sm:grow">
             <div className = "text-zinc-400 text-sm">
               <span className = "text-violet-700 font-medium">{article.category.title}</span>
               &nbsp;·&nbsp;
               <span>{getDate(article.published_at, lang)}</span>
             </div>
-            <h3 className = {`${isTop? 'text-4xl' : 'text-2xl'} font-medium text-zinc-800 group-hover:text-violet-900`}>{article.title}</h3>
+            <h3 className = {`font-medium text-zinc-800 group-hover:text-violet-900 ${isTop ? 'text-3xl' : 'text-xl'}`}>{article.title}</h3>
             <h4 className = "text-base text-zinc-500 leading-7">{article.subtitle}</h4>
             {article.topic && (
-                <div className = "flex flex-wrap gap-2 pt-2">
+                <div className = "flex flex-wrap gap-2">
                   {article.topic.map((topic, index) => (
                       <span
                           key = {index}
@@ -45,7 +49,7 @@ export default function CoverArticleCard({article, isTop}: { article: Article, i
                 </div>
             )}
             {isTop && article.abstract && (
-                <p className="bg-zinc-100 p-2 rounded-md text-zinc-600 mt-2 lg:p-4">{article.abstract}</p>
+                <p className="text-sm bg-zinc-50 p-2 rounded-md text-zinc-500 mt-2 lg:p-4">{article.abstract}</p>
             )}
           </div>
         </Link>
