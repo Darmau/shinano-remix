@@ -63,12 +63,12 @@ const Subnav: SubnavType = {
         "link": "/zh/site"
       },
       {
-        "name": "RSS",
-        "link": "/zh/rss"
-      },
-      {
         "name": "联系我",
         "link": "/zh/contact"
+      },
+      {
+        "name": "RSS",
+        "link": "/zh/rss"
       }
     ],
   },
@@ -121,13 +121,13 @@ const Subnav: SubnavType = {
         "link": "/en/site"
       },
       {
+        "name": "Contact",
+        "link": "/en/contact"
+      },
+      {
         "name": "RSS",
         "link": "/en/rss"
       },
-      {
-        "name": "Contact",
-        "link": "/en/contact"
-      }
     ],
   },
   "jp": {
@@ -179,13 +179,13 @@ const Subnav: SubnavType = {
         "link": "/jp/site"
       },
       {
+        "name": "連絡",
+        "link": "/jp/contact"
+      },
+      {
         "name": "RSS",
         "link": "/jp/rss"
       },
-      {
-        "name": "連絡",
-        "link": "/jp/contact"
-      }
     ],
   },
 }

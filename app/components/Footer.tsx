@@ -2,25 +2,12 @@ import TwitterIcon from "~/icons/Twitter";
 import GithubIcon from "~/icons/Github";
 import YoutubeIcon from "~/icons/Youtube";
 import InstagramIcon from "~/icons/Instagram";
-import getLanguageLabel from "~/utils/getLanguageLabel";
 import FooterText from "~/locales/footer";
 import {Link} from "@remix-run/react";
 import RSSIcon from "~/icons/RSS";
-import {Config} from "~/root";
-import {useContext} from "react";
+import getFooterLabels from "~/utils/getFooterLabels";
 
 const navigation = {
-  blog: [
-    {name: 'article', href: '/articles/all/1'},
-    {name: 'photography', href: '/photos/all/1'},
-    {name: 'thought', href: '/thoughts/all/1'},
-  ],
-  about: [
-    {name: 'about_me', href: '/about'},
-    {name: 'contact', href: '/contact'},
-    {name: 'tech_stack', href: '/tech'},
-    {name: 'stats', href: '/stats'},
-  ],
   social: [
     {
       name: 'GitHub',
@@ -45,9 +32,8 @@ const navigation = {
   ],
 }
 
-export default function Footer() {
-  const {lang} = useContext(Config);
-  const label = getLanguageLabel(FooterText, lang);
+export default function Footer({lang}: {lang: string}) {
+  const links = getFooterLabels(FooterText, lang);
   const currentYear = new Date().getFullYear();
 
   return (
@@ -62,37 +48,23 @@ export default function Footer() {
                 src = "/favicon.svg"
                 className = "h-12"
             />
-            <div className = "my-16 grid grid-cols-2 gap-8 xl:mt-0">
-              <div>
-                <h3 className = "text-sm font-semibold leading-6 text-gray-900">{label.blog}</h3>
-                <ul className = "mt-6 space-y-4">
-                  {navigation.blog.map((item) => (
-                      <li key = {item.name}>
+            <div className = "my-16 grid grid-cols-2 lg:grid-cols-4 gap-8 xl:mt-0">
+
+              {links?.map((block, index) => (
+                  <div key={index} className="flex flex-col gap-4">
+                    <h3 className = "text-sm font-semibold leading-6 text-gray-900">{block.name}</h3>
+                    {block.items.map((item, index) => (
                         <Link
-                            to = {`/${lang}${item.href}`} prefetch = "intent"
-                            className = "text-sm leading-6 text-gray-600 hover:text-gray-900"
+                            key = {index}
+                            to = {item.href} prefetch = "intent"
+                            className = "text-sm leading-6 text-zinc-600 hover:text-zinc-900"
                         >
-                          {label[item.name]}
+                          {item.name}
                         </Link>
-                      </li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3 className = "text-sm font-semibold leading-6 text-gray-900">{label.about}</h3>
-                <ul className = "mt-6 space-y-4">
-                  {navigation.about.map((item) => (
-                      <li key = {item.name}>
-                        <Link
-                            to = {`/${lang}${item.href}`} prefetch = "intent"
-                            className = "text-sm leading-6 text-gray-600 hover:text-gray-900"
-                        >
-                          {label[item.name]}
-                        </Link>
-                      </li>
-                  ))}
-                </ul>
-              </div>
+                    ))}
+                  </div>
+              ))}
+
             </div>
           </div>
 

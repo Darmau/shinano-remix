@@ -1,15 +1,13 @@
-import {useContext, useState} from 'react'
+import {useState} from 'react'
 import {Dialog, DialogPanel, Popover, PopoverButton, PopoverPanel,} from '@headlessui/react'
 import {Bars3Icon, XMarkIcon,} from '@heroicons/react/24/outline'
 import NavbarItems from '~/locales/navbar'
 import {Link, useLocation} from "@remix-run/react";
 import Profile from "~/components/Profile";
-import {Config} from "~/root";
 import TranslateIcon from "~/icons/Translate";
 
 
-export default function Navbar() {
-  const {lang} = useContext(Config);
+export default function Navbar({lang}: {lang: string}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const navbarItems = NavbarItems(lang);
 
@@ -83,7 +81,7 @@ export default function Navbar() {
                 )
               })}
             </div>
-            <Profile/>
+            <Profile lang={lang} />
           </div>
         </nav>
         <Dialog open = {mobileMenuOpen} onClose = {setMobileMenuOpen} className = "lg:hidden">
@@ -125,7 +123,7 @@ export default function Navbar() {
                   })}
                 </div>
                 <div className = "pt-8">
-                  <Profile/>
+                  <Profile lang={lang}/>
                 </div>
               </div>
             </div>

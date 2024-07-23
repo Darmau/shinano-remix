@@ -30,7 +30,7 @@ const Navbar: NavbarType = {
   "en": [
     {
       "name": "Articles",
-      "link": "/"
+      "link": "/en"
     },
     {
       "name": "Photography",

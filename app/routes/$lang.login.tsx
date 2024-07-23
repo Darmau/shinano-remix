@@ -1,12 +1,10 @@
-import {Form, redirect, useActionData} from "@remix-run/react";
+import {Form, redirect, useActionData, useOutletContext} from "@remix-run/react";
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import GithubLogin from "~/components/GithubLogin";
 import EmailLogin from "~/components/EmailLogin";
 import SignupText from '~/locales/signup'
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import {createClient} from "~/utils/supabase/server";
-import {Config} from "~/root";
-import {useContext} from "react";
 
 export async function loader({request}: LoaderFunctionArgs) {
   const origin = new URL(request.url).origin;
@@ -15,7 +13,7 @@ export async function loader({request}: LoaderFunctionArgs) {
 }
 
 export default function Login() {
-  const {lang} = useContext(Config);
+  const {lang} = useOutletContext<{lang: string}>();
   const label = getLanguageLabel(SignupText, lang);
   const actionResponse = useActionData<typeof action>();
 
