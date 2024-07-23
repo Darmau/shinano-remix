@@ -10,7 +10,9 @@ export interface Article {
   published_at: string,
   cover: {
     alt: string | null,
-    storage_key: string
+    storage_key: string,
+    width: number,
+    height: number
   } | null,
   category: {
     title: string,

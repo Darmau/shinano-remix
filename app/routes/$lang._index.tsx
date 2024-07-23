@@ -37,10 +37,10 @@ export default function Index() {
         <Subnav active = "article"/>
         <div className = "w-full max-w-8xl mx-auto px-4 space-y-8">
           <div className="flex flex-col gap-8 mt-4 lg:mt-8 lg:grid lg:grid-cols-2">
-            <HomeTopArticle isTop={true} article = {articles[0]} classList="" />
+            <HomeTopArticle isTop={true} article = {articles[0]} classList="group" />
             <div className="flex flex-col gap-8 md:grid md:grid-cols-3 lg:flex lg:flex-col">
               {articles.slice(1, 4).map((article) => (
-                  <HomeTopArticle isTop={false} key = {article.id} article = {article} classList=""/>
+                  <HomeTopArticle isTop={false} key = {article.id} article = {article} classList="group"/>
               ))}
             </div>
           </div>
@@ -75,7 +75,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       is_premium,
       topic,
       published_at,
-      cover (alt, storage_key),
+      cover (alt, storage_key, width, height),
       category (title, slug),
       language!inner (lang)
       `)

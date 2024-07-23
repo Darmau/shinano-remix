@@ -1,9 +1,10 @@
 import {Article} from "~/types/Article";
 import {Link, useOutletContext} from "@remix-run/react";
 import getDate from "~/utils/getDate";
+import ResponsiveImage from "~/components/ResponsiveImage";
 
 export default function HomeTopArticle({article, isTop, classList}: { article: Article, isTop: boolean, classList?: string }) {
-  const {lang, prefix} = useOutletContext<{lang: string, prefix: string}>();
+  const {lang} = useOutletContext<{lang: string}>();
 
   return (
       <article
@@ -17,15 +18,12 @@ export default function HomeTopArticle({article, isTop, classList}: { article: A
         >
           {article.cover && (
               <div className = {`aspect-[5/3] sm:aspect-[3/1] w-full rounded-md overflow-hidden ${isTop ? '' : 'md:aspect-[3/2] lg:grow-0 lg:max-w-48'}`}>
-                <img
-                    className = "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    src = {`${prefix}/cdn-cgi/image/format=auto,width=360/${article.cover.storage_key}`}
-                    srcSet={`${isTop ? `${prefix}/cdn-cgi/image/format=auto,width=960/${article.cover.storage_key}`
-                    : `${prefix}/cdn-cgi/image/format=auto,width=360/${article.cover.storage_key}`}`}
-                    alt = {article.cover.alt || ''}
-                    height = "320"
-                    width = "960"
-                />
+                {isTop ? (
+                    <ResponsiveImage image={article.cover} width={720} classList={'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'}/>
+                ) : (
+                    <ResponsiveImage image={article.cover} width={240} classList={'w-full h-full object-cover' +
+                        ' group-hover:scale-105 transition-transform duration-300'}/>
+                )}
               </div>
           )}
           <div className = "flex flex-col gap-3 sm:grow">
