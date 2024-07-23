@@ -3,8 +3,12 @@ import {Link, useOutletContext} from "@remix-run/react";
 import getDate from "~/utils/getDate";
 import ResponsiveImage from "~/components/ResponsiveImage";
 
-export default function HomeTopArticle({article, isTop, classList}: { article: Article, isTop: boolean, classList?: string }) {
-  const {lang} = useOutletContext<{lang: string}>();
+export default function HomeTopArticle({article, isTop, classList}: {
+  article: Article,
+  isTop: boolean,
+  classList?: string
+}) {
+  const {lang} = useOutletContext<{ lang: string }>();
 
   return (
       <article
@@ -17,12 +21,19 @@ export default function HomeTopArticle({article, isTop, classList}: { article: A
             `}
         >
           {article.cover && (
-              <div className = {`aspect-[5/3] sm:aspect-[3/1] w-full rounded-md overflow-hidden ${isTop ? '' : 'md:aspect-[3/2] lg:grow-0 lg:max-w-48'}`}>
+              <div
+                  className = {`aspect-[5/3] sm:aspect-[3/1] w-full rounded-md overflow-hidden ${isTop ? '' : 'md:aspect-[3/2] lg:grow-0 lg:max-w-48'}`}
+              >
                 {isTop ? (
-                    <ResponsiveImage image={article.cover} width={720} classList={'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'}/>
+                    <ResponsiveImage
+                        image = {article.cover} width = {640}
+                        classList = {'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'}
+                    />
                 ) : (
-                    <ResponsiveImage image={article.cover} width={240} classList={'w-full h-full object-cover' +
-                        ' group-hover:scale-105 transition-transform duration-300'}/>
+                    <ResponsiveImage
+                        image = {article.cover} width = {240} classList = {'w-full h-full object-cover' +
+                        ' group-hover:scale-105 transition-transform duration-300'}
+                    />
                 )}
               </div>
           )}
@@ -47,7 +58,7 @@ export default function HomeTopArticle({article, isTop, classList}: { article: A
                 </div>
             )}
             {isTop && article.abstract && (
-                <p className="text-sm bg-zinc-50 p-2 rounded-md text-zinc-500 mt-2 lg:p-4">{article.abstract}</p>
+                <p className = "text-sm bg-zinc-50 p-2 rounded-md text-zinc-500 mt-2 lg:p-4">{article.abstract}</p>
             )}
           </div>
         </Link>
