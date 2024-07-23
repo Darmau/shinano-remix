@@ -5,8 +5,6 @@ import InstagramIcon from "~/icons/Instagram";
 import FooterText from "~/locales/footer";
 import {Link} from "@remix-run/react";
 import RSSIcon from "~/icons/RSS";
-import {Config} from "~/root";
-import {useContext} from "react";
 import getFooterLabels from "~/utils/getFooterLabels";
 
 const navigation = {
@@ -34,8 +32,7 @@ const navigation = {
   ],
 }
 
-export default function Footer() {
-  const {lang} = useContext(Config);
+export default function Footer({lang}: {lang: string}) {
   const links = getFooterLabels(FooterText, lang);
   const currentYear = new Date().getFullYear();
 

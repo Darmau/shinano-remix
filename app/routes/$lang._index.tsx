@@ -4,9 +4,7 @@ import HomepageText from "~/locales/homepage";
 import ArticleSection from "~/components/HomeArticle";
 import {createClient} from "~/utils/supabase/server";
 import {useLoaderData} from "@remix-run/react";
-import PhotoSection from "~/components/HomePhoto";
 import {Article} from "~/types/Article";
-import {Photo} from "~/types/Photo";
 import Subnav from "~/components/Subnav";
 
 export const meta: MetaFunction = ({ params }) => {
@@ -23,14 +21,13 @@ export const meta: MetaFunction = ({ params }) => {
 
 
 export default function Index() {
-  const { articles, photos } = useLoaderData<typeof loader>();
+  const { articles } = useLoaderData<typeof loader>();
 
   return (
       <>
         <Subnav active="article" />
         <div className = "w-full max-w-8xl mx-auto flex flex-col px-4 lg:px-8">
           <ArticleSection articles = {articles}/>
-          <PhotoSection photos = {photos}/>
         </div>
       </>
   );
@@ -64,28 +61,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     .order('published_at', {ascending: false})
     .returns<Article[]>();
 
-  // 获取摄影作品
-  const {data: photographyData} = await supabase
-    .from('photo')
-    .select(`
-      id,
-      title,
-      slug,
-      cover (alt, storage_key, width, height),
-      published_at,
-      language!inner (lang)
-   `)
-    .filter('language.lang', 'eq', lang)
-    .filter('is_draft', 'eq', false)
-    .limit(12)
-    .order('is_top', {ascending: false})
-    .order('published_at', {ascending: false})
-    .returns<Photo[]>();
-
   return {
     articles: articleData,
-    photos: photographyData,
-    prefix: context.cloudflare.env.IMG_PREFIX,
     lang,
   }
 }

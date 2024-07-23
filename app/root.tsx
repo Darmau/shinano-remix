@@ -15,7 +15,7 @@ import "./tailwind.css";
 import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {getLang} from "~/utils/getLang";
 import {createClient} from "~/utils/supabase/server";
-import {createContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {createBrowserClient} from "@supabase/ssr";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
@@ -53,14 +53,11 @@ export const loader = async ({request, context}: LoaderFunctionArgs) => {
   }, {headers: response.headers});
 };
 
-export const Config = createContext({
-  lang: '',
-  prefix: ''
-});
-
 
 export default function App() {
   const {lang, env, session} = useLoaderData<typeof loader>();
+
+  const prefix = env.PREFIX
 
   const {revalidate} = useRevalidator()
 
@@ -94,13 +91,11 @@ export default function App() {
         <Links/>
       </head>
       <body className = "min-h-screen flex flex-col">
-      <Config.Provider value = {{ lang: lang, prefix: env.PREFIX}}>
-        <Navbar/>
+        <Navbar lang={lang}/>
         <main className = "flex-1 w-full">
-          <Outlet context = {{supabase}}/>
+          <Outlet context = {{supabase, lang, prefix}}/>
         </main>
-        <Footer />
-      </Config.Provider>
+        <Footer lang={lang} />
       <ScrollRestoration/>
       <Scripts/>
       </body>

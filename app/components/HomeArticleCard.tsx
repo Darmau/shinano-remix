@@ -1,13 +1,11 @@
 import {Article} from "~/types/Article";
-import {Link} from "@remix-run/react";
+import {Link, useOutletContext} from "@remix-run/react";
 import getDate from "~/utils/getDate";
-import {useContext} from "react";
-import {Config} from "~/root";
 
 export default function ArticleCard({article}: {
   article: Article
 }) {
-  const {lang} = useContext(Config);
+  const {lang} = useOutletContext<{lang: string}>();
 
   return (
       <article

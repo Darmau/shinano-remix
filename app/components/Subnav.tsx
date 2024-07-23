@@ -1,10 +1,8 @@
-import {Link, useLocation} from "@remix-run/react";
+import {Link, useLocation, useOutletContext} from "@remix-run/react";
 import SubNavItems from "~/locales/subnav";
-import {useContext} from "react";
-import {Config} from "~/root";
 
 export default function Subnav ({active}: {active: string}) {
-  const {lang} = useContext(Config);
+  const {lang} = useOutletContext<{lang: string}>();
   const subnavItems = SubNavItems(lang, active);
   const location = useLocation();
 

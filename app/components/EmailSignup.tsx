@@ -1,10 +1,9 @@
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import SignupText from '~/locales/signup'
-import {useContext} from "react";
-import {Config} from "~/root";
+import {useOutletContext} from "@remix-run/react";
 
 export default function EmailSignup () {
-  const {lang} = useContext(Config);
+  const {lang} = useOutletContext<{lang: string}>();
   const label = getLanguageLabel(SignupText, lang);
   return (
       <div className = "space-y-6">

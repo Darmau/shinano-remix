@@ -2,13 +2,12 @@ import getLanguageLabel from "~/utils/getLanguageLabel";
 import HomepageText from "~/locales/homepage";
 import {Photo} from "~/types/Photo";
 import "react-photo-album/rows.css";
-import {useContext} from "react";
-import {Config} from "~/root";
+import {useOutletContext} from "@remix-run/react";
 
 export default function PhotoSection({photos}: {
   photos: Photo[] | null
 }) {
-  const {lang, prefix} = useContext(Config);
+  const {lang, prefix} = useOutletContext<{lang: string, prefix: string}>();
 
   if (!photos) return null;
 

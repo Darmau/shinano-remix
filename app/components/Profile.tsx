@@ -4,8 +4,6 @@ import {createClient} from "~/utils/supabase/server";
 import {Link, useLoaderData} from "@remix-run/react";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import ProfileText from "~/locales/profile";
-import {useContext} from "react";
-import {Config} from "~/root";
 
 export const loader = async ({request, context}: LoaderFunctionArgs) => {
   const { supabase } = createClient(request, context);
@@ -15,8 +13,7 @@ export const loader = async ({request, context}: LoaderFunctionArgs) => {
   })
 }
 
-export default function Profile() {
-  const {lang} = useContext(Config);
+export default function Profile({lang}: {lang: string}) {
   const { session } = useLoaderData<typeof loader>();
   const label = getLanguageLabel(ProfileText, lang)
 
