@@ -1,5 +1,10 @@
+import Subnav from "~/components/Subnav";
+
 export default function RSS () {
   return (
-      <div>RSS</div>
+      <>
+        <Subnav active="about" />
+        <div>RSS</div>
+      </>
   )
 }

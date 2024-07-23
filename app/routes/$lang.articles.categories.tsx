@@ -1,10 +1,10 @@
 import Subnav from "~/components/Subnav";
 
-export default function AllFeaturedArticles () {
+export default function ArticleCategories () {
   return (
       <>
         <Subnav active="article" />
-        <div>推荐文章</div>
+        <div>所有分类</div>
       </>
   )
 }

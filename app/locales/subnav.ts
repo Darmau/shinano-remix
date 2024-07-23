@@ -29,6 +29,10 @@ const Subnav: SubnavType = {
         "link": "/zh/articles/featured/1"
       },
       {
+        "name": "分类",
+        "link": "/zh/articles/categories"
+      },
+      {
         "name": "归档",
         "link": `/zh/articles/archive`
       }
@@ -81,6 +85,10 @@ const Subnav: SubnavType = {
       {
         "name": "Featured",
         "link": "/en/articles/featured/1"
+      },
+      {
+        "name": "Category",
+        "link": "/en/articles/categories"
       },
       {
         "name": "Archive",
@@ -137,6 +145,10 @@ const Subnav: SubnavType = {
         "link": "/jp/articles/featured/1"
       },
       {
+        "name": "カテゴリ",
+        "link": "/jp/articles/categories"
+      },
+      {
         "name": "アーカイブ",
         "link": `/jp/articles/archive/${year}/1`
       }
@@ -178,35 +190,9 @@ const Subnav: SubnavType = {
   },
 }
 
-function pathMap(path: string) {
-  switch (path) {
-    case 'articles':
-      return 'article';
-    case 'albums':
-      return 'photography';
-    case 'thoughts':
-      return 'thought';
-    case 'about':
-      return 'about';
-    case 'site':
-      return 'about';
-    case 'rss':
-      return 'about';
-    case 'contact':
-      return 'about';
-    case 'login':
-      return 'about';
-    case 'signup':
-      return 'about';
-    default:
-      return '';
-  }
-}
-
 export default function SubNavItems(lang: string, current: string) {
-  const path = pathMap(current);
   if (!Subnav[lang]) {
-    return Subnav['zh'][path];
+    return Subnav['zh'][current];
   }
-  return Subnav[lang][path];
+  return Subnav[lang][current];
 }

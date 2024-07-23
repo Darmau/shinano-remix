@@ -1,5 +1,10 @@
+import Subnav from "~/components/Subnav";
+
 export default function ArchiveArticles () {
   return (
-      <div>按年浏览</div>
+      <>
+        <Subnav active="article" />
+        <div>按年浏览</div>
+      </>
   )
 }

@@ -1,5 +1,10 @@
+import Subnav from "~/components/Subnav";
+
 export default function AboutMe () {
   return (
-      <div>关于我</div>
+      <>
+        <Subnav active="about" />
+        <div>关于作者</div>
+      </>
   )
 }

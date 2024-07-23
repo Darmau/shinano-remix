@@ -1,5 +1,10 @@
+import Subnav from "~/components/Subnav";
+
 export default function AllFeaturedAlbums () {
   return (
-      <div>所有推荐摄影</div>
+      <>
+        <Subnav active="photography" />
+        <div>推荐摄影</div>
+      </>
   )
 }
