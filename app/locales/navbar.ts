@@ -1,6 +1,7 @@
 interface NavItem {
   name: string;
   link: string;
+  type: string;
 }
 
 // 定义整个Navbar对象的类型
@@ -12,55 +13,67 @@ const Navbar: NavbarType = {
   "zh": [
     {
       "name": "文章",
-      "link": "/zh"
+      "link": "/zh/",
+      "type": "article"
     },
     {
       "name": "摄影",
-      "link": "/zh/albums/featured/1"
+      "link": "/zh/albums/featured/1",
+      "type": "album"
     },
     {
       "name": "想法",
-      "link": "/zh/thoughts/1"
+      "link": "/zh/thoughts/1",
+      "type": "thought"
     },
     {
       "name": "关于",
-      "link": "/zh/about"
+      "link": "/zh/about",
+      "type": "about"
     }
   ],
   "en": [
     {
       "name": "Articles",
-      "link": "/en"
+      "link": "/en/",
+      "type": "article"
     },
     {
       "name": "Photography",
-      "link": "/albums/featured/1"
+      "link": "/albums/featured/1",
+      "type": "album"
     },
     {
       "name": "Thoughts",
-      "link": "/thoughts/1"
+      "link": "/thoughts/1",
+      "type": "thought"
     },
     {
       "name": "About",
-      "link": "/about"
+      "link": "/about",
+      "type": "about"
     }
   ],
   "jp": [
     {
       "name": "記事",
-      "link": "/jp"
+      "link": "/jp/",
+      "type": "article"
     },
     {
       "name": "写真",
-      "link": "/jp/albums/featured/1"
+      "link": "/jp/albums/featured/1",
+      "type": "album"
     },
     {
       "name": "思考",
-      "link": "/jp/thoughts/1"
+      "link": "/jp/thoughts/1",
+      "type": "thought"
     },
     {
       "name": "について",
-      "link": "/jp/about"
+      "link": "/jp/about",
+      "type": "about"
     }
   ]
 }

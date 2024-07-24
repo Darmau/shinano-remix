@@ -6,6 +6,21 @@ import {Link, useLocation} from "@remix-run/react";
 import Profile from "~/components/Profile";
 import TranslateIcon from "~/icons/Translate";
 
+const pathMap = new Map([
+  ['', 'article'],
+  ['articles', 'article'],
+  ['albums', 'album'],
+  ['thoughts', 'thought'],
+  ['about', 'about'],
+  ['site', 'about'],
+  ['contact', 'about'],
+  ['rss', 'about'],
+])
+
+function isCurrentTab(tab: string, path: string): boolean {
+  const currentTab = pathMap.get(path.split('/')[2]);
+  return currentTab === tab;
+}
 
 export default function Navbar({lang}: {lang: string}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -71,11 +86,11 @@ export default function Navbar({lang}: {lang: string}) {
                     <Link
                         to = {item.link}
                         key = {index}
-                        className = {`relative group inline-block px-2 py-1 rounded-md text-sm leading-6 text-gray-900 focus:outline-none ${location.pathname === item.link ? 'font-bold' : 'font-medium'}`}
+                        className = {`relative group inline-block px-2 py-1 rounded-md text-sm leading-6 text-gray-900 focus:outline-none ${isCurrentTab(item.type, location.pathname) ? 'font-bold' : 'font-medium'}`}
                     >
                       <span className="group-hover:text-violet-700">{item.name}</span>
                       <span
-                          className = {`absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-1 h-1 rounded-full transition-all duration-300 group-hover:bg-violet-500 ${location.pathname === item.link ? 'bg-violet-500' : ''}`}
+                          className = {`absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-1 h-1 rounded-full transition-all duration-300 group-hover:bg-violet-500 ${isCurrentTab(item.type, location.pathname) ? 'bg-violet-500' : ''}`}
                       ></span>
                     </Link>
                 )

@@ -18,7 +18,7 @@ const Subnav: SubnavType = {
     "article": [
       {
         "name": "首页",
-        "link": "/zh"
+        "link": "/zh/"
       },
       {
         "name": "最新",
@@ -76,7 +76,7 @@ const Subnav: SubnavType = {
     "article": [
       {
         "name": "Homepage",
-        "link": "/en"
+        "link": "/en/"
       },
       {
         "name": "Latest",
@@ -134,7 +134,7 @@ const Subnav: SubnavType = {
     "article": [
       {
         "name": "ホーム",
-        "link": "/jp"
+        "link": "/jp/"
       },
       {
         "name": "最新",
