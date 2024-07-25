@@ -792,6 +792,46 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_article_count_by_category: {
+        Args: {
+          lang_name: string
+        }
+        Returns: {
+          category_id: number
+          category_name: string
+          category_slug: string
+          count: number
+        }[]
+      }
+      get_article_count_by_year: {
+        Args: {
+          lang_name: string
+        }
+        Returns: {
+          year: string
+          count: number
+        }[]
+      }
+      get_photography_count_by_category: {
+        Args: {
+          lang_name: string
+        }
+        Returns: {
+          category_id: number
+          category_name: string
+          category_slug: string
+          count: number
+        }[]
+      }
+      get_photography_count_by_year: {
+        Args: {
+          lang_name: string
+        }
+        Returns: {
+          year: string
+          count: number
+        }[]
+      }
       is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean

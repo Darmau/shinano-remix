@@ -21,21 +21,13 @@ const Subnav: SubnavType = {
         "link": "/zh/"
       },
       {
-        "name": "最新",
-        "link": "/zh/articles/all/1"
-      },
-      {
         "name": "推荐",
         "link": "/zh/articles/featured/1"
       },
       {
-        "name": "分类",
-        "link": "/zh/articles/categories"
+        "name": "最新",
+        "link": "/zh/articles/1"
       },
-      {
-        "name": "归档",
-        "link": `/zh/articles/archive`
-      }
     ],
     "photography": [
       {
@@ -79,21 +71,13 @@ const Subnav: SubnavType = {
         "link": "/en/"
       },
       {
-        "name": "Latest",
-        "link": "/en/articles/all/1"
-      },
-      {
         "name": "Featured",
         "link": "/en/articles/featured/1"
       },
       {
-        "name": "Category",
-        "link": "/en/articles/categories"
+        "name": "Latest",
+        "link": "/en/articles/1"
       },
-      {
-        "name": "Archive",
-        "link": `/en/articles/archive/${year}/1`
-      }
     ],
     "photography": [
       {
@@ -137,21 +121,13 @@ const Subnav: SubnavType = {
         "link": "/jp/"
       },
       {
-        "name": "最新",
-        "link": "/jp/articles/all/1"
-      },
-      {
         "name": "厳選",
         "link": "/jp/articles/featured/1"
       },
       {
-        "name": "カテゴリ",
-        "link": "/jp/articles/categories"
+        "name": "最新",
+        "link": "/jp/articles/1"
       },
-      {
-        "name": "アーカイブ",
-        "link": `/jp/articles/archive/${year}/1`
-      }
     ],
     "photography": [
       {
