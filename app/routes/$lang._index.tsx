@@ -83,7 +83,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       category (title, slug),
       language!inner (lang)
       `)
-  .filter('language.lang', 'eq', lang)
+  .eq('language.lang', lang)
   .filter('is_draft', 'eq', false)
   .limit(13)
   .order('is_top', {ascending: false})
@@ -92,6 +92,5 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
 
   return {
     articles: articleData,
-    lang,
   }
 }

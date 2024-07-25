@@ -6,6 +6,21 @@ import {Link, useLocation} from "@remix-run/react";
 import Profile from "~/components/Profile";
 import TranslateIcon from "~/icons/Translate";
 
+const pathMap = new Map([
+  ['', 'article'],
+  ['articles', 'article'],
+  ['albums', 'album'],
+  ['thoughts', 'thought'],
+  ['about', 'about'],
+  ['site', 'about'],
+  ['contact', 'about'],
+  ['rss', 'about'],
+])
+
+function isCurrentTab(tab: string, path: string): boolean {
+  const currentTab = pathMap.get(path.split('/')[2]);
+  return currentTab === tab;
+}
 
 export default function Navbar({lang}: {lang: string}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -71,11 +86,11 @@ export default function Navbar({lang}: {lang: string}) {
                     <Link
                         to = {item.link}
                         key = {index}
-                        className = {`relative group inline-block px-2 py-1 rounded-md text-sm leading-6 text-gray-900 focus:outline-none ${location.pathname === item.link ? 'font-bold' : 'font-medium'}`}
+                        className = {`relative group inline-block px-2 py-1 rounded-md text-sm leading-6 text-gray-900 focus:outline-none ${isCurrentTab(item.type, location.pathname) ? 'font-bold' : 'font-medium'}`}
                     >
                       <span className="group-hover:text-violet-700">{item.name}</span>
                       <span
-                          className = {`absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-1 h-1 rounded-full transition-all duration-300 group-hover:bg-violet-500 ${location.pathname === item.link ? 'bg-violet-500' : ''}`}
+                          className = {`absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-1 h-1 rounded-full transition-all duration-300 group-hover:bg-violet-500 ${isCurrentTab(item.type, location.pathname) ? 'bg-violet-500' : ''}`}
                       ></span>
                     </Link>
                 )
@@ -90,14 +105,48 @@ export default function Navbar({lang}: {lang: string}) {
               className = "fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
           >
             <div className = "flex items-center justify-between">
-              <a href = "/" className = "-m-1.5 p-1.5">
-                <span className = "sr-only">Your Company</span>
-                <img
-                    alt = ""
-                    src = "https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    className = "h-8 w-auto"
-                />
-              </a>
+              <div className="flex items-center gap-4">
+                <a href = "/" className = "-m-1.5 p-1.5">
+                  <span className = "sr-only">Your Company</span>
+                  <img
+                      alt = ""
+                      src = "https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                      className = "h-8 w-auto"
+                  />
+                </a>
+                <Popover>
+                  <PopoverButton className = "block data-[active]:text-violet-700 data-[hover]:text-violet-700">
+                    <TranslateIcon className = "size-6 text-gray-900"/>
+                  </PopoverButton>
+                  <PopoverPanel
+                      transition
+                      anchor = "bottom"
+                      className = "z-20 shadow-2xl divide-y divide-zinc-100 rounded-md bg-white text-sm transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+                  >
+                    <Link
+                        reloadDocument
+                        to = "/zh/"
+                        className = "block p-4 w-32 transition hover:bg-zinc-50"
+                    >
+                      中文
+                    </Link>
+                    <Link
+                        reloadDocument
+                        to = "/en/"
+                        className = "block p-4 w-32 transition hover:bg-zinc-50"
+                    >
+                      English
+                    </Link>
+                    <Link
+                        reloadDocument
+                        to = "/jp/"
+                        className = "block p-4 w-32 transition hover:bg-zinc-50"
+                    >
+                      日本語
+                    </Link>
+                  </PopoverPanel>
+                </Popover>
+              </div>
               <button
                   type = "button"
                   onClick = {() => setMobileMenuOpen(false)}
@@ -123,7 +172,7 @@ export default function Navbar({lang}: {lang: string}) {
                   })}
                 </div>
                 <div className = "pt-8">
-                  <Profile lang={lang}/>
+                  <Profile lang = {lang}/>
                 </div>
               </div>
             </div>
