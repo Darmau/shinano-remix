@@ -2,15 +2,19 @@ import Subnav from "~/components/Subnav";
 import {LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Article} from "~/types/Article";
-import {Link, useLoaderData, useOutletContext} from "@remix-run/react";
+import {Link, useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
 import NormalArticleCard from "~/components/NormalArticleCard";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import ArticlesText from "~/locales/articles";
+import Pagination from "~/components/Pagination";
 
 export default function AllArticles() {
-  const {articles, countByYear, countByCategory} = useLoaderData<typeof loader>();
+  const {articles, countByYear, countByCategory, articleCount, page} = useLoaderData<typeof loader>();
   const {lang} = useOutletContext<{ lang: string }>();
   const label = getLanguageLabel(ArticlesText, lang);
+  const location = useLocation();
+  // 将pathname末尾的page去掉
+  const path = location.pathname.replace(/\/\d+$/, '');
 
   if (!articles || articles.length === 0) {
     return (
@@ -30,6 +34,7 @@ export default function AllArticles() {
             {articles.map((article) => (
                 <NormalArticleCard article = {article} key = {article.id}/>
             ))}
+            <Pagination count={articleCount || 0} limit={12} page={page} path={path} />
           </div>
           <aside className = "space-y-8 md:col-span-1">
             <div className = "space-y-4">
@@ -107,6 +112,15 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   .order('published_at', {ascending: false})
   .returns<Article[]>();
 
+  // 指定语言article的数量，排除草稿
+  const {count} = await supabase
+  .from('article')
+  .select(`
+    id,
+    language!inner (lang)
+  `, {count: 'exact', head: true})
+  .eq('language.lang', lang);
+
   const {data: countByYear} = await supabase.rpc('get_article_count_by_year', {lang_name: lang});
 
   const {data: countByCategory} = await supabase.rpc('get_article_count_by_category', {
@@ -121,6 +135,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     articles: data,
     countByYear: countByYear,
     countByCategory: countByCategory,
+    articleCount: count,
     page: Number(page)
   }
 

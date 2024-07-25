@@ -1,6 +1,3 @@
-// 生成当前年份
-const year = new Date().getFullYear()
-
 interface NavItem {
   name: string;
   link: string;
