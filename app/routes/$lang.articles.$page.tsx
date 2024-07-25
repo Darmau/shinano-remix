@@ -102,7 +102,6 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       topic,
       published_at,
       category (title, slug),
-      cover (alt, storage_key, width, height),
       language!inner (lang)
     `)
   .eq('language.lang', lang)
@@ -119,6 +118,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     id,
     language!inner (lang)
   `, {count: 'exact', head: true})
+  .filter('is_draft', 'eq', false)
   .eq('language.lang', lang);
 
   const {data: countByYear} = await supabase.rpc('get_article_count_by_year', {lang_name: lang});

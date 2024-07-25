@@ -7,7 +7,7 @@ import {
   redirect,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
+  useLoaderData, useNavigation,
   useRevalidator,
   useRouteError
 } from "@remix-run/react";
@@ -19,6 +19,7 @@ import {useEffect, useState} from "react";
 import {createBrowserClient} from "@supabase/ssr";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
+import PendingNavigation from "~/components/PendingNavigation";
 
 export const loader = async ({request, context}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -82,6 +83,8 @@ export default function App() {
     }
   }, [serverAccessToken, supabase, revalidate])
 
+  const navigation = useNavigation();
+
   return (
       <html lang = {lang}>
       <head>
@@ -92,7 +95,8 @@ export default function App() {
       </head>
       <body className = "min-h-screen flex flex-col relative">
         <Navbar lang={lang}/>
-        <main className = "flex-1 w-full">
+        <PendingNavigation />
+        <main className = {`flex-1 w-full ${navigation.state === 'loading' && 'opacity-30'}`}>
           <Outlet context = {{supabase, lang, prefix}}/>
         </main>
         <Footer lang={lang} />
