@@ -17,5 +17,6 @@ export interface Article {
   category: {
     title: string,
     slug: string
-  }
+  },
+  content_json: JSON,
 }

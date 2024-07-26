@@ -8,6 +8,7 @@ import ArticlesText from "~/locales/articles";
 import NormalArticleCard from "~/components/NormalArticleCard";
 import Pagination from "~/components/Pagination";
 import ResponsiveImage from "~/components/ResponsiveImage";
+import {Image} from "~/types/Image";
 
 export default function ArticlesByCategory() {
   const {articles, countByYear, countByCategory, articleCount, page, category} = useLoaderData<typeof loader>();
@@ -41,7 +42,7 @@ export default function ArticlesByCategory() {
           <div className = "relative overflow-hidden rounded-2xl w-full aspect-[3/1]">
             <div className = "absolute inset-0 bg-gradient-to-b from-transparent to-zinc-800/60"></div>
             <ResponsiveImage
-                image = {category.cover}
+                image = {category.cover as unknown as Image}
                 width = {640}
                 classList = "w-full h-full object-cover"
             />
