@@ -32,7 +32,7 @@ export default function ArticleDetail () {
         </header>
         <div className="col-span-1 space-y-4 md:space-y-8 md:col-span-3">
           <div>
-            <ResponsiveImage image={article.cover as unknown as Image} width={960} classList="w-full h-full rounded-md overflow-hiden object-cover aspect-[5/2]" />
+            <ResponsiveImage image={article.cover as unknown as Image} width={960} classList="w-full h-full rounded-md overflow-hiden object-cover aspect-[5/3]" />
           </div>
           <div className="flex justify-between items-center flex-wrap">
             <div className = "flex gap-8">
