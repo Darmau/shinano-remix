@@ -34,7 +34,7 @@ export default function ArticleDetail () {
           <div>
             <ResponsiveImage image={article.cover as unknown as Image} width={960} classList="w-full h-full rounded-md overflow-hiden object-cover aspect-[5/2]" />
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center flex-wrap">
             <div className = "flex gap-8">
               <div className = "space-y-2 md:space-y-3">
                 <h4 className = "text-sm text-violet-700 font-medium">{label.published_at}</h4>
