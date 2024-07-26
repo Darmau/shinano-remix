@@ -6,6 +6,7 @@ import {Image} from "~/types/Image";
 import getDate from "~/utils/getDate";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import ArticleText from '~/locales/article';
+import ContentContainer from "~/components/ContentContainer";
 
 export default function ArticleDetail () {
   const { article } = useLoaderData<typeof loader>();
@@ -49,7 +50,9 @@ export default function ArticleDetail () {
           </div>
         </div>
         <div className = "grid grid-cols-1 md:grid-cols-3 col-span-1 md:gap-24 md:col-span-3">
-          <div className = "col-span-1 md:col-span-2">{JSON.stringify(article)}</div>
+          <div className = "col-span-1 md:col-span-2">
+            <ContentContainer content={article.content_json as object} />
+          </div>
           <nav className="hidden md:flex md:col-span-1">目录</nav>
         </div>
       </div>
