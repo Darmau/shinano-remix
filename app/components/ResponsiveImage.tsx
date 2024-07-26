@@ -12,6 +12,7 @@ export default function ResponsiveImage({image, width, classList}: {image: Image
           className = {classList}
           src = {`${prefix}/cdn-cgi/image/format=auto,${base}=${width}/${image.storage_key}`}
           srcSet = {`${prefix}/cdn-cgi/image/format=auto,${base}=${width}/${image.storage_key} 1x, ${prefix}/cdn-cgi/image/format=auto,${base}=${width * 2}/${image.storage_key} 2x`}
+          sizes="(max-width: 720px) 100vw, 2x"
           alt = {image.alt || ''}
           width = {width}
       />
