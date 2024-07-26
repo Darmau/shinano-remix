@@ -56,7 +56,7 @@ export default function Index() {
                     <h2 className = "font-medium text-lg text-zinc-700">{label.recent_article}</h2>
                     <div className = "grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-12">
                       {articles.slice(4).map((article) => (
-                          <NormalArticleCard key = {article.id} article = {article}/>
+                          <NormalArticleCard key = {article.id} article = {article} showAbstract={false}/>
                       ))
                       }
                     </div>

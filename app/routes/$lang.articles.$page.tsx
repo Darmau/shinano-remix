@@ -18,9 +18,12 @@ export default function AllArticles() {
 
   if (!articles || articles.length === 0) {
     return (
-        <div>
-          No articles found
-        </div>
+        <>
+          <Subnav active="article" />
+          <header className="w-full max-w-6xl mx-auto p-4 md:py-8 mb-8 lg:mb-16">
+            <h1 className="text-3xl font-black text-zinc-700 text-center my-16">{label.no_articles}</h1>
+          </header>
+        </>
     )
   }
 
@@ -32,7 +35,7 @@ export default function AllArticles() {
         >
           <div className = "grow flex flex-col gap-8 md:gap-12 md:col-span-2">
             {articles.map((article) => (
-                <NormalArticleCard article = {article} key = {article.id}/>
+                <NormalArticleCard article = {article} key = {article.id} showAbstract={true}/>
             ))}
             <Pagination count={articleCount || 0} limit={12} page={page} path={path} />
           </div>
@@ -47,7 +50,7 @@ export default function AllArticles() {
                     >
                       <Link
                           to = {`/${lang}/articles/archive/${year.year}/1`}
-                          className = "text-base text-zinc-500"
+                          className = "text-base text-zinc-500 block"
                       >
                         {year.year} ({year.count})
                       </Link>
@@ -69,7 +72,7 @@ export default function AllArticles() {
                       >
                         <Link
                             to = {`/${lang}/articles/category/${category.slug}/1`}
-                            className = "text-base text-zinc-500"
+                            className = "text-base text-zinc-500 block"
                         >
                           {category.title} ({category.count})
                         </Link>
@@ -105,9 +108,9 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       language!inner (lang)
     `)
   .eq('language.lang', lang)
+  .eq('is_draft', false)
   .limit(12)
   .range((Number(page) - 1) * 12, Number(page) * 12 - 1)
-  .filter('is_draft', 'eq', false)
   .order('published_at', {ascending: false})
   .returns<Article[]>();
 
@@ -118,7 +121,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     id,
     language!inner (lang)
   `, {count: 'exact', head: true})
-  .filter('is_draft', 'eq', false)
+  .eq('is_draft', false)
   .eq('language.lang', lang);
 
   const {data: countByYear} = await supabase.rpc('get_article_count_by_year', {lang_name: lang});

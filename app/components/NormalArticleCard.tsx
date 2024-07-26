@@ -2,8 +2,9 @@ import {Article} from "~/types/Article";
 import {Link, useOutletContext} from "@remix-run/react";
 import getDate from "~/utils/getDate";
 
-export default function NormalArticleCard({article}: {
+export default function NormalArticleCard({article, showAbstract}: {
   article: Article
+  showAbstract?: boolean
 }) {
   const {lang} = useOutletContext<{lang: string}>();
 
@@ -34,6 +35,9 @@ export default function NormalArticleCard({article}: {
                     </span>
                 ))}
               </div>
+          )}
+          {showAbstract && article.abstract && (
+              <div className="bg-zinc-100 p-2 text-sm text-zinc-700 mt-3 rounded-md md:p-4 leading-6">{article.abstract}</div>
           )}
         </Link>
 
