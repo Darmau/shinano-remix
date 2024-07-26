@@ -1,17 +1,19 @@
 import {LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
-import {useLoaderData, useOutletContext} from "@remix-run/react";
+import {useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
 import ResponsiveImage from "~/components/ResponsiveImage";
 import {Image} from "~/types/Image";
 import getDate from "~/utils/getDate";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import ArticleText from '~/locales/article';
 import ContentContainer from "~/components/ContentContainer";
+import ShareButton from "~/components/ShareButton";
 
 export default function ArticleDetail () {
-  const { article } = useLoaderData<typeof loader>();
+  const { article, domain } = useLoaderData<typeof loader>();
   const { lang } = useOutletContext<{ lang: string }>();
   const label = getLanguageLabel(ArticleText, lang);
+  const { pathname } = useLocation();
 
   if (!article) {
     throw new Response(null, {
@@ -32,28 +34,31 @@ export default function ArticleDetail () {
           <div>
             <ResponsiveImage image={article.cover as unknown as Image} width={960} classList="w-full h-full rounded-md overflow-hiden object-cover aspect-[5/2]" />
           </div>
-          <div className="flex gap-8 flex-wrap">
-            <div className="space-y-2 md:space-y-3">
-              <h4 className="text-sm text-violet-700 font-medium">{label.published_at}</h4>
-              <h3 className="text-zinc-600 text-sm">{getDate(article.published_at!, lang)}</h3>
+          <div className="flex justify-between items-center">
+            <div className = "flex gap-8">
+              <div className = "space-y-2 md:space-y-3">
+                <h4 className = "text-sm text-violet-700 font-medium">{label.published_at}</h4>
+                <h3 className = "text-zinc-600 text-sm">{getDate(article.published_at!, lang)}</h3>
+              </div>
+              {article.topic && (
+                  <div className = "space-y-2 lg:space-y-3">
+                    <h4 className = "text-sm text-violet-700 font-medium">{label.topic}</h4>
+                    <ol className = "flex gap-2 flex-wrap">
+                      {article.topic.map((topic, index) => (
+                          <li key = {index} className = "text-sm text-zinc-600">#{topic}</li>
+                      ))}
+                    </ol>
+                  </div>
+              )}
             </div>
-            {article.topic && (
-                <div className="space-y-2 lg:space-y-3">
-                  <h4 className="text-sm text-violet-700 font-medium">{label.topic}</h4>
-                  <ol className = "flex gap-2 flex-wrap">
-                    {article.topic.map((topic, index) => (
-                        <li key = {index} className="text-sm text-zinc-600">#{topic}</li>
-                    ))}
-                  </ol>
-                </div>
-            )}
+            <ShareButton url={`${domain}${pathname}`} title={article.title!} lang={lang} />
           </div>
         </div>
         <div className = "grid grid-cols-1 md:grid-cols-3 col-span-1 md:gap-24 md:col-span-3">
           <div className = "col-span-1 md:col-span-2">
-            <ContentContainer content={article.content_json as object} />
+            <ContentContainer content = {article.content_json as object}/>
           </div>
-          <nav className="hidden md:flex md:col-span-1">目录</nav>
+          <nav className = "hidden md:flex md:col-span-1">目录</nav>
         </div>
       </div>
   )
@@ -65,8 +70,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   const slug = params.slug as string;
 
   const {data: articleContent} = await supabase
-    .from('article')
-    .select(`
+  .from('article')
+  .select(`
       id,
       title,
       slug,
@@ -87,6 +92,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     .single();
 
   return {
-    article: articleContent
+    article: articleContent,
+    domain: context.cloudflare.env.BASE_URL
   }
 }

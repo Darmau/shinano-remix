@@ -7,6 +7,7 @@ import {type PlatformProxy} from "wrangler";
 // even if no `wrangler.toml` exists.
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Env {
+  BASE_URL: string;
   IMG_PREFIX: string;
   SUPABASE_URL: string;
   SUPABASE_ANON_KEY: string;

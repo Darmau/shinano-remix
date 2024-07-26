@@ -2,6 +2,7 @@
 // by running `wrangler types`
 
 interface Env {
+	BASE_URL: string;
 	IMG_PREFIX: string;
 	SUPABASE_URL: string;
 	SUPABASE_ANON_KEY: string;
