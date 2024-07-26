@@ -8,8 +8,15 @@ import {Link, useLoaderData, useLocation, useOutletContext} from "@remix-run/rea
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import ArticlesText from "~/locales/articles";
 
-export default function ArchiveArticles () {
-  const {articles, countByYear, countByCategory, articleCount, page, year} = useLoaderData<typeof loader>();
+export default function ArchiveArticles() {
+  const {
+    articles,
+    countByYear,
+    countByCategory,
+    articleCount,
+    page,
+    year
+  } = useLoaderData<typeof loader>();
   const {lang} = useOutletContext<{ lang: string }>();
   const label = getLanguageLabel(ArticlesText, lang);
   const location = useLocation();
@@ -19,9 +26,9 @@ export default function ArchiveArticles () {
   if (!articles || articles.length === 0) {
     return (
         <>
-          <Subnav active="article" />
-          <header className="w-full max-w-6xl mx-auto p-4 md:py-8 mb-8 lg:mb-16">
-            <h1 className="text-3xl font-black text-zinc-700 text-center my-16">{label.no_articles}</h1>
+          <Subnav active = "article"/>
+          <header className = "w-full max-w-6xl mx-auto p-4 md:py-8 mb-8 lg:mb-16">
+            <h1 className = "text-3xl font-black text-zinc-700 text-center my-16">{label.no_articles}</h1>
           </header>
         </>
     )
@@ -29,17 +36,17 @@ export default function ArchiveArticles () {
 
   return (
       <>
-        <Subnav active="article" />
-        <header className="w-full max-w-6xl mx-auto px-4 py-8 my-8 space-y-4">
-          <p className="font-medium text-violet-700 text-sm">{label.published_at}</p>
-          <h1 className="font-bold text-3xl md:text-4xl">{year}</h1>
+        <Subnav active = "article"/>
+        <header className = "w-full max-w-6xl mx-auto px-4 py-8 my-8 space-y-4">
+          <p className = "font-medium text-violet-700 text-sm">{label.published_at}</p>
+          <h1 className = "font-bold text-3xl md:text-4xl">{year}</h1>
         </header>
         <div
             className = "w-full max-w-6xl mx-auto p-4 flex flex-col-reverse gap-8 md:py-8 mb-8 lg:mb-16 md:grid md:grid-cols-3"
         >
           <div className = "grow flex flex-col gap-8 md:gap-12 md:col-span-2">
             {articles.map((article) => (
-                <NormalArticleCard article = {article} key = {article.id} showAbstract={true}/>
+                <NormalArticleCard article = {article} key = {article.id} showAbstract = {true}/>
             ))}
             <Pagination count = {articleCount || 0} limit = {12} page = {page} path = {path}/>
           </div>
@@ -114,8 +121,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       language!inner (lang)
       `)
   .eq('language.lang', lang)
+  .eq('is_draft', false)
   .limit(12)
-  .filter('is_draft', 'eq', false)
   .gte('published_at', `${year}-01-01T00:00:00Z`)
   .lte('published_at', `${year}-12-31T23:59:59Z`)
   .order('published_at', {ascending: false})
@@ -129,10 +136,10 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     id,
     language!inner (lang)
   `, {count: 'exact', head: true})
-  .filter('is_draft', 'eq', false)
+  .eq('is_draft', false)
+  .eq('language.lang', lang)
   .gte('published_at', `${year}-01-01T00:00:00Z`)
-  .lte('published_at', `${year}-12-31T23:59:59Z`)
-  .eq('language.lang', lang);
+  .lte('published_at', `${year}-12-31T23:59:59Z`);
 
   const {data: countByYear} = await supabase.rpc('get_article_count_by_year', {lang_name: lang});
 

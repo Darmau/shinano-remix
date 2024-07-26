@@ -108,9 +108,9 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       language!inner (lang)
     `)
   .eq('language.lang', lang)
+  .eq('is_draft', false)
   .limit(12)
   .range((Number(page) - 1) * 12, Number(page) * 12 - 1)
-  .filter('is_draft', 'eq', false)
   .order('published_at', {ascending: false})
   .returns<Article[]>();
 
@@ -121,7 +121,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     id,
     language!inner (lang)
   `, {count: 'exact', head: true})
-  .filter('is_draft', 'eq', false)
+  .eq('is_draft', false)
   .eq('language.lang', lang);
 
   const {data: countByYear} = await supabase.rpc('get_article_count_by_year', {lang_name: lang});
