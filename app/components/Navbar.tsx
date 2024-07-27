@@ -156,6 +156,7 @@ export default function Navbar({lang}: {lang: string}) {
                   {navbarItems.map((item, index) => {
                     return (
                         <Link
+                            reloadDocument
                             to = {item.link}
                             key = {index}
                             className = "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
