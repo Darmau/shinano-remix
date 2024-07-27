@@ -1,5 +1,8 @@
 import {Json} from "~/types/supabase";
 import ArticleImage from "~/components/ArticleImage";
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github-dark-dimmed.css';
+import {useEffect, useRef} from "react";
 
 type ContentStructure = {
   content: Content[];
@@ -83,7 +86,7 @@ const Node = ({node}: { node: Content }) => {
     case 'customCodeBlock':
       return <CodeBlock attrs = {node.attrs} content = {node.content}/>;
     case 'horizontalRule':
-      return <Horizental />;
+      return <Horizental/>;
     case 'image':
       return <Image attrs = {node.attrs as unknown as ImageAttrs}/>;
     case 'table':
@@ -108,25 +111,25 @@ const Paragraph = ({content}: { content?: ContentItem[] }) => (
 const Heading = ({attrs, content}: { attrs?: Content["attrs"]; content?: ContentItem[] }) => {
   switch (attrs?.level) {
     case 2:
-      return <h2 className="mt-12 font-bold text-3xl text-zinc-800">
+      return <h2 className = "mt-12 font-bold text-3xl text-zinc-800">
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
         ))}
       </h2>;
     case 3:
-      return <h3 className="mt-8 mb-4 font-bold text-2xl text-zinc-700">
+      return <h3 className = "mt-8 mb-4 font-bold text-2xl text-zinc-700">
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
         ))}
       </h3>;
     case 4:
-      return <h4 className="mt-6 mb-4 font-bold text-xl text-zinc-600">
+      return <h4 className = "mt-6 mb-4 font-bold text-xl text-zinc-600">
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
         ))}
       </h4>;
     default:
-      return <h2 className="mb-4 font-bold text-3xl text-zinc-800">
+      return <h2 className = "mb-4 font-bold text-3xl text-zinc-800">
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
         ))}
@@ -135,18 +138,42 @@ const Heading = ({attrs, content}: { attrs?: Content["attrs"]; content?: Content
 };
 
 const Blockquote = ({content}: { content?: ContentItem[] }) => (
-    <blockquote className="my-4 py-1 pl-4 border-l-2 border-violet-800 text-lg font-medium">
+    <blockquote className = "my-4 py-1 pl-4 border-l-2 border-violet-800 text-lg font-medium">
       {content?.map((item, index) => (
           <Node key = {index} node = {item}/>
       ))}
     </blockquote>
 );
 
-const CodeBlock = ({attrs, content}: { attrs?: Content["attrs"]; content?: ContentItem[] }) => (
-    <pre>
-    <code className = {`language-${attrs?.language}`}>{content?.[0].text}</code>
-  </pre>
-);
+const CodeBlock = ({attrs, content}: { attrs?: Content["attrs"]; content?: ContentItem[] }) => {
+  const codeRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (codeRef.current) {
+      hljs.highlightElement(codeRef.current);
+    }
+  }, [attrs?.language, content]);
+
+  const language = attrs?.language || '';
+  const codeContent = content?.[0]?.text || '';
+
+  return (
+      <pre className = "hljs rounded-xl overflow-hidden">
+        <div className = "flex justify-between px-4 py-2">
+          {/*显示三个圆点模拟终端的窗口控制按钮*/}
+          <span className = "flex items-center gap-1">
+            <span className = "w-3 h-3 rounded-full bg-red-500"/>
+            <span className = "w-3 h-3 rounded-full bg-yellow-500"/>
+            <span className = "w-3 h-3 rounded-full bg-green-500"/>
+          </span>
+          <p>{language}</p>
+        </div>
+      <code ref = {codeRef} className = {language ? `language-${language}` : ''}>
+        {codeContent}
+      </code>
+    </pre>
+  );
+};
 
 const Horizental = () => (
     <div className = "relative my-8">
@@ -160,7 +187,7 @@ const Horizental = () => (
 );
 
 const Image = ({attrs}: { attrs: ImageAttrs }) => (
-    <ArticleImage attrs={attrs} />
+    <ArticleImage attrs = {attrs}/>
 );
 
 const Table = ({content}: { content?: ContentItem[] }) => {
@@ -169,17 +196,17 @@ const Table = ({content}: { content?: ContentItem[] }) => {
   const bodyRows = content?.slice(1);
 
   return (
-      <table className="min-w-full divide-y divide-gray-300 mt-8 border border-gray-300">
+      <table className = "min-w-full divide-y divide-gray-300 mt-8 border border-gray-300">
         <thead>
         {headerRow && (
             <tr>
               {headerRow.content?.map((cell, cellIndex) => (
                   <th
-                      scope="col"
-                      key={cellIndex}
-                      className="px-4 py-1 text-left text-sm font-bold text-gray-900"
+                      scope = "col"
+                      key = {cellIndex}
+                      className = "px-4 py-1 text-left text-sm font-bold text-gray-900"
                   >
-                    <Node node={cell.content?.[0] as Content}/>
+                    <Node node = {cell.content?.[0] as Content}/>
                   </th>
               ))}
             </tr>
@@ -187,10 +214,10 @@ const Table = ({content}: { content?: ContentItem[] }) => {
         </thead>
         <tbody>
         {bodyRows?.map((row, rowIndex) => (
-            <tr key={rowIndex} className="even:bg-gray-50">
+            <tr key = {rowIndex} className = "even:bg-gray-50">
               {row.content?.map((cell, cellIndex) => (
-                  <td key={cellIndex} className="whitespace-nowrap px-4 py-1 text-sm text-gray-500">
-                    <Node node={cell.content?.[0] as Content}/>
+                  <td key = {cellIndex} className = "whitespace-nowrap px-4 py-1 text-sm text-gray-500">
+                    <Node node = {cell.content?.[0] as Content}/>
                   </td>
               ))}
             </tr>
@@ -201,7 +228,7 @@ const Table = ({content}: { content?: ContentItem[] }) => {
 };
 
 const BulletList = ({content}: { content?: ContentItem[] }) => (
-    <ul className="list-disc pl-4">
+    <ul className = "list-disc pl-4">
       {content?.map((item, index) => (
           <li key = {index}>
             {item.content?.map((node, nodeIndex) => (
@@ -213,7 +240,7 @@ const BulletList = ({content}: { content?: ContentItem[] }) => (
 );
 
 const OrderedList = ({attrs, content}: { attrs?: Content["attrs"]; content?: ContentItem[] }) => (
-    <ol start = {attrs?.start} className="list-decimal pl-4">
+    <ol start = {attrs?.start} className = "list-decimal pl-4">
       {content?.map((item, index) => (
           <li key = {index}>
             {item.content?.map((node, nodeIndex) => (
@@ -236,25 +263,28 @@ const TextNode = ({node}: { node: Content }) => {
       switch (mark.type) {
         case 'link':
           content = (
-              <a className="text-violet-700 after:content-['_↗'] hover:underline hover:decoration-2 hover:underline-offset-4" href = {mark.attrs?.href} target = {mark.attrs?.target} rel = {mark.attrs?.rel}>
+              <a
+                  className = "text-violet-700 after:content-['_↗'] hover:underline hover:decoration-2 hover:underline-offset-4"
+                  href = {mark.attrs?.href} target = {mark.attrs?.target} rel = {mark.attrs?.rel}
+              >
                 {content}
               </a>
           );
           break;
         case 'bold':
-          content = <strong className="font-medium">{content}</strong>;
+          content = <strong className = "font-medium">{content}</strong>;
           break;
         case 'italic':
-          content = <em className="italic">{content}</em>;
+          content = <em className = "italic">{content}</em>;
           break;
         case 'strike':
-          content = <del className="line-through decoration-red-400">{content}</del>;
+          content = <del className = "line-through decoration-red-400">{content}</del>;
           break;
         case 'highlight':
-          content = <mark className="bg-yellow-300">{content}</mark>;
+          content = <mark className = "bg-yellow-300">{content}</mark>;
           break;
         case 'code':
-          content = <code>{content}</code>;
+          content = <code className="font-mono px-2">{content}</code>;
           break;
       }
     });
