@@ -21,22 +21,19 @@ export default function HomeTopArticle({article, isTop, classList}: {
             `}
         >
           {article.cover && (
-              <div
-                  className = {`aspect-[5/3] sm:aspect-[3/1] w-full rounded-md overflow-hidden ${isTop ? '' : 'md:aspect-[3/2] lg:grow-0 lg:max-w-48'}`}
-              >
-                {isTop ? (
-                    <ResponsiveImage
-                        image = {article.cover} width = {640}
-                        classList = {'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'}
-                    />
-                ) : (
-                    <ResponsiveImage
-                        image = {article.cover} width = {240} classList = {'w-full h-full object-cover' +
-                        ' group-hover:scale-105 transition-transform duration-300'}
-                    />
-                )}
-              </div>
-          )}
+              isTop ? (
+                  <ResponsiveImage
+                      image = {article.cover} width = {640}
+                      classList = "aspect-[5/3] sm:aspect-[3/1] w-full rounded-md overflow-hidden"
+                  />
+              ) : (
+                  <ResponsiveImage
+                      image = {article.cover} width = {240}
+                      classList = "aspect-[5/3] sm:aspect-[3/1] w-full rounded-md overflow-hidden md:aspect-[3/2] lg:grow-0 lg:max-w-48"
+                  />
+              )
+          )
+          }
           <div className = "flex flex-col gap-3 sm:grow">
             <div className = "text-zinc-400 text-sm">
               <span className = "text-violet-700 font-medium">{article.category.title}</span>
