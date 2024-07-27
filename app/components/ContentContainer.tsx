@@ -1,4 +1,5 @@
 import {Json} from "~/types/supabase";
+import ArticleImage from "~/components/ArticleImage";
 
 type ContentStructure = {
   content: Content[];
@@ -33,7 +34,7 @@ type Mark = {
   };
 };
 
-type ImageAttrs = {
+export type ImageAttrs = {
   id: number;
   alt: string;
   storage_key: string;
@@ -159,14 +160,7 @@ const Horizental = () => (
 );
 
 const Image = ({attrs}: { attrs: ImageAttrs }) => (
-    <figure>
-      <img
-          src = {`${attrs.prefix}/${attrs.storage_key}`}
-          alt = {attrs.alt}
-          id = {attrs.id.toString()}
-      />
-      <figcaption>{attrs.caption}</figcaption>
-    </figure>
+    <ArticleImage attrs={attrs} />
 );
 
 const Table = ({content}: { content?: ContentItem[] }) => (
