@@ -18,7 +18,7 @@ export default function ArticleImage({attrs}: { attrs: ImageAttrs }) {
   const highResSrcSet = `${highResSrc} 1x, ${prefix}/cdn-cgi/image/format=auto,width=1280/${attrs.storage_key} 2x`;
 
   return (
-      <figure>
+      <figure className="my-8">
         <div className = "relative overflow-hidden rounded-md" id = {`image-${attrs.id}`}>
           {/* Low resolution blurred image */}
           <img

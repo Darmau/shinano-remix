@@ -68,6 +68,7 @@ export default function ContentContainer({content}: { content: Json }) {
 
   return (
       <>
+        <div>{JSON.stringify(article)}</div>
         {article.map((node: Content, index: number) => (
             <Node key = {index} node = {node}/>
         ))}
@@ -101,7 +102,7 @@ const Node = ({node}: { node: Content }) => {
 };
 
 const Paragraph = ({content}: { content?: ContentItem[] }) => (
-    <p className = "my-4 text-zinc-800 leading-7">
+    <p className = "my-8 text-zinc-800 leading-8">
       {content?.map((item, index) => (
           <TextNode key = {index} node = {item}/>
       ))}
@@ -111,19 +112,19 @@ const Paragraph = ({content}: { content?: ContentItem[] }) => (
 const Heading = ({attrs, content}: { attrs?: Content["attrs"]; content?: ContentItem[] }) => {
   switch (attrs?.level) {
     case 2:
-      return <h2 className = "mt-12 font-bold text-3xl text-zinc-800">
+      return <h2 className = "mt-16 font-bold text-3xl text-zinc-800">
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
         ))}
       </h2>;
     case 3:
-      return <h3 className = "mt-8 mb-4 font-bold text-2xl text-zinc-700">
+      return <h3 className = "mt-12 mb-4 font-bold text-2xl text-zinc-700">
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
         ))}
       </h3>;
     case 4:
-      return <h4 className = "mt-6 mb-4 font-bold text-xl text-zinc-600">
+      return <h4 className = "mt-8 mb-4 font-bold text-xl text-zinc-600">
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
         ))}
