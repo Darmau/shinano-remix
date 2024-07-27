@@ -1,20 +1,56 @@
-import {Image} from "~/types/Image";
-import {useOutletContext} from "@remix-run/react";
+import { useState, useEffect, useRef } from "react";
+import { Image } from "~/types/Image";
+import { useOutletContext } from "@remix-run/react";
 
-export default function ResponsiveImage({image, width, classList}: {image: Image, width: number, classList: string}) {
-  const {prefix} = useOutletContext<{prefix: string}>();
+export default function ResponsiveImage({ image, width, classList }: { image: Image; width: number; classList: string }) {
+  const { prefix } = useOutletContext<{ prefix: string }>();
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
 
-  // 根据宽高比，决定以那条边为基准
   const base = image.width > image.height ? 'width' : 'height';
+  const lowResWidth = Math.floor(width / 15);
+
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete) {
+      setImageLoaded(true);
+    }
+  }, []);
+
+  const highResSrc = `${prefix}/cdn-cgi/image/format=auto,${base}=${width}/${image.storage_key}`;
+  const highResSrcSet = `${highResSrc} 1x, ${prefix}/cdn-cgi/image/format=auto,${base}=${width * 2}/${image.storage_key} 2x`;
 
   return (
-      <img
-          className = {classList}
-          src = {`${prefix}/cdn-cgi/image/format=auto,${base}=${width}/${image.storage_key}`}
-          srcSet = {`${prefix}/cdn-cgi/image/format=auto,${base}=${width}/${image.storage_key} 1x, ${prefix}/cdn-cgi/image/format=auto,${base}=${width * 2}/${image.storage_key} 2x`}
-          sizes="(max-width: 720px) 100vw, 2x"
-          alt = {image.alt || ''}
-          width = {width}
-      />
-  )
+      <div className={`${classList} relative overflow-hidden`}>
+        {/* Low resolution blurred image */}
+        <img
+            className={`scale-105 brightness-110 absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}
+            src={`${prefix}/cdn-cgi/image/format=auto,${base}=${lowResWidth}/${image.storage_key}`}
+            alt={image.alt || ''}
+            width={width}
+            style={{ filter: 'blur(20px)' }}
+        />
+
+        {/* High resolution image */}
+        <picture className={`transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}>
+          <source
+              media="(max-width: 639px)"
+              srcSet={highResSrc}
+          />
+          <source
+              media="(min-width: 640px)"
+              srcSet={highResSrcSet}
+          />
+          <img
+              ref={imgRef}
+              className="group-hover:scale-105 w-full h-full object-cover transition-all duration-300"
+              src={highResSrc}
+              srcSet={highResSrcSet}
+              sizes="(max-width: 720px) 100vw, 2x"
+              alt={image.alt || ''}
+              width={width}
+              onLoad={() => setImageLoaded(true)}
+          />
+        </picture>
+      </div>
+  );
 }

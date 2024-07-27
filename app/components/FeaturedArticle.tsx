@@ -10,21 +10,16 @@ export default function FeaturedArticle({article}: {
 
   return (
       <article
-          className="group"
+          className = "group"
       >
         <Link
             to = {`/${lang}/article/${article.slug}`}
         >
-          {article.cover && (
-              <div
-                  className = "aspect-[5/3] sm:aspect-[3/1] md:aspect-[3/2] w-full rounded-md overflow-hidden mb-4"
-              >
-                <ResponsiveImage
-                    image = {article.cover} width = {480}
-                    classList = {'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'}
-                />
-              </div>
-          )}
+          {article.cover &&
+              <ResponsiveImage
+                  image = {article.cover} width = {480}
+                  classList = "aspect-[5/3] sm:aspect-[3/1] md:aspect-[3/2] w-full rounded-md overflow-hidden mb-4"
+              />}
           <div className = "flex flex-col gap-3">
             <div className = "text-zinc-400 text-sm">
               <span className = "text-violet-700 font-medium">{article.category.title}</span>
