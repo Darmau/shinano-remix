@@ -8,6 +8,7 @@ import getLanguageLabel from "~/utils/getLanguageLabel";
 import ArticleText from '~/locales/article';
 import ContentContainer from "~/components/ContentContainer";
 import ShareButton from "~/components/ShareButton";
+import {Json} from "~/types/supabase";
 
 export default function ArticleDetail () {
   const { article, domain } = useLoaderData<typeof loader>();
@@ -31,13 +32,18 @@ export default function ArticleDetail () {
           {article.abstract && <p className="p-4 rounded-md bg-zinc-100 text-zinc-600 leading-normal text-sm lg:text-base">{article.abstract}</p>}
         </header>
         <div className="col-span-1 space-y-4 md:space-y-8 md:col-span-3">
-          <div>
-            <ResponsiveImage image={article.cover as unknown as Image} width={960} classList="w-full h-full rounded-md overflow-hiden object-cover aspect-[5/3]" />
-          </div>
-          <div className="flex justify-between items-center flex-wrap">
+          {article.cover && (
+              <div>
+                <ResponsiveImage
+                    image = {article.cover as unknown as Image} width = {960}
+                    classList = "w-full h-full rounded-md overflow-hiden object-cover aspect-[5/3]"
+                />
+              </div>
+          )}
+          <div className = "flex justify-between items-center flex-wrap">
             <div className = "flex gap-8">
               <div className = "space-y-2 md:space-y-3">
-                <h4 className = "text-sm text-violet-700 font-medium">{label.published_at}</h4>
+              <h4 className = "text-sm text-violet-700 font-medium">{label.published_at}</h4>
                 <h3 className = "text-zinc-600 text-sm">{getDate(article.published_at!, lang)}</h3>
               </div>
               {article.topic && (
@@ -55,8 +61,8 @@ export default function ArticleDetail () {
           </div>
         </div>
         <div className = "grid grid-cols-1 md:grid-cols-3 col-span-1 md:gap-24 md:col-span-3">
-          <div className = "col-span-1 md:col-span-2">
-            <ContentContainer content = {article.content_json as object}/>
+          <div className = "col-span-1 md:col-span-2 selection:bg-violet-800/60 selection:text-white">
+            <ContentContainer content = {article.content_json as Json}/>
           </div>
           <nav className = "hidden md:flex md:col-span-1">目录</nav>
         </div>
