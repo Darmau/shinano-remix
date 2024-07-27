@@ -8,7 +8,7 @@ type ContentStructure = {
   content: Content[];
 };
 
-type Content = {
+export type Content = {
   type: string;
   content?: ContentItem[];
   attrs?: {
@@ -79,11 +79,13 @@ const Node = ({node}: { node: Content }) => {
   switch (node.type) {
     case 'paragraph':
       return <Paragraph content = {node.content}/>;
-    case 'headingWithID':
+    case 'heading':
       return <Heading attrs = {node.attrs} content = {node.content}/>;
     case 'blockquote':
       return <Blockquote content = {node.content}/>;
     case 'customCodeBlock':
+      return <CodeBlock attrs = {node.attrs} content = {node.content}/>;
+    case 'codeBlock':
       return <CodeBlock attrs = {node.attrs} content = {node.content}/>;
     case 'horizontalRule':
       return <Horizental/>;
@@ -111,25 +113,37 @@ const Paragraph = ({content}: { content?: ContentItem[] }) => (
 const Heading = ({attrs, content}: { attrs?: Content["attrs"]; content?: ContentItem[] }) => {
   switch (attrs?.level) {
     case 2:
-      return <h2 className = "mt-16 font-bold text-3xl text-zinc-800">
+      return <h2
+          className = "mt-16 font-bold text-3xl text-zinc-800"
+          id={attrs?.id}
+      >
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
         ))}
       </h2>;
     case 3:
-      return <h3 className = "mt-12 mb-4 font-bold text-2xl text-zinc-700">
+      return <h3
+          className = "mt-12 mb-4 font-bold text-2xl text-zinc-700"
+          id={attrs?.id}
+      >
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
         ))}
       </h3>;
     case 4:
-      return <h4 className = "mt-8 mb-4 font-bold text-xl text-zinc-600">
+      return <h4
+          className = "mt-8 mb-4 font-bold text-xl text-zinc-600"
+          id={attrs?.id}
+      >
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
         ))}
       </h4>;
     default:
-      return <h2 className = "mb-4 font-bold text-3xl text-zinc-800">
+      return <h2
+          className = "mb-4 font-bold text-3xl text-zinc-800"
+          id={attrs?.id}
+      >
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
         ))}
