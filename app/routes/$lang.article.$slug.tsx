@@ -9,6 +9,7 @@ import ArticleText from '~/locales/article';
 import ContentContainer from "~/components/ContentContainer";
 import ShareButton from "~/components/ShareButton";
 import {Json} from "~/types/supabase";
+import Catalog from "~/components/Catalog";
 
 export default function ArticleDetail () {
   const { article, domain } = useLoaderData<typeof loader>();
@@ -60,11 +61,13 @@ export default function ArticleDetail () {
             <ShareButton url={`${domain}${pathname}`} title={article.title!} lang={lang} />
           </div>
         </div>
-        <div className = "grid grid-cols-1 md:grid-cols-3 col-span-1 md:gap-24 md:col-span-3">
+        <div className = "relative grid grid-cols-1 md:grid-cols-3 col-span-1 md:gap-24 md:col-span-3">
           <div className = "col-span-1 md:col-span-2 selection:bg-violet-800/60 selection:text-white">
             <ContentContainer content = {article.content_json as Json}/>
           </div>
-          <nav className = "hidden md:flex md:col-span-1">目录</nav>
+          <div className = "hidden md:flex md:col-span-1">
+            <Catalog content={article.content_json as Json}/>
+          </div>
         </div>
       </div>
   )
