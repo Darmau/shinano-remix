@@ -28,7 +28,7 @@ export default function HomeTopArticle({article, isTop, classList}: {
                   />
               ) : (
                   <ResponsiveImage
-                      image = {article.cover} width = {240}
+                      image = {article.cover} width = {640}
                       classList = "aspect-[5/3] sm:aspect-[3/1] w-full rounded-md overflow-hidden md:aspect-[3/2] lg:grow-0 lg:max-w-48"
                   />
               )
