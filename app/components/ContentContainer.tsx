@@ -68,7 +68,6 @@ export default function ContentContainer({content}: { content: Json }) {
 
   return (
       <>
-        <div>{JSON.stringify(article)}</div>
         {article.map((node: Content, index: number) => (
             <Node key = {index} node = {node}/>
         ))}
