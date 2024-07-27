@@ -1,5 +1,6 @@
 import {Json} from "~/types/supabase";
 import {Content} from "~/components/ContentContainer";
+import {Link} from "@remix-run/react";
 
 type ContentStructure = {
   content: Content[];
@@ -24,7 +25,7 @@ function generateTableOfContents(nodes: Content[]): JSX.Element {
 
       return (
           <li key={index} className="text-base font-medium text-zinc-500">
-            <a href={`#${id}`}>{text}</a>
+            <Link to={{ hash: `#${id}`}}>{text}</Link>
             {nodes
             .slice(index + 1)
             .filter(node => node.type === "heading" && node.attrs.level > level)
