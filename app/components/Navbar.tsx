@@ -34,8 +34,7 @@ export default function Navbar({lang}: {lang: string}) {
           <div className="max-w-8xl mx-auto flex items-center justify-between p-6 lg:px-8">
             <div className = "hidden lg:flex lg:gap-2 lg:items-center">
               <Link to = {`/${lang}`} className = "-m-1.5 p-1.5">
-                <span className = "sr-only">Logo</span>
-                <img alt = "" src = "/favicon.svg" className = "h-8 w-auto"/>
+                <img alt = "logo" src = "/favicon.svg" className = "h-8 w-auto" width="32" height="32" />
               </Link>
               <Popover>
                 <PopoverButton className="block data-[active]:text-violet-700 data-[hover]:text-violet-700">
@@ -107,12 +106,7 @@ export default function Navbar({lang}: {lang: string}) {
             <div className = "flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <a href = "/" className = "-m-1.5 p-1.5">
-                  <span className = "sr-only">Your Company</span>
-                  <img
-                      alt = ""
-                      src = "https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                      className = "h-8 w-auto"
-                  />
+                  <img alt = "logo" src = "/favicon.svg" className = "h-8 w-auto" width = "32" height = "32"/>
                 </a>
                 <Popover>
                   <PopoverButton className = "block data-[active]:text-violet-700 data-[hover]:text-violet-700">
