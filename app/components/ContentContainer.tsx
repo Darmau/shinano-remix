@@ -163,24 +163,42 @@ const Image = ({attrs}: { attrs: ImageAttrs }) => (
     <ArticleImage attrs={attrs} />
 );
 
-const Table = ({content}: { content?: ContentItem[] }) => (
-    <table>
-      <tbody>
-      {content?.map((row, rowIndex) => (
-          <tr key = {rowIndex}>
-            {row.content?.map((cell, cellIndex) => {
-              const CellTag = cell.type === 'tableHeader' ? 'th' : 'td';
-              return (
-                  <CellTag key = {cellIndex}>
-                    <Node node = {cell.content?.[0] as Content}/>
-                  </CellTag>
-              );
-            })}
-          </tr>
-      ))}
-      </tbody>
-    </table>
-);
+const Table = ({content}: { content?: ContentItem[] }) => {
+  // 假设第一行总是表头
+  const headerRow = content?.[0];
+  const bodyRows = content?.slice(1);
+
+  return (
+      <table className="min-w-full divide-y divide-gray-300 mt-8 border border-gray-300">
+        <thead>
+        {headerRow && (
+            <tr>
+              {headerRow.content?.map((cell, cellIndex) => (
+                  <th
+                      scope="col"
+                      key={cellIndex}
+                      className="px-4 py-1 text-left text-sm font-bold text-gray-900"
+                  >
+                    <Node node={cell.content?.[0] as Content}/>
+                  </th>
+              ))}
+            </tr>
+        )}
+        </thead>
+        <tbody>
+        {bodyRows?.map((row, rowIndex) => (
+            <tr key={rowIndex} className="even:bg-gray-50">
+              {row.content?.map((cell, cellIndex) => (
+                  <td key={cellIndex} className="whitespace-nowrap px-4 py-1 text-sm text-gray-500">
+                    <Node node={cell.content?.[0] as Content}/>
+                  </td>
+              ))}
+            </tr>
+        ))}
+        </tbody>
+      </table>
+  );
+};
 
 const BulletList = ({content}: { content?: ContentItem[] }) => (
     <ul className="list-disc pl-4">

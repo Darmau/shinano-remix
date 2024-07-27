@@ -23,10 +23,10 @@ export default function ArticleImage({attrs}: { attrs: ImageAttrs }) {
           {/* Low resolution blurred image */}
           <img
               className = {`brightness-110 absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}
-              src = {`${prefix}/cdn-cgi/image/format=auto,width=56/${attrs.storage_key}`}
+              src = {`${prefix}/cdn-cgi/image/format=auto,width=24/${attrs.storage_key}`}
               alt = {attrs.alt || ''}
               width = "740"
-              style = {{filter: 'blur(20px)'}}
+              style = {{filter: 'blur(36px)'}}
           />
 
           {/* High resolution image */}
