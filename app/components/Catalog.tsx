@@ -16,48 +16,39 @@ function isContentStructure(content: Json): content is ContentStructure {
   );
 }
 
-function generateTableOfContents(nodes: Content[]): JSX.Element {
-  const createTocItem = (item: Content, index: number): JSX.Element | null => {
-    if (item.type === "heading") {
-      const level = item.attrs?.level;
-      const id = item.attrs?.id;
-      const text = item.content?.[0].text;
+// 将heading里的节点type为text的内容提取出来，拼接成完整标题
+function getHeadingText(heading: Content) {
+  return heading.content?.filter(node => node.type === 'text').map(node => node.text).join('');
+}
 
-      return (
-          <li key={index} className="text-base font-medium text-zinc-500">
-            <Link to={{ hash: `#${id}`}}>{text}</Link>
-            {nodes
-            .slice(index + 1)
-            .filter(node => node.type === "heading" && node.attrs.level > level)
-                .length > 0 && (
-                <ul>
-                  {nodes
-                  .slice(index + 1)
-                  .map((node, i) => {
-                    if (node.type === "heading" && node.attrs.level > level) {
-                      return createTocItem(node, i + index + 1);
-                    }
-                    return null;
-                  })
-                  .filter(Boolean)}
-                </ul>
-            )}
-          </li>
-      );
-    }
-    return null;
-  };
-
-  const tocItems = nodes
-  .map((node, index) => {
-    if (node.type === "heading" && node.attrs?.level === 2) {
-      return createTocItem(node, index);
-    }
-    return null;
-  })
-  .filter(Boolean);
-
-  return <ul className="space-y-3">{tocItems}</ul>;
+function generateTableOfContents(nodes: Content[]) {
+  const toc = nodes.filter(node => node.type === 'heading');
+  return (
+      <>
+        {toc.map((heading, index) => {
+        switch (heading.attrs?.level) {
+          case 2:
+            return (
+                <Link key={index} to={{hash: `#${heading.attrs?.id}`}} className="font-medium text-zinc-700 hover:text-violet-700">
+                  {getHeadingText(heading)}
+                </Link>
+            )
+          case 3:
+            return (
+                <Link key={index} to={{hash: `#${heading.attrs?.id}`}} className="pl-2 text-zinc-600 hover:text-violet-700">
+                  {getHeadingText(heading)}
+                </Link>
+            )
+          case 4:
+            return (
+                <Link key={index} to={{hash: `#${heading.attrs?.id}`}} className="pl-4 text-zinc-500 hover:text-violet-700">
+                  {getHeadingText(heading)}
+                </Link>
+            )
+        }
+      })}
+      </>
+  )
 }
 
 export default function Catalog({content}: { content: Json }) {
@@ -72,7 +63,9 @@ export default function Catalog({content}: { content: Json }) {
   const article = content.content as Content[];
 
   return (
-      <nav aria-label="Table of contents">
+      <nav aria-label="Table of contents"
+           className="md:sticky md:top-16 md:h-fit flex flex-col gap-2"
+      >
         {generateTableOfContents(article)}
       </nav>
   );

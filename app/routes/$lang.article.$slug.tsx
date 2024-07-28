@@ -65,9 +65,9 @@ export default function ArticleDetail () {
           <div className = "col-span-1 md:col-span-2 selection:bg-violet-800/60 selection:text-white">
             <ContentContainer content = {article.content_json as Json}/>
           </div>
-          <div className = "hidden md:flex md:col-span-1">
+          <aside className = "hidden md:flex md:col-span-1 md:h-full">
             <Catalog content={article.content_json as Json}/>
-          </div>
+          </aside>
         </div>
       </div>
   )
