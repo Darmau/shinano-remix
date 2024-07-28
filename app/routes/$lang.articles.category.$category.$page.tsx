@@ -53,7 +53,7 @@ export default function ArticlesByCategory() {
         >
           <div className = "grow flex flex-col gap-8 md:gap-12 md:col-span-2">
             {articles.map((article) => (
-                <NormalArticleCard article = {article} key = {article.id} showAbstract = {true}/>
+                <NormalArticleCard article = {article as Article} key = {article.id} showAbstract = {true}/>
             ))}
             <Pagination count = {articleCount || 0} limit = {12} page = {page} path = {path}/>
           </div>

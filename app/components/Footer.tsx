@@ -2,10 +2,9 @@ import TwitterIcon from "~/icons/Twitter";
 import GithubIcon from "~/icons/Github";
 import YoutubeIcon from "~/icons/Youtube";
 import InstagramIcon from "~/icons/Instagram";
-import FooterText from "~/locales/footer";
 import {Link} from "@remix-run/react";
 import RSSIcon from "~/icons/RSS";
-import getFooterLabels from "~/utils/getFooterLabels";
+import {footerLinks} from "~/utils/getFooterLabels";
 
 const navigation = {
   social: [
@@ -32,8 +31,7 @@ const navigation = {
   ],
 }
 
-export default function Footer({lang, currentYear}: {lang: string, currentYear: number}) {
-  const links = getFooterLabels(FooterText, lang);
+export default function Footer({lang, currentYear, items}: {lang: string, currentYear: number, items: footerLinks[]}) {
 
   return (
       <footer aria-labelledby = "footer-heading" className = "bg-white border-t">
@@ -49,7 +47,7 @@ export default function Footer({lang, currentYear}: {lang: string, currentYear: 
             />
             <div className = "my-16 grid grid-cols-2 lg:grid-cols-4 gap-8 xl:mt-0">
 
-              {links?.map((block, index) => (
+              {items?.map((block, index) => (
                   <div key={index} className="flex flex-col gap-4">
                     <h3 className = "text-sm font-semibold leading-6 text-gray-900">{block.name}</h3>
                     {block.items.map((item, index) => (

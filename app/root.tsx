@@ -20,6 +20,9 @@ import {createBrowserClient} from "@supabase/ssr";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
 import PendingNavigation from "~/components/PendingNavigation";
+import NavbarItems from "~/locales/navbar";
+import getFooterLabels from "~/utils/getFooterLabels";
+import FooterText from "~/locales/footer";
 
 export const loader = async ({request, context}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -50,11 +53,19 @@ export const loader = async ({request, context}: LoaderFunctionArgs) => {
   // 生成当前年份
   const currentYear = new Date().getFullYear();
 
+  // 获取导航栏文案
+  const navbarItems = NavbarItems(lang);
+
+  // 获取footer文案
+  const footerItems = getFooterLabels(FooterText, lang);
+
   return json({
     lang,
     env,
     session,
-    currentYear
+    currentYear,
+    navbarItems,
+    footerItems
   }, {headers: response.headers});
 };
 
@@ -64,7 +75,9 @@ export default function App() {
     lang,
     env,
     session,
-    currentYear
+    currentYear,
+    navbarItems,
+    footerItems
   } = useLoaderData<typeof loader>();
 
   const prefix = env.PREFIX
@@ -104,12 +117,12 @@ export default function App() {
         <Links/>
       </head>
       <body className = "min-h-screen flex flex-col relative">
-        <Navbar lang={lang}/>
+        <Navbar lang={lang} items={navbarItems} />
         <PendingNavigation />
         <main className = {`flex-1 w-full mt-24 ${navigation.state === 'loading' && 'opacity-30'}`}>
           <Outlet context = {{supabase, lang, prefix}}/>
         </main>
-        <Footer lang={lang} currentYear={currentYear} />
+        <Footer lang={lang} currentYear={currentYear} items={footerItems} />
       <ScrollRestoration/>
       <Scripts/>
       </body>
