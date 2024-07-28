@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import {Dialog, DialogPanel, Popover, PopoverButton, PopoverPanel,} from '@headlessui/react'
 import {Bars3Icon, XMarkIcon,} from '@heroicons/react/24/outline'
-import NavbarItems from '~/locales/navbar'
+import {NavItem} from '~/locales/navbar'
 import {Link, useLocation} from "@remix-run/react";
 import Profile from "~/components/Profile";
 import TranslateIcon from "~/icons/Translate";
@@ -22,9 +22,8 @@ function isCurrentTab(tab: string, path: string): boolean {
   return currentTab === tab;
 }
 
-export default function Navbar({lang}: {lang: string}) {
+export default function Navbar({lang, items}: { lang: string, items: NavItem[] }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const navbarItems = NavbarItems(lang);
 
   const location = useLocation();
 
@@ -52,40 +51,40 @@ export default function Navbar({lang}: {lang: string}) {
   }, []);
 
   return (
-      <header id="navbar" className = "bg-white isolate z-10 fixed top-0 w-full transition-all duration-300">
+      <header id = "navbar" className = "bg-white isolate z-10 fixed top-0 w-full transition-all duration-300">
         <nav aria-label = "Global" className = "border-b">
-          <div className="max-w-8xl mx-auto flex items-center justify-between p-6 lg:px-8">
+          <div className = "max-w-8xl mx-auto flex items-center justify-between p-6 lg:px-8">
             <div className = "hidden lg:flex lg:gap-2 lg:items-center">
               <Link to = {`/${lang}`} className = "-m-1.5 p-1.5">
-                <img alt = "logo" src = "/favicon.svg" className = "h-8 w-8" width="32" height="32" />
+                <img alt = "logo" src = "/favicon.svg" className = "h-8 w-8" width = "32" height = "32"/>
               </Link>
               <Popover>
-                <PopoverButton className="block data-[active]:text-violet-700 data-[hover]:text-violet-700">
-                  <TranslateIcon className="size-6 text-gray-900"/>
+                <PopoverButton className = "block data-[active]:text-violet-700 data-[hover]:text-violet-700">
+                  <TranslateIcon className = "size-6 text-gray-900"/>
                 </PopoverButton>
                 <PopoverPanel
-                  transition
-                  anchor="bottom"
-                  className="z-20 shadow-2xl divide-y divide-zinc-100 rounded-md bg-white text-sm transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+                    transition
+                    anchor = "bottom"
+                    className = "z-20 shadow-2xl divide-y divide-zinc-100 rounded-md bg-white text-sm transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
                 >
                   <Link
                       reloadDocument
-                      to="/zh"
-                      className="block p-4 w-32 transition hover:bg-zinc-50"
+                      to = "/zh"
+                      className = "block p-4 w-32 transition hover:bg-zinc-50"
                   >
                     中文
                   </Link>
                   <Link
                       reloadDocument
-                      to="/en"
-                      className="block p-4 w-32 transition hover:bg-zinc-50"
+                      to = "/en"
+                      className = "block p-4 w-32 transition hover:bg-zinc-50"
                   >
                     English
                   </Link>
                   <Link
                       reloadDocument
-                      to="/jp"
-                      className="block p-4 w-32 transition hover:bg-zinc-50"
+                      to = "/jp"
+                      className = "block p-4 w-32 transition hover:bg-zinc-50"
                   >
                     日本語
                   </Link>
@@ -103,14 +102,14 @@ export default function Navbar({lang}: {lang: string}) {
               </button>
             </div>
             <div className = "hidden lg:absolute lg:left-1/2 -translate-x-1/2 lg:flex lg:gap-x-12">
-              {navbarItems.map((item, index) => {
+              {items.map((item, index) => {
                 return (
                     <Link
                         to = {item.link}
                         key = {index}
                         className = {`relative group inline-block px-2 py-1 rounded-md text-sm leading-6 text-gray-900 focus:outline-none ${isCurrentTab(item.type, location.pathname) ? 'font-bold' : 'font-medium'}`}
                     >
-                      <span className="group-hover:text-violet-700">{item.name}</span>
+                      <span className = "group-hover:text-violet-700">{item.name}</span>
                       <span
                           className = {`absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-1 h-1 rounded-full transition-all duration-300 group-hover:bg-violet-500 ${isCurrentTab(item.type, location.pathname) ? 'bg-violet-500' : ''}`}
                       ></span>
@@ -118,7 +117,7 @@ export default function Navbar({lang}: {lang: string}) {
                 )
               })}
             </div>
-            <Profile lang={lang} />
+            <Profile lang = {lang}/>
           </div>
         </nav>
         <Dialog open = {mobileMenuOpen} onClose = {setMobileMenuOpen} className = "lg:hidden">
@@ -127,7 +126,7 @@ export default function Navbar({lang}: {lang: string}) {
               className = "fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
           >
             <div className = "flex items-center justify-between">
-              <div className="flex items-center gap-4">
+              <div className = "flex items-center gap-4">
                 <a href = "/" className = "-m-1.5 p-1.5">
                   <img alt = "logo" src = "/favicon.svg" className = "h-8 w-8" width = "32" height = "32"/>
                 </a>
@@ -176,7 +175,7 @@ export default function Navbar({lang}: {lang: string}) {
             <div className = "mt-6 flow-root">
               <div className = "-my-6 divide-y divide-gray-500/10">
                 <div className = "space-y-2 py-6">
-                  {navbarItems.map((item, index) => {
+                  {items.map((item, index) => {
                     return (
                         <Link
                             reloadDocument
