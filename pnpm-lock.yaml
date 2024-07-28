@@ -48,8 +48,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-photo-album:
-        specifier: ^3.0.0-rc.6
-        version: 3.0.0-rc.6(@types/react@18.3.3)(react@18.3.1)
+        specifier: ^3.0.0
+        version: 3.0.0(@types/react@18.3.3)(react@18.3.1)
       resend:
         specifier: ^3.5.0
         version: 3.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3344,8 +3344,8 @@ packages:
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
-  react-photo-album@3.0.0-rc.6:
-    resolution: {integrity: sha512-JTWbFNPiWLo0Ys84Y6QLqV+9g1Hvj7NdEN2s9byS20B/PvKXOl4/J9mtArYPLFKwOy+nK8aZN3bhxswVeOKB/A==}
+  react-photo-album@3.0.0:
+    resolution: {integrity: sha512-b+ZKjVmdRXJxw7XiORRLhNWtwI7rKR+ag9PFgVlrMwzMoYmk5KvKWFVFKFNrrF3idTeI3f0SdVCQ1fDE36MauQ==}
     engines: {node: '>=18'}
     peerDependencies:
       '@types/react': '>=18'
@@ -7807,7 +7807,7 @@ snapshots:
 
   react-is@16.13.1: {}
 
-  react-photo-album@3.0.0-rc.6(@types/react@18.3.3)(react@18.3.1):
+  react-photo-album@3.0.0(@types/react@18.3.3)(react@18.3.1):
     dependencies:
       react: 18.3.1
     optionalDependencies:
