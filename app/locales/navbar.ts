@@ -13,7 +13,7 @@ const Navbar: NavbarType = {
   "zh": [
     {
       "name": "文章",
-      "link": "/zh/",
+      "link": "/zh",
       "type": "article"
     },
     {
@@ -35,12 +35,12 @@ const Navbar: NavbarType = {
   "en": [
     {
       "name": "Articles",
-      "link": "/en/",
+      "link": "/en",
       "type": "article"
     },
     {
       "name": "Photography",
-      "link": "/albums/featured",
+      "link": "/en/albums/featured",
       "type": "album"
     },
     {
@@ -57,7 +57,7 @@ const Navbar: NavbarType = {
   "jp": [
     {
       "name": "記事",
-      "link": "/jp/",
+      "link": "/jp",
       "type": "article"
     },
     {
