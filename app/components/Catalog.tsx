@@ -64,7 +64,7 @@ export default function Catalog({content}: { content: Json }) {
 
   return (
       <nav aria-label="Table of contents"
-           className="md:sticky md:top-16 md:h-fit flex flex-col gap-2"
+           className="md:sticky md:top-24 md:h-fit flex flex-col gap-2"
       >
         {generateTableOfContents(article)}
       </nav>
