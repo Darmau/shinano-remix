@@ -47,16 +47,25 @@ export const loader = async ({request, context}: LoaderFunctionArgs) => {
     data: {session},
   } = await supabase.auth.getSession();
 
+  // 生成当前年份
+  const currentYear = new Date().getFullYear();
+
   return json({
     lang,
     env,
-    session
+    session,
+    currentYear
   }, {headers: response.headers});
 };
 
 
 export default function App() {
-  const {lang, env, session} = useLoaderData<typeof loader>();
+  const {
+    lang,
+    env,
+    session,
+    currentYear
+  } = useLoaderData<typeof loader>();
 
   const prefix = env.PREFIX
 
@@ -100,7 +109,7 @@ export default function App() {
         <main className = {`flex-1 w-full ${navigation.state === 'loading' && 'opacity-30'}`}>
           <Outlet context = {{supabase, lang, prefix}}/>
         </main>
-        <Footer lang={lang} />
+        <Footer lang={lang} currentYear={currentYear} />
       <ScrollRestoration/>
       <Scripts/>
       </body>
