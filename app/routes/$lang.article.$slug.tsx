@@ -10,6 +10,7 @@ import ContentContainer from "~/components/ContentContainer";
 import ShareButton from "~/components/ShareButton";
 import {Json} from "~/types/supabase";
 import Catalog from "~/components/Catalog";
+import ReadingProcess from "~/components/ReadingProcess";
 
 export default function ArticleDetail () {
   const { article, domain } = useLoaderData<typeof loader>();
@@ -26,6 +27,7 @@ export default function ArticleDetail () {
 
   return (
       <div className="w-full max-w-6xl mx-auto p-4 md:py-8 mb-8 lg:mb-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <ReadingProcess />
         <header className="col-span-1 md:col-span-2 space-y-3 md:space-y-4">
           <h3 className="font-medium text-sm md:text-base text-violet-700">{article.category!.title}</h3>
           <h1 className="font-medium text-zinc-800 leading-normal text-4xl lg:text-5xl">{article.title}</h1>
