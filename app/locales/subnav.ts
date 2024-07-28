@@ -29,7 +29,7 @@ const Subnav: SubnavType = {
     "photography": [
       {
         "name": "推荐",
-        "link": "/zh/albums/featured/1"
+        "link": "/zh/albums/featured"
       },
       {
         "name": "最新",
@@ -79,7 +79,7 @@ const Subnav: SubnavType = {
     "photography": [
       {
         "name": "Featured",
-        "link": "/en/albums/featured/1"
+        "link": "/en/albums/featured"
       },
       {
         "name": "Latest",
@@ -129,7 +129,7 @@ const Subnav: SubnavType = {
     "photography": [
       {
         "name": "厳選",
-        "link": "/jp/albums/featured/1"
+        "link": "/jp/albums/featured"
       },
       {
         "name": "最新",

@@ -25,7 +25,7 @@ export default function ShareButton({url, title, lang}: {url: string, title: str
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeTitle}&url=${encodeUrl}&via=darmaulee`;
 
   return (
-      <div className="flex justify-between gap-3 items-center">
+      <div className="flex justify-start gap-3 items-center">
         {showMessage && <p className="text-sm text-green-600">{label.coppied}</p>}
         <button onClick={copyToClipboard} className="group flex gap-2 border rounded-md shadow-sm p-2 justify-between">
           <CopyIcon className="h-5 w-5 group-hover:text-zinc-900" />

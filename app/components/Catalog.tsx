@@ -1,6 +1,7 @@
 import {Json} from "~/types/supabase";
 import {Content} from "~/components/ContentContainer";
 import {Link} from "@remix-run/react";
+import ShareButton from "~/components/ShareButton";
 
 type ContentStructure = {
   content: Content[];
@@ -51,7 +52,7 @@ function generateTableOfContents(nodes: Content[]) {
   )
 }
 
-export default function Catalog({content}: { content: Json }) {
+export default function Catalog({content, url, title, lang}: { content: Json, url: string, title: string, lang: string }) {
   if (!content || !isContentStructure(content)) {
     return (
         <div>
@@ -64,9 +65,12 @@ export default function Catalog({content}: { content: Json }) {
 
   return (
       <nav aria-label="Table of contents"
-           className="md:sticky md:top-24 md:h-fit flex flex-col gap-2"
+           className="md:w-full md:sticky md:top-24 md:h-fit space-y-6"
       >
-        {generateTableOfContents(article)}
+        <div className="flex flex-col gap-2 border-b pb-6">
+          {generateTableOfContents(article)}
+        </div>
+        <ShareButton url = {url} title = {title!} lang = {lang}/>
       </nav>
   );
 }

@@ -53,7 +53,7 @@ export default function Navbar({lang, items}: { lang: string, items: NavItem[] }
   return (
       <header id = "navbar" className = "bg-white isolate z-10 fixed top-0 w-full transition-all duration-300">
         <nav aria-label = "Global" className = "border-b">
-          <div className = "max-w-8xl mx-auto flex items-center justify-between p-6 lg:px-8">
+          <div className = "max-w-8xl mx-auto flex items-center justify-between p-5 lg:px-8">
             <div className = "hidden lg:flex lg:gap-2 lg:items-center">
               <Link to = {`/${lang}`} className = "-m-1.5 p-1.5">
                 <img alt = "logo" src = "/favicon.svg" className = "h-8 w-8" width = "32" height = "32"/>
