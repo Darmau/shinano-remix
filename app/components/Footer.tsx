@@ -32,9 +32,8 @@ const navigation = {
   ],
 }
 
-export default function Footer({lang}: {lang: string}) {
+export default function Footer({lang, currentYear}: {lang: string, currentYear: number}) {
   const links = getFooterLabels(FooterText, lang);
-  const currentYear = new Date().getFullYear();
 
   return (
       <footer aria-labelledby = "footer-heading" className = "bg-white border-t">

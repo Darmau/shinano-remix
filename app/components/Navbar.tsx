@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Dialog, DialogPanel, Popover, PopoverButton, PopoverPanel,} from '@headlessui/react'
 import {Bars3Icon, XMarkIcon,} from '@heroicons/react/24/outline'
 import NavbarItems from '~/locales/navbar'
@@ -28,8 +28,31 @@ export default function Navbar({lang}: {lang: string}) {
 
   const location = useLocation();
 
+  useEffect(() => {
+    let lastScrollTop = 0;
+    const navbar = document.getElementById('navbar');
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      if (scrollTop > lastScrollTop) {
+        // 向下滚动
+        navbar!.style.top = '-88px'; // 隐藏导航栏
+      } else {
+        // 向上滚动
+        navbar!.style.top = '0'; // 显示导航栏
+      }
+      lastScrollTop = scrollTop;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-      <header className = "relative isolate z-10">
+      <header id="navbar" className = "bg-white isolate z-10 fixed top-0 w-full transition-all duration-300">
         <nav aria-label = "Global" className = "border-b">
           <div className="max-w-8xl mx-auto flex items-center justify-between p-6 lg:px-8">
             <div className = "hidden lg:flex lg:gap-2 lg:items-center">
