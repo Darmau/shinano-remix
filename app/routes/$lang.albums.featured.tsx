@@ -1,10 +1,11 @@
 import Subnav from "~/components/Subnav";
 import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
-import {useLoaderData, useOutletContext} from "@remix-run/react";
+import {Link, useLoaderData, useOutletContext} from "@remix-run/react";
 import {UnstableServerPhotoAlbum as ServerPhotoAlbum} from "react-photo-album/server";
 import "react-photo-album/rows.css";
 import {generatePhotoAlbum} from "~/utils/generatePhotoAlbum";
+import GalleryImage from "~/components/GalleryImage";
 
 export default function AllFeaturedAlbums () {
   const {prefix, lang} = useOutletContext<{prefix: string, lang: string}>();
@@ -20,6 +21,15 @@ export default function AllFeaturedAlbums () {
               layout = "rows"
               photos = {photos}
               breakpoints = {[480, 720, 1080]}
+              spacing={0}
+              render={{
+                // eslint-disable-next-line no-empty-pattern
+                photo: ({}, { photo}) => (
+                    <Link to={photo.href} className="w-full h-full m-2" key={photo.key}>
+                      <GalleryImage image={photo} width= {640} classList="w-full h-full group" />
+                    </Link>
+                )
+              }}
           />
         </div>
       </>
