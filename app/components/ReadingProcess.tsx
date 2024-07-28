@@ -32,7 +32,7 @@ function ScrollProgressBar() {
             height: '2px',
             backgroundColor: '#7c3aed',
             zIndex: 9999,
-            transition: 'width 0.2s ease-out'
+            transition: 'width 0.2s ease-in-out',
           }}
       />
   );

@@ -22,7 +22,7 @@ export default function NormalArticleCard({article, showAbstract}: {
             &nbsp;·&nbsp;
             <span>{getDate(article.published_at, lang)}</span>
           </div>
-          <h3 className = "text-xl font-medium text-zinc-800 group-hover:text-violet-900">{article.title}</h3>
+          <h3 className = "text-2xl font-medium text-zinc-800 group-hover:text-violet-900">{article.title}</h3>
           <h4 className = "text-base text-zinc-500 leading-7">{article.subtitle}</h4>
           {article.topic && (
               <div className = "flex flex-wrap gap-2 pt-2">

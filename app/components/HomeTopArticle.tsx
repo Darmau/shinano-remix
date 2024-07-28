@@ -40,7 +40,7 @@ export default function HomeTopArticle({article, isTop, classList}: {
               &nbsp;·&nbsp;
               <span>{getDate(article.published_at, lang)}</span>
             </div>
-            <h3 className = {`font-medium text-zinc-800 group-hover:text-violet-900 ${isTop ? 'text-3xl' : 'text-xl'}`}>{article.title}</h3>
+            <h3 className = {`font-medium text-zinc-800 group-hover:text-violet-900 ${isTop ? 'text-3xl' : 'text-2xl'}`}>{article.title}</h3>
             <h4 className = "text-base text-zinc-500 leading-7">{article.subtitle}</h4>
             {article.topic && (
                 <div className = "flex flex-wrap gap-2">
