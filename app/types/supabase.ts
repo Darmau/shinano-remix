@@ -226,6 +226,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "comment_to_photo_fkey"
+            columns: ["to_photo"]
+            isOneToOne: false
+            referencedRelation: "random_en_photos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_to_photo_fkey"
+            columns: ["to_photo"]
+            isOneToOne: false
+            referencedRelation: "random_jp_photos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_to_photo_fkey"
+            columns: ["to_photo"]
+            isOneToOne: false
+            referencedRelation: "random_zh_photos"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "comment_to_thought_fkey"
             columns: ["to_thought"]
             isOneToOne: false
@@ -469,6 +490,27 @@ export type Database = {
             referencedRelation: "photo"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "photo_image_photo_id_fkey"
+            columns: ["photo_id"]
+            isOneToOne: false
+            referencedRelation: "random_en_photos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "photo_image_photo_id_fkey"
+            columns: ["photo_id"]
+            isOneToOne: false
+            referencedRelation: "random_jp_photos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "photo_image_photo_id_fkey"
+            columns: ["photo_id"]
+            isOneToOne: false
+            referencedRelation: "random_zh_photos"
+            referencedColumns: ["id"]
+          },
         ]
       }
       reaction: {
@@ -525,6 +567,27 @@ export type Database = {
             columns: ["to_photo"]
             isOneToOne: false
             referencedRelation: "photo"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reaction_to_photo_fkey"
+            columns: ["to_photo"]
+            isOneToOne: false
+            referencedRelation: "random_en_photos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reaction_to_photo_fkey"
+            columns: ["to_photo"]
+            isOneToOne: false
+            referencedRelation: "random_jp_photos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reaction_to_photo_fkey"
+            columns: ["to_photo"]
+            isOneToOne: false
+            referencedRelation: "random_zh_photos"
             referencedColumns: ["id"]
           },
           {
@@ -789,7 +852,141 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      random_en_photos: {
+        Row: {
+          abstract: string | null
+          category: number | null
+          content_html: string | null
+          content_json: Json | null
+          content_text: string | null
+          cover: number | null
+          created_at: string | null
+          id: number | null
+          is_draft: boolean | null
+          is_featured: boolean | null
+          is_top: boolean | null
+          lang: number | null
+          page_view: number | null
+          published_at: string | null
+          slug: string | null
+          title: string | null
+          topic: string[] | null
+          updated_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "photo_category_fkey"
+            columns: ["category"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "photo_cover_fkey"
+            columns: ["cover"]
+            isOneToOne: false
+            referencedRelation: "image"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "photo_lang_fkey"
+            columns: ["lang"]
+            isOneToOne: false
+            referencedRelation: "language"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      random_jp_photos: {
+        Row: {
+          abstract: string | null
+          category: number | null
+          content_html: string | null
+          content_json: Json | null
+          content_text: string | null
+          cover: number | null
+          created_at: string | null
+          id: number | null
+          is_draft: boolean | null
+          is_featured: boolean | null
+          is_top: boolean | null
+          lang: number | null
+          page_view: number | null
+          published_at: string | null
+          slug: string | null
+          title: string | null
+          topic: string[] | null
+          updated_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "photo_category_fkey"
+            columns: ["category"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "photo_cover_fkey"
+            columns: ["cover"]
+            isOneToOne: false
+            referencedRelation: "image"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "photo_lang_fkey"
+            columns: ["lang"]
+            isOneToOne: false
+            referencedRelation: "language"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      random_zh_photos: {
+        Row: {
+          abstract: string | null
+          category: number | null
+          content_html: string | null
+          content_json: Json | null
+          content_text: string | null
+          cover: number | null
+          created_at: string | null
+          id: number | null
+          is_draft: boolean | null
+          is_featured: boolean | null
+          is_top: boolean | null
+          lang: number | null
+          page_view: number | null
+          published_at: string | null
+          slug: string | null
+          title: string | null
+          topic: string[] | null
+          updated_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "photo_category_fkey"
+            columns: ["category"]
+            isOneToOne: false
+            referencedRelation: "category"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "photo_cover_fkey"
+            columns: ["cover"]
+            isOneToOne: false
+            referencedRelation: "image"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "photo_lang_fkey"
+            columns: ["lang"]
+            isOneToOne: false
+            referencedRelation: "language"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       get_article_count_by_category: {
@@ -797,9 +994,8 @@ export type Database = {
           lang_name: string
         }
         Returns: {
-          category_id: number
-          category_name: string
-          category_slug: string
+          title: string
+          slug: string
           count: number
         }[]
       }
@@ -817,9 +1013,8 @@ export type Database = {
           lang_name: string
         }
         Returns: {
-          category_id: number
-          category_name: string
-          category_slug: string
+          title: string
+          slug: string
           count: number
         }[]
       }
