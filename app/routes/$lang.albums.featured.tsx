@@ -3,7 +3,7 @@ import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Link, useLoaderData, useOutletContext} from "@remix-run/react";
 import {UnstableServerPhotoAlbum as ServerPhotoAlbum} from "react-photo-album/server";
-import "react-photo-album/rows.css";
+import "react-photo-album/masonry.css";
 import {generatePhotoAlbum} from "~/utils/generatePhotoAlbum";
 import GalleryImage from "~/components/GalleryImage";
 
@@ -18,14 +18,14 @@ export default function AllFeaturedAlbums () {
         <Subnav active="photography" />
         <div className="w-full max-w-8xl mx-auto p-4 md:py-8 lg:mb-16">
           <ServerPhotoAlbum
-              layout = "rows"
+              layout = "masonry"
               photos = {photos}
               breakpoints = {[480, 720, 1080]}
               spacing={0}
               render={{
                 // eslint-disable-next-line no-empty-pattern
                 photo: ({}, { photo}) => (
-                    <Link to={photo.href} className="w-full h-full m-2" key={photo.key}>
+                    <Link to={photo.href} className="m-2" key={photo.key}>
                       <GalleryImage image={photo} width= {640} classList="w-full h-full group" />
                     </Link>
                 )
