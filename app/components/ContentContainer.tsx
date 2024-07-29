@@ -103,7 +103,7 @@ const Node = ({node}: { node: Content }) => {
 };
 
 const Paragraph = ({content}: { content?: ContentItem[] }) => (
-    <p className = "my-8 text-zinc-800 leading-8">
+    <p className = "my-4 text-zinc-800 leading-8">
       {content?.map((item, index) => (
           <TextNode key = {index} node = {item}/>
       ))}
