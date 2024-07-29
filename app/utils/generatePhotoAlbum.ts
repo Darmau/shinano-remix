@@ -22,6 +22,7 @@ export interface GalleryPhoto {
   alt: string;
   href: string;
   label: string;
+  title: string;
   storage_key?: string;
 }
 
@@ -34,6 +35,7 @@ export function generatePhotoAlbum(featuredPhotos: FeaturedPhoto[], prefix: stri
     alt: photo.title,
     href: `/${lang}/album/${photo.slug}`,
     label: photo.title,
-    storage_key: photo.cover.storage_key
+    storage_key: photo.cover.storage_key,
+    title: photo.title
   }))
 }

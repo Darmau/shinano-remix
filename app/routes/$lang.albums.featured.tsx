@@ -3,30 +3,37 @@ import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Link, useLoaderData, useOutletContext} from "@remix-run/react";
 import {UnstableServerPhotoAlbum as ServerPhotoAlbum} from "react-photo-album/server";
-import "react-photo-album/rows.css";
-import {generatePhotoAlbum} from "~/utils/generatePhotoAlbum";
+import "react-photo-album/masonry.css";
+import {FeaturedPhoto, generatePhotoAlbum} from "~/utils/generatePhotoAlbum";
 import GalleryImage from "~/components/GalleryImage";
 
 export default function AllFeaturedAlbums () {
   const {prefix, lang} = useOutletContext<{prefix: string, lang: string}>();
   const {featuredPhotos} = useLoaderData<typeof loader>();
 
-  const photos = generatePhotoAlbum(featuredPhotos, prefix, lang);
+  const photos = generatePhotoAlbum(featuredPhotos as unknown as FeaturedPhoto[], prefix, lang);
 
   return (
       <>
         <Subnav active="photography" />
         <div className="w-full max-w-8xl mx-auto p-4 md:py-8 lg:mb-16">
           <ServerPhotoAlbum
-              layout = "rows"
+              layout = "masonry"
               photos = {photos}
               breakpoints = {[480, 720, 1080]}
               spacing={0}
               render={{
                 // eslint-disable-next-line no-empty-pattern
                 photo: ({}, { photo}) => (
-                    <Link to={photo.href} className="w-full h-full m-2" key={photo.key}>
-                      <GalleryImage image={photo} width= {640} classList="w-full h-full group" />
+                    <Link to={photo.href} className="group m-2 relative rounded-md overflow-hidden" key={photo.key}>
+                      <div className = "z-20 absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent">
+                        <div
+                            className = "transform translate-y-full transition-transform duration-300 group-hover:translate-y-0 p-4"
+                        >
+                          <p className = "text-white font-medium text-base">{photo.title}</p>
+                        </div>
+                      </div>
+                      <GalleryImage image = {photo} width = {640} classList = "w-full h-full group"/>
                     </Link>
                 )
               }}

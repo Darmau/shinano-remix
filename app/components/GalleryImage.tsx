@@ -22,7 +22,7 @@ export default function GalleryImage({ image, width, classList }: { image: Galle
       <div className={`${classList} relative overflow-hidden`}>
         {/* Low resolution blurred image */}
         <img
-            className={`scale-110 brightness-110 absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}
+            className={`scale-110 brightness-110 absolute inset-0 transition-opacity duration-300 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}
             src={`${prefix}/cdn-cgi/image/format=auto,${base}=24}/${image.storage_key}`}
             alt={image.alt || ''}
             width={width}
@@ -41,7 +41,7 @@ export default function GalleryImage({ image, width, classList }: { image: Galle
           />
           <img
               ref={imgRef}
-              className="group-hover:scale-105 w-full h-full object-cover transition-all duration-300"
+              className="group-hover:scale-105 transition-all duration-300"
               src={highResSrc}
               srcSet={highResSrcSet}
               sizes="(max-width: 720px) 100vw, 2x"
