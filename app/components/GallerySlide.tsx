@@ -2,7 +2,7 @@ import "yet-another-react-lightbox/styles.css";
 import {useOutletContext} from "@remix-run/react";
 import Lightbox from "yet-another-react-lightbox";
 import {useState} from "react";
-import {Inline, Thumbnails} from "yet-another-react-lightbox/plugins";
+import {Captions, Inline, Thumbnails} from "yet-another-react-lightbox/plugins";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import {ArrowsPointingOutIcon, ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/solid";
@@ -33,7 +33,7 @@ export default function GallerySlide({albumImages}: { albumImages: AlbumPhoto[] 
           <Lightbox
             plugins={[Inline, Thumbnails]}
             inline={{
-              style: { width: "100%", maxWidth: "928px", aspectRatio: "3 / 2"}
+              style: { width: "100%", maxWidth: "1280", aspectRatio: "3 / 2"}
             }}
             slides={defaultSlides}
             styles={{
@@ -54,19 +54,21 @@ export default function GallerySlide({albumImages}: { albumImages: AlbumPhoto[] 
             }}
           />
         </div>
-        <button
-            onClick = {() => setOpen(true)}
-            type = "button"
-            className = "inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          <ArrowsPointingOutIcon aria-hidden = "true" className = "-ml-0.5 h-5 w-5"/>
-          Button text
-        </button>
+        <div className="flex justify-center">
+          <button
+              onClick = {() => setOpen(true)}
+              type = "button"
+              className = "inline-flex items-center gap-x-1.5 rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            <ArrowsPointingOutIcon aria-hidden = "true" className = "h-5 w-5"/>
+            Full Screen
+          </button>
+        </div>
         <Lightbox
             open = {open}
             close = {() => setOpen(false)}
             slides = {fullscreenSlides}
-            plugins = {[Thumbnails]}
+            plugins = {[Thumbnails, Captions]}
         />
       </div>
   )
@@ -79,6 +81,7 @@ function generateSlides(albumImages: AlbumPhoto[], prefix: string, targetWidth: 
       alt: photo.image.alt,
       width: photo.image.width,
       height: photo.image.height,
+      title: photo.image.caption,
       secSet: [
         {
           src: `${prefix}/cdn-cgi/image/format=auto,width=640/${photo.image.storage_key}`,
