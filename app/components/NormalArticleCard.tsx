@@ -16,6 +16,7 @@ export default function NormalArticleCard({article, showAbstract}: {
         <Link
             to = {`/${lang}/article/${article.slug}`}
             className = "flex flex-col gap-2"
+            prefetch="intent"
         >
           <div className = "text-zinc-400 text-sm">
             <span className="text-violet-700 font-medium">{article.category.title}</span>

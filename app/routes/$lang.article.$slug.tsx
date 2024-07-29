@@ -1,4 +1,4 @@
-import {LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
 import ResponsiveImage from "~/components/ResponsiveImage";
@@ -10,10 +10,16 @@ import ContentContainer from "~/components/ContentContainer";
 import {Json} from "~/types/supabase";
 import Catalog from "~/components/Catalog";
 import ReadingProcess from "~/components/ReadingProcess";
+import NextAndPrev, {NeighboringPost} from "~/components/NextAndPrev";
 
 export default function ArticleDetail () {
-  const { article, domain } = useLoaderData<typeof loader>();
   const { lang } = useOutletContext<{ lang: string }>();
+  const {
+    article,
+    domain,
+    previousArticle,
+    nextArticle,
+  } = useLoaderData<typeof loader>();
   const label = getLanguageLabel(ArticleText, lang);
   const { pathname } = useLocation();
 
@@ -46,7 +52,7 @@ export default function ArticleDetail () {
               <div className = "space-y-2">
                 <h4 className = "text-sm text-violet-700 font-medium">{label.topic}</h4>
                 <ol className = "flex gap-2 flex-wrap">
-                  {article.topic.map((topic, index) => (
+                  {article.topic.map((topic: string, index: number) => (
                       <li key = {index} className = "text-sm text-zinc-600">#{topic}</li>
                   ))}
                 </ol>
@@ -66,6 +72,11 @@ export default function ArticleDetail () {
         <div className = "relative grid grid-cols-1 md:grid-cols-3 col-span-1 md:gap-24 md:col-span-3">
           <div className = "col-span-1 md:col-span-2 selection:bg-violet-800/60 selection:text-white">
             <ContentContainer content = {article.content_json as Json}/>
+            <NextAndPrev
+                type="article"
+                next={nextArticle as NeighboringPost}
+                prev={previousArticle as NeighboringPost}
+            />
           </div>
           <aside className = "hidden md:flex md:col-span-1 md:h-full">
             <Catalog
@@ -85,6 +96,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   const lang = params.lang as string;
   const slug = params.slug as string;
 
+  // 文章详情
   const {data: articleContent} = await supabase
   .from('article')
   .select(`
@@ -101,14 +113,44 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       content_json,
       category (title, slug),
       cover (alt, height, width, storage_key),
-      language!inner (lang)
+      language!inner (lang),
+      lang
     `)
   .eq('slug', slug)
   .eq('language.lang', lang)
   .single();
 
-  return {
-    article: articleContent,
-    domain: context.cloudflare.env.BASE_URL
+  if(!articleContent) {
+    throw new Response(null, {
+      status: 404,
+      statusText: 'Article not exists'
+    })
   }
+
+  // 前一篇和后一篇文章
+  const {data: previousArticle} = await supabase
+    .from('article')
+    .select('title, slug, subtitle')
+    .eq('lang', articleContent.lang!)
+    .lt('published_at', articleContent.published_at)
+    .order('published_at', {ascending: false})
+    .limit(1)
+    .single();
+
+  const {data: nextArticle} = await supabase
+  .from('article')
+  .select('title, slug')
+  .eq('lang', articleContent.lang!)
+  .gt('published_at', articleContent.published_at)
+  .order('published_at', {ascending: true})
+  .limit(1)
+  .single();
+
+
+  return json({
+    article: articleContent,
+    previousArticle: previousArticle || null,
+    nextArticle: nextArticle || null,
+    domain: context.cloudflare.env.BASE_URL
+  })
 }
