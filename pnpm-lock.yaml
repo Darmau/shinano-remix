@@ -38,6 +38,9 @@ importers:
       isbot:
         specifier: ^5.1.13
         version: 5.1.13
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       negotiator:
         specifier: ^0.6.3
         version: 0.6.3
@@ -53,6 +56,9 @@ importers:
       resend:
         specifier: ^3.5.0
         version: 3.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      yet-another-react-lightbox:
+        specifier: ^3.21.1
+        version: 3.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20240725.0
@@ -63,6 +69,9 @@ importers:
       '@tailwindcss/forms':
         specifier: ^0.5.7
         version: 0.5.7(tailwindcss@3.4.7)
+      '@types/lodash':
+        specifier: ^4.17.7
+        version: 4.17.7
       '@types/negotiator':
         specifier: ^0.6.3
         version: 0.6.3
@@ -1164,6 +1173,9 @@ packages:
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+
+  '@types/lodash@4.17.7':
+    resolution: {integrity: sha512-8wTvZawATi/lsmNu10/j2hk1KEP0IvjubqPE3cu1Xz7xfXXt5oCq3SNUz4fMIP4XGF9Ky+Ue2tBA3hcS7LSBlA==}
 
   '@types/mdast@3.0.15':
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
@@ -4114,6 +4126,13 @@ packages:
     engines: {node: '>= 14'}
     hasBin: true
 
+  yet-another-react-lightbox@3.21.1:
+    resolution: {integrity: sha512-/+5YyPg61BDGsMzUkBluxjoi6eU1EXwztRugU31iCj1aaPImvofgewsOAifY0HzYelXmKZgRWkbRtleSy6Cviw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
@@ -5140,6 +5159,8 @@ snapshots:
       '@types/unist': 2.0.10
 
   '@types/json5@0.0.29': {}
+
+  '@types/lodash@4.17.7': {}
 
   '@types/mdast@3.0.15':
     dependencies:
@@ -8746,6 +8767,11 @@ snapshots:
   yallist@5.0.0: {}
 
   yaml@2.4.5: {}
+
+  yet-another-react-lightbox@3.21.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   yocto-queue@0.1.0: {}
 

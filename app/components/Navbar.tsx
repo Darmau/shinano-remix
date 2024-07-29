@@ -5,6 +5,8 @@ import {NavItem} from '~/locales/navbar'
 import {Link, useLocation} from "@remix-run/react";
 import Profile from "~/components/Profile";
 import TranslateIcon from "~/icons/Translate";
+import pkg from 'lodash';
+const {throttle} = pkg;
 
 const pathMap = new Map([
   ['', 'article'],
@@ -31,7 +33,7 @@ export default function Navbar({lang, items}: { lang: string, items: NavItem[] }
     let lastScrollTop = 0;
     const navbar = document.getElementById('navbar');
 
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       if (scrollTop > lastScrollTop) {
         // 向下滚动
@@ -41,7 +43,7 @@ export default function Navbar({lang, items}: { lang: string, items: NavItem[] }
         navbar!.style.top = '0'; // 显示导航栏
       }
       lastScrollTop = scrollTop;
-    };
+    }, 200);
 
     window.addEventListener('scroll', handleScroll);
 
