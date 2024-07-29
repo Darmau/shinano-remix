@@ -4,14 +4,14 @@ import {createClient} from "~/utils/supabase/server";
 import {Link, useLoaderData, useOutletContext} from "@remix-run/react";
 import {UnstableServerPhotoAlbum as ServerPhotoAlbum} from "react-photo-album/server";
 import "react-photo-album/masonry.css";
-import {generatePhotoAlbum} from "~/utils/generatePhotoAlbum";
+import {FeaturedPhoto, generatePhotoAlbum} from "~/utils/generatePhotoAlbum";
 import GalleryImage from "~/components/GalleryImage";
 
 export default function AllFeaturedAlbums () {
   const {prefix, lang} = useOutletContext<{prefix: string, lang: string}>();
   const {featuredPhotos} = useLoaderData<typeof loader>();
 
-  const photos = generatePhotoAlbum(featuredPhotos, prefix, lang);
+  const photos = generatePhotoAlbum(featuredPhotos as unknown as FeaturedPhoto[], prefix, lang);
 
   return (
       <>
