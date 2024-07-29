@@ -25,7 +25,12 @@ export default function AllFeaturedAlbums () {
               render={{
                 // eslint-disable-next-line no-empty-pattern
                 photo: ({}, { photo}) => (
-                    <Link to={photo.href} className="m-2" key={photo.key}>
+                    <Link to={photo.href} className="group m-2 relative rounded-md overflow-hidden" key={photo.key}>
+                      <div
+                          className="absolute -bottom-12 z-20 p-4 w-full bg-gradient-to-b from-transparent to-black/50 text-white font-medium text-base group-hover:bottom-0 group-active:bottom-0 transition-all duration-300"
+                      >
+                        {photo.alt}
+                      </div>
                       <GalleryImage image={photo} width= {640} classList="w-full h-full group" />
                     </Link>
                 )
