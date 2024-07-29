@@ -15,6 +15,7 @@ export default function HomeTopArticle({article, isTop, classList}: {
           className = {classList}
       >
         <Link
+            prefetch="render"
             to = {`/${lang}/article/${article.slug}`}
             className = {`gap-4 flex flex-col lg:gap-6
               ${isTop ? 'lg:flex-col' : 'lg:flex-row'}

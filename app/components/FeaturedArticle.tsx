@@ -14,6 +14,7 @@ export default function FeaturedArticle({article}: {
       >
         <Link
             to = {`/${lang}/article/${article.slug}`}
+            prefetch="intent"
         >
           {article.cover &&
               <ResponsiveImage

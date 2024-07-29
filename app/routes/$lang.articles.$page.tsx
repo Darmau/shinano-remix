@@ -1,5 +1,5 @@
 import Subnav from "~/components/Subnav";
-import {LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Article} from "~/types/Article";
 import {Link, useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
@@ -134,12 +134,12 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     count: number
   }[]>();
 
-  return {
+  return json({
     articles: data,
     countByYear: countByYear,
     countByCategory: countByCategory,
     articleCount: count,
     page: Number(page)
-  }
+  })
 
 }
