@@ -4,6 +4,7 @@ import {useLoaderData, useOutletContext} from "@remix-run/react";
 import {Json} from "~/types/supabase";
 import ContentContainer from "~/components/ContentContainer";
 import getDate from "~/utils/getDate";
+import GallerySlide, {AlbumPhoto} from "~/components/GallerySlide";
 
 export default function AlbumDetail () {
   const { lang } = useOutletContext<{ lang: string }>();
@@ -13,7 +14,9 @@ export default function AlbumDetail () {
   } = useLoaderData<typeof loader>()
   return (
       <div className="w-full max-w-8xl mx-auto p-4 md:py-8 lg:mb-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="col-span-1 md:col-span-2">{JSON.stringify(albumImages)}</div>
+        <div className="col-span-1 md:col-span-2">
+          <GallerySlide albumImages={albumImages as unknown as AlbumPhoto[]} />
+        </div>
         <div className = "col-span-1 space-y-4">
           <h2 className = "text-sm text-violet-700 font-medium">{albumContent.category!.title}</h2>
           <h1 className = "text-zinc-800 font-medium text-3xl">{albumContent.title}</h1>
@@ -65,7 +68,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     .from('photo_image')
     .select(`
       order,
-      image (alt, caption, height, width, storage_key)
+      image (alt, caption, height, width, storage_key, exif, location)
     `)
     .eq('photo_id', albumContent.id)
     .order('order', {ascending: true});
