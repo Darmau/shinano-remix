@@ -20,9 +20,11 @@ export interface AlbumPhoto {
   }
 }
 
-export default function GallerySlide({albumImages}: { albumImages: AlbumPhoto[] }) {
+export default function GallerySlide({albumImages, onIndexChange}: { albumImages: AlbumPhoto[], onIndexChange: (index: number) => void }) {
   const {prefix} = useOutletContext<{ prefix: string }>();
   const [open, setOpen] = useState(false);
+  const [index, setIndex] = useState(0);
+
 
   const defaultSlides = generateSlides(albumImages, prefix, 1080);
   const fullscreenSlides = generateSlides(albumImages, prefix, 1600);
@@ -31,6 +33,7 @@ export default function GallerySlide({albumImages}: { albumImages: AlbumPhoto[] 
       <div>
         <div className="relative">
           <Lightbox
+            index={index}
             plugins={[Inline, Thumbnails]}
             inline={{
               style: { width: "100%", maxWidth: "1280", aspectRatio: "5 / 4"}
@@ -47,7 +50,7 @@ export default function GallerySlide({albumImages}: { albumImages: AlbumPhoto[] 
               vignette: false,
               padding: 0,
               border: 3,
-              borderColor: '#52525b',
+              borderColor: '#52525b'
             }}
             render={{
               iconPrev: () => <div className="p-2 rounded-full bg-white/60 backdrop-blur-2xl">
@@ -56,6 +59,12 @@ export default function GallerySlide({albumImages}: { albumImages: AlbumPhoto[] 
               iconNext: () => <div className="p-2 rounded-full bg-white/60 backdrop-blur-2xl">
                 <ChevronRightIcon aria-hidden = "true" className = "h-5 w-5 text-black"/>
               </div>
+            }}
+            on={{
+              view: ({ index: currentIndex }) => {
+                setIndex(currentIndex);
+                onIndexChange(currentIndex);
+              }
             }}
           />
           <button
