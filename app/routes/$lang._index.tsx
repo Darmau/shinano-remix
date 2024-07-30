@@ -85,7 +85,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       `)
   .eq('language.lang', lang)
   .filter('is_draft', 'eq', false)
-  .limit(13)
+  .limit(16)
   .order('is_top', {ascending: false})
   .order('published_at', {ascending: false})
   .returns<Article[]>();
