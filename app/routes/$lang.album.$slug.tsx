@@ -6,12 +6,15 @@ import ContentContainer from "~/components/ContentContainer";
 import getDate from "~/utils/getDate";
 import GallerySlide, {AlbumPhoto} from "~/components/GallerySlide";
 import {useState} from "react";
+import Mapbox, {EXIF} from "~/components/Mapbox";
+import {MapPinIcon} from "@heroicons/react/20/solid";
 
 export default function AlbumDetail () {
   const { lang } = useOutletContext<{ lang: string }>();
   const {
     albumContent,
-    albumImages
+    albumImages,
+    MAPBOX
   } = useLoaderData<typeof loader>();
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -37,7 +40,11 @@ export default function AlbumDetail () {
                 ))}
               </ol>
           )}
-          <p className="text-sm text-zinc-500">{albumImages![currentIndex].image!.location}</p>
+          <div className="flex gap-2 justify-start items-center">
+            <MapPinIcon className = "w-6 h-6 text-violet-700 inline-block"/>
+            <p className = "text-sm text-zinc-500">{albumImages![currentIndex].image!.location}</p>
+          </div>
+          <Mapbox mapboxToken = {MAPBOX} exifData = {albumImages![currentIndex].image!.exif as EXIF} />
         </div>
       </div>
   )
@@ -84,6 +91,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
 
   return json({
     albumContent,
-    albumImages
+    albumImages,
+    MAPBOX: context.cloudflare.env.MAPBOX_TOKEN
   });
 }
