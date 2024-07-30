@@ -1,11 +1,13 @@
 import "yet-another-react-lightbox/styles.css";
 import {useOutletContext} from "@remix-run/react";
 import Lightbox from "yet-another-react-lightbox";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {Captions, Inline, Thumbnails} from "yet-another-react-lightbox/plugins";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import {ArrowsPointingOutIcon, ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/solid";
+import pkg from 'lodash';
+const {debounce} = pkg;
 
 export interface AlbumPhoto {
   order: number,
@@ -25,6 +27,13 @@ export default function GallerySlide({albumImages, onIndexChange}: { albumImages
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
 
+  const debouncedOnChange = useCallback(
+      debounce((currentIndex) => {
+        setIndex(currentIndex);
+        onIndexChange(currentIndex);
+      }, 300),
+      [setIndex, onIndexChange]
+  );
 
   const defaultSlides = generateSlides(albumImages, prefix, 1080);
   const fullscreenSlides = generateSlides(albumImages, prefix, 1600);
@@ -62,8 +71,7 @@ export default function GallerySlide({albumImages, onIndexChange}: { albumImages
             }}
             on={{
               view: ({ index: currentIndex }) => {
-                setIndex(currentIndex);
-                onIndexChange(currentIndex);
+                debouncedOnChange(currentIndex);
               }
             }}
           />
@@ -113,3 +121,4 @@ function generateSlides(albumImages: AlbumPhoto[], prefix: string, targetWidth: 
     }
   })
 }
+

@@ -29,7 +29,6 @@ export default function AlbumDetail () {
           <h2 className = "text-sm text-violet-700 font-medium">{albumContent.category!.title}</h2>
           <h1 className = "text-zinc-800 font-medium text-3xl">{albumContent.title}</h1>
           <p className = "text-zinc-600 text-sm">{getDate(albumContent.published_at!, lang)}</p>
-          <p>当前图片索引: {currentIndex + 1}</p>
           <ContentContainer content = {albumContent.content_json as Json}/>
           {albumContent.topic && (
               <ol className = "flex gap-2 flex-wrap">
@@ -38,6 +37,7 @@ export default function AlbumDetail () {
                 ))}
               </ol>
           )}
+          <p className="text-sm text-zinc-500">{albumImages![currentIndex].image!.location}</p>
         </div>
       </div>
   )
