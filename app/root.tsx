@@ -117,12 +117,12 @@ export default function App() {
         <Links/>
       </head>
       <body className = "min-h-screen flex flex-col relative">
-        <Navbar lang={lang} items={navbarItems} />
-        <PendingNavigation />
-        <main className = {`flex-1 w-full mt-20 ${navigation.state === 'loading' && 'opacity-30'}`}>
-          <Outlet context = {{supabase, lang, prefix}}/>
-        </main>
-        <Footer lang={lang} currentYear={currentYear} items={footerItems} />
+      <Navbar lang = {lang} items = {navbarItems}/>
+      <PendingNavigation/>
+      <main className = {`flex-1 w-full mt-20 ${navigation.state === 'loading' && 'opacity-30'}`}>
+        <Outlet context = {{supabase, lang, prefix}}/>
+      </main>
+      <Footer lang = {lang} currentYear = {currentYear} items = {footerItems}/>
       <ScrollRestoration/>
       <Scripts/>
       </body>

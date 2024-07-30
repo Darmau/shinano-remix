@@ -5,17 +5,28 @@ import {Json} from "~/types/supabase";
 import ContentContainer from "~/components/ContentContainer";
 import getDate from "~/utils/getDate";
 import GallerySlide, {AlbumPhoto} from "~/components/GallerySlide";
+import {useState} from "react";
+import Mapbox, {EXIF} from "~/components/Mapbox";
+import {MapPinIcon} from "@heroicons/react/20/solid";
 
 export default function AlbumDetail () {
   const { lang } = useOutletContext<{ lang: string }>();
   const {
     albumContent,
-    albumImages
-  } = useLoaderData<typeof loader>()
+    albumImages,
+    MAPBOX
+  } = useLoaderData<typeof loader>();
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+
   return (
-      <div className="w-full max-w-8xl mx-auto p-4 md:py-8 lg:mb-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="col-span-1 md:col-span-2">
-          <GallerySlide albumImages={albumImages as unknown as AlbumPhoto[]} />
+      <div className="w-full max-w-8xl mx-auto p-4 md:py-8 lg:mb-16 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="col-span-1 lg:col-span-2">
+          <GallerySlide
+              albumImages={albumImages as unknown as AlbumPhoto[]}
+              onIndexChange={setCurrentIndex}
+          />
         </div>
         <div className = "col-span-1 space-y-4">
           <h2 className = "text-sm text-violet-700 font-medium">{albumContent.category!.title}</h2>
@@ -29,6 +40,11 @@ export default function AlbumDetail () {
                 ))}
               </ol>
           )}
+          <div className="flex gap-2 justify-start items-center">
+            <MapPinIcon className = "w-6 h-6 text-violet-700 inline-block"/>
+            <p className = "text-sm text-zinc-500">{albumImages![currentIndex].image!.location}</p>
+          </div>
+          <Mapbox mapboxToken = {MAPBOX} exifData = {albumImages![currentIndex].image!.exif as EXIF} />
         </div>
       </div>
   )
@@ -75,6 +91,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
 
   return json({
     albumContent,
-    albumImages
+    albumImages,
+    MAPBOX: context.cloudflare.env.MAPBOX_TOKEN
   });
 }

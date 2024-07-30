@@ -13,6 +13,7 @@ interface Env {
   SUPABASE_ANON_KEY: string;
   RESEND_KEY: string;
   RESEND_AUDIENCE_ID: string;
+  MAPBOX_TOKEN: string;
 }
 
 type Cloudflare = Omit<PlatformProxy<Env>, "dispose">;
