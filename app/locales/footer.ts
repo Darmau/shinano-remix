@@ -9,15 +9,7 @@ const FooterText = {
         },
         {
           "name": "最新文章",
-          "href": "/zh/articles/all/1"
-        },
-        {
-          "name": "分类",
-          "href": "/zh/articles/categories"
-        },
-        {
-          "name": "归档",
-          "href": "/zh/articles/archive"
+          "href": "/zh/articles/1"
         },
       ]
     },
@@ -26,7 +18,7 @@ const FooterText = {
       items: [
         {
           "name": "推荐摄影",
-          "href": "/zh/albums/featured/1"
+          "href": "/zh/albums/featured"
         },
         {
           "name": "全部摄影",
@@ -39,7 +31,7 @@ const FooterText = {
       items: [
         {
           "name": "所有想法",
-          "href": "/zh/thoughts/1"
+          "href": "/zh/thoughts"
         },
       ]
     },
@@ -75,15 +67,7 @@ const FooterText = {
         },
         {
           "name": "All",
-          "href": "/en/articles/all/1"
-        },
-        {
-          "name": "Categories",
-          "href": "/en/articles/categories"
-        },
-        {
-          "name": "Archive",
-          "href": "/en/articles/archive"
+          "href": "/en/articles/1"
         },
       ]
     },
@@ -92,7 +76,7 @@ const FooterText = {
       items: [
         {
           "name": "Featured",
-          "href": "/en/albums/featured/1"
+          "href": "/en/albums/featured"
         },
         {
           "name": "All",
@@ -105,7 +89,7 @@ const FooterText = {
       items: [
         {
           "name": "All",
-          "href": "/en/thoughts/1"
+          "href": "/en/thoughts"
         },
       ]
     },
@@ -141,15 +125,7 @@ const FooterText = {
         },
         {
           "name": "すべて",
-          "href": "/jp/articles/all/1"
-        },
-        {
-          "name": "カテゴリ",
-          "href": "/jp/articles/categories"
-        },
-        {
-          "name": "アーカイブ",
-          "href": "/jp/articles/archive"
+          "href": "/jp/articles/1"
         },
       ]
     },
@@ -158,7 +134,7 @@ const FooterText = {
       items: [
         {
           "name": "おすすめ",
-          "href": "/jp/albums/featured/1"
+          "href": "/jp/albums/featured"
         },
         {
           "name": "すべて",
@@ -171,7 +147,7 @@ const FooterText = {
       items: [
         {
           "name": "すべて",
-          "href": "/jp/thoughts/1"
+          "href": "/jp/thoughts"
         },
       ]
     },

@@ -39,7 +39,7 @@ const Subnav: SubnavType = {
     "thought": [
       {
         "name": "最新",
-        "link": "/zh/thoughts/1"
+        "link": "/zh/thoughts"
       }
     ],
     "about": [
@@ -89,7 +89,7 @@ const Subnav: SubnavType = {
     "thought": [
       {
         "name": "Latest",
-        "link": "/en/thoughts/1"
+        "link": "/en/thoughts"
       }
     ],
     "about": [
@@ -139,7 +139,7 @@ const Subnav: SubnavType = {
     "thought": [
       {
         "name": "最新",
-        "link": "/jp/thoughts/1"
+        "link": "/jp/thoughts"
       }
     ],
     "about": [
