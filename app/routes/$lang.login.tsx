@@ -18,28 +18,26 @@ export default function Login() {
   const actionResponse = useActionData<typeof action>();
 
   return (
-      <div className = "bg-zinc-50">
-        <div className = "flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
-          <div className = "sm:mx-auto sm:w-full sm:max-w-md">
-            <h2 className = "mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-zinc-900">
-              {label.log_in_title}
-            </h2>
-            <p className = "mt-6 text-center text-base text-zinc-500">{label.log_in_description}</p>
-          </div>
+      <div className = "h-full bg-zinc-50 flex flex-col justify-center py-16 sm:px-6 lg:px-8">
+        <div className = "sm:mx-auto sm:w-full sm:max-w-md">
+          <h2 className = "mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-zinc-900">
+            {label.log_in_title}
+          </h2>
+          <p className = "mt-6 text-center text-base text-zinc-500">{label.log_in_description}</p>
+        </div>
 
-          <div className = "mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-            <Form method = "POST" className = "bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-              <EmailLogin />
+        <div className = "mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+          <Form method = "POST" className = "bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+            <EmailLogin/>
 
-              {actionResponse?.error && (
-                  <div className = "mt-6">
-                    <p className = "text-sm text-red-600">{actionResponse.error}</p>
-                  </div>
-              )}
+            {actionResponse?.error && (
+                <div className = "mt-6">
+                  <p className = "text-sm text-red-600">{actionResponse.error}</p>
+                </div>
+            )}
 
-              <GithubLogin />
-            </Form>
-          </div>
+            <GithubLogin/>
+          </Form>
         </div>
       </div>
   )
