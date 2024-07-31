@@ -37,7 +37,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       )
    `)
   .order('created_at', {ascending: false})
-  .limit(3);
+  .limit(12);
 
   if (!thoughts) {
     throw new Response(null, {
@@ -67,7 +67,7 @@ export async function action({request, context}: ActionFunctionArgs) {
       image (id, alt, storage_key, width, height)
     )
   `)
-  .range(page * 3, (page + 1) * 3 - 1)
+  .range(page * 12, (page + 1) * 12 - 1)
   .order("created_at", {ascending: false});
 
   if (error) {

@@ -3,13 +3,14 @@ import ContentContainer from "~/components/ContentContainer";
 import {Json} from "~/types/supabase";
 import ResponsiveImage from "~/components/ResponsiveImage";
 import getDate from "~/utils/getDate";
-import {useOutletContext} from "@remix-run/react";
+import {Link, useOutletContext} from "@remix-run/react";
 
 export default function ThoughtCard({thought}: {thought: Thought}) {
   const {lang} = useOutletContext<{lang: string}>();
   return (
-      <article
-          className = "break-inside-avoid mb-4 cursor-pointer relative rounded-2xl bg-white px-6 py-2 shadow-xl border overflow-hidden shadow-zinc-500/10 hover:shadow-zinc-500/30 hover:shadow-2xl transition-all duration-300"
+      <Link
+          to={`/${lang}/thought/${thought.slug}`}
+          className = "block mb-4 cursor-pointer relative rounded-2xl bg-white px-6 py-2 shadow-xl border overflow-hidden shadow-zinc-500/10 hover:shadow-zinc-500/30 hover:shadow-2xl transition-all duration-300"
       >
         <svg aria-hidden = "true" width = "105" height = "78" className = "absolute left-6 top-6 fill-slate-100">
           <path
@@ -29,6 +30,6 @@ export default function ThoughtCard({thought}: {thought: Thought}) {
               </div>
           )}
         </div>
-      </article>
+      </Link>
   )
 }
