@@ -71,9 +71,9 @@ export default function GallerySlide({albumImages, onIndexChange}: { albumImages
                 <ChevronRightIcon aria-hidden = "true" className = "h-5 w-5 text-black"/>
               </div>,
               slideFooter: () => (
-                  <div className="absolute bottom-0 p-4 bg-black/40 w-full text-white">
+                  <div className="hidden md:block p-4 absolute w-full bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white">
                     {albumImages[index].image.caption &&
-                        <p>
+                        <p className="mb-4">
                           {albumImages[index].image.caption}
                         </p>}
                     <EXIF exif = {albumImages[index].image.exif as unknown as EXIFProps} />
