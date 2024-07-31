@@ -5,6 +5,7 @@ export default {
     "published_at": "发布时间",
     "next": "下一篇",
     "previous": "上一篇",
+    "latest_articles": "最新文章",
   },
   "en": {
     "category": "Category",
@@ -12,6 +13,7 @@ export default {
     "published_at": "Published At",
     "next": "Next",
     "previous": "Previous",
+    "latest_articles": "Latest Articles",
   },
   "jp": {
     "category": "カテゴリ",
@@ -19,5 +21,6 @@ export default {
     "published_at": "公開日",
     "next": "次の記事",
     "previous": "前の記事",
+    "latest_articles": "最新記事",
   }
 }
