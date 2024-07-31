@@ -1,5 +1,5 @@
 import Subnav from "~/components/Subnav";
-import { json, redirect } from "@remix-run/cloudflare";
+import { json } from "@remix-run/cloudflare";
 import {Form, useActionData, useLoaderData, Link, useOutletContext} from "@remix-run/react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
@@ -19,25 +19,44 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   const { data: { session } } = await supabase.auth.getSession();
 
   if (!session) {
-    return json({ error: "未登录用户无法提交信息" }, { status: 401 });
+    return json({ error: "未登录用户无法提交信息", success: null }, { status: 401 });
   }
 
   const formData = await request.formData();
+  const contactType = formData.get("contact_type");
+  const contact = formData.get("contact");
   const message = formData.get("message");
 
-  if (typeof message !== "string" || message.length === 0) {
-    return json({ error: "请输入有效的信息" }, { status: 400 });
+  console.log(session.user.id)
+
+  // 去public.users表中查找当前用户的id
+  const { data: user, error: userError } = await supabase
+    .from('users')
+    .select('id, user_id, name')
+    .eq('user_id', session.user.id)
+    .single();
+
+  console.log(user)
+
+  if (userError) {
+    return json({ error: userError.message, success: null }, { status: 500 });
   }
 
-  const { data, error } = await supabase
+  const { error } = await supabase
   .from("message")
-  .insert([{ message, user_id: session.user.id }]);
+  .insert({
+    user_id: user.id,
+    name: user.name,
+    contact_type: contactType,
+    contact_detail: contact,
+    message
+  });
 
   if (error) {
-    return json({ error: "提交信息失败" }, { status: 500 });
+    return json({ error: "提交信息失败", success: null }, { status: 500 });
   }
 
-  return redirect("/contact?success=true");
+  return json({ success: "信息提交成功", error: null });
 };
 
 export default function Contact() {
@@ -49,26 +68,13 @@ export default function Contact() {
   return (
       <>
         <Subnav active="about" />
-        <div className = "max-w-md mx-auto my-8">
+        <div className = "max-w-md mx-auto my-8 lg:my-12">
           <header className = "text-center space-y-4">
             <h2 className = "font-medium text-sm text-violet-700">{label.contact_us}</h2>
             <h1 className = "font-medium text-3xl text-zinc-700">{label.get_in_touch}</h1>
             <p className = "text-zinc-500">{label.description}</p>
           </header>
           <Form method = "post" className = "space-y-6">
-            <div>
-              <label htmlFor = "name" className = "block text-sm font-medium leading-6 text-gray-900 mb-2">
-                {label.name}
-              </label>
-              <input
-                  id = "name"
-                  name = "name"
-                  type = "text"
-                  className = "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200 sm:text-sm sm:leading-6"
-                  required
-                  disabled = {!session}
-              />
-            </div>
             <div className = "mb-4">
               <label htmlFor = "contact_type" className = "block text-sm font-medium leading-6 text-gray-900 mb-2">
                 {label.contact_type}
@@ -76,7 +82,7 @@ export default function Contact() {
               <select
                   id = "contact_type"
                   name = "contact_type"
-                  className = "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200 sm:text-sm sm:leading-6"
+                  className = "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200 sm:text-sm sm:leading-6"
                   required
                   disabled = {!session}
               >
@@ -94,7 +100,7 @@ export default function Contact() {
                   id = "contact"
                   name = "contact"
                   type = "text"
-                  className = "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200 sm:text-sm sm:leading-6"
+                  className = "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200 sm:text-sm sm:leading-6"
                   required
                   disabled = {!session}
               />
@@ -107,7 +113,7 @@ export default function Contact() {
                   id = "message"
                   name = "message"
                   rows = {4}
-                  className = "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 disabled:cursor-not-allowed disabled:bg-gray-50"
+                  className = "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6 disabled:cursor-not-allowed disabled:bg-gray-50"
                   required
                   disabled = {!session}
               />
@@ -115,7 +121,7 @@ export default function Contact() {
             {session ? (
                 <button
                     type = "submit"
-                    className = ""
+                    className = "flex w-full justify-center rounded-md bg-violet-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
                 >
                   {label.submit}
                 </button>
@@ -137,6 +143,9 @@ export default function Contact() {
           </Form>
           {actionData?.error && (
               <p className = "mt-4 text-red-500">{actionData.error}</p>
+          )}
+          {actionData?.success && (
+              <p className="mt-4 text-green-500">{actionData.success}</p>
           )}
         </div>
       </>

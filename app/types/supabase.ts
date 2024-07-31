@@ -347,32 +347,43 @@ export type Database = {
       message: {
         Row: {
           contact_detail: string | null
-          contact_type: Database["public"]["Enums"]["communication"] | null
+          contact_type: string | null
           created_at: string | null
           id: number
-          is_readed: boolean | null
-          message: Json | null
+          is_read: boolean | null
+          message: string | null
           name: string | null
+          user_id: number
         }
         Insert: {
           contact_detail?: string | null
-          contact_type?: Database["public"]["Enums"]["communication"] | null
+          contact_type?: string | null
           created_at?: string | null
           id?: number
-          is_readed?: boolean | null
-          message?: Json | null
+          is_read?: boolean | null
+          message?: string | null
           name?: string | null
+          user_id: number
         }
         Update: {
           contact_detail?: string | null
-          contact_type?: Database["public"]["Enums"]["communication"] | null
+          contact_type?: string | null
           created_at?: string | null
           id?: number
-          is_readed?: boolean | null
-          message?: Json | null
+          is_read?: boolean | null
+          message?: string | null
           name?: string | null
+          user_id?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "message_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       photo: {
         Row: {
@@ -517,7 +528,7 @@ export type Database = {
         Row: {
           created_at: string | null
           id: number
-          reaction: Database["public"]["Enums"]["emoji"] | null
+          reaction: string | null
           to_article: number | null
           to_comment: number | null
           to_photo: number | null
@@ -528,7 +539,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           id?: number
-          reaction?: Database["public"]["Enums"]["emoji"] | null
+          reaction?: string | null
           to_article?: number | null
           to_comment?: number | null
           to_photo?: number | null
@@ -539,7 +550,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           id?: number
-          reaction?: Database["public"]["Enums"]["emoji"] | null
+          reaction?: string | null
           to_article?: number | null
           to_comment?: number | null
           to_photo?: number | null
@@ -1045,9 +1056,7 @@ export type Database = {
       }
     }
     Enums: {
-      communication: "email" | "wechat" | "telegram" | "twitter" | "line"
       content: "article" | "photo" | "video" | "thought"
-      emoji: "thumbs_up" | "thumbs_down" | "clap"
       role: "admin" | "reader" | "banned"
     }
     CompositeTypes: {

@@ -38,7 +38,7 @@ export default function Profile({lang}: {lang: string}) {
     return (
         <div className="lg:py-0 lg:flex lg:flex-col lg:items-end">
           <h3 className="text-sm font-medium text-zinc-700">{session.user.user_metadata.name}</h3>
-          <p className="text-sm text-zinc-400">{session.user.user_metadata.email}</p>
+          <p className="text-xs text-zinc-400">{session.user.user_metadata.email}</p>
         </div>
     )
   }
