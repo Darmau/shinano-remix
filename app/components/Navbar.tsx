@@ -35,7 +35,7 @@ export default function Navbar({lang, items}: { lang: string, items: NavItem[] }
 
     const handleScroll = throttle(() => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      if (scrollTop > lastScrollTop) {
+      if (scrollTop > lastScrollTop && scrollTop > 120) {
         // 向下滚动
         navbar!.style.top = '-88px'; // 隐藏导航栏
       } else {
