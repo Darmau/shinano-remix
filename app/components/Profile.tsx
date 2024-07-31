@@ -22,7 +22,7 @@ export default function Profile({lang}: {lang: string}) {
         <div className = "flex gap-4 justify-between">
           <Link
               to = {`${lang}/signup`}
-              className = "flex-1 text-center break-keep rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className = "flex-1 text-center break-keep rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
           >
             {label.signup}
           </Link>
@@ -38,7 +38,7 @@ export default function Profile({lang}: {lang: string}) {
     return (
         <div className="lg:py-0 lg:flex lg:flex-col lg:items-end">
           <h3 className="text-sm font-medium text-zinc-700">{session.user.user_metadata.name}</h3>
-          <p className="text-sm text-zinc-400">{session.user.user_metadata.email}</p>
+          <p className="text-xs text-zinc-400">{session.user.user_metadata.email}</p>
         </div>
     )
   }
