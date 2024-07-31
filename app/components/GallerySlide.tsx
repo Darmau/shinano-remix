@@ -7,6 +7,7 @@ import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import {ArrowsPointingOutIcon, ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/solid";
 import pkg from 'lodash';
+import EXIF, {EXIFProps} from "~/icons/EXIF";
 const {debounce} = pkg;
 
 export interface AlbumPhoto {
@@ -40,7 +41,7 @@ export default function GallerySlide({albumImages, onIndexChange}: { albumImages
 
   return (
       <div>
-        <div className="relative">
+        <div className="relative group">
           <Lightbox
             index={index}
             plugins={[Inline, Thumbnails]}
@@ -50,9 +51,10 @@ export default function GallerySlide({albumImages, onIndexChange}: { albumImages
             slides={defaultSlides}
             styles={{
               container: { backgroundColor: "transparent" },
+              thumbnail: { gap: "16px" },
               thumbnailsContainer: { backgroundColor: "transparent" },
               button: { filter: "none" },
-              slide: { padding: 0, borderRadius: "12px" },
+              slide: { padding: 0},
             }}
             thumbnails={{
               imageFit: 'contain',
@@ -67,7 +69,16 @@ export default function GallerySlide({albumImages, onIndexChange}: { albumImages
               </div>,
               iconNext: () => <div className="p-2 rounded-full bg-white/60 backdrop-blur-2xl">
                 <ChevronRightIcon aria-hidden = "true" className = "h-5 w-5 text-black"/>
-              </div>
+              </div>,
+              slideFooter: () => (
+                  <div className="absolute bottom-0 p-4 bg-black/40 w-full text-white">
+                    {albumImages[index].image.caption &&
+                        <p>
+                          {albumImages[index].image.caption}
+                        </p>}
+                    <EXIF exif = {albumImages[index].image.exif as unknown as EXIFProps} />
+                  </div>
+              )
             }}
             on={{
               view: ({ index: currentIndex }) => {
