@@ -50,7 +50,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
     contact_type: contactType,
     contact_detail: contact,
     message
-  });
+  } as MessageInsert);
 
   if (error) {
     return json({ error: "提交信息失败", success: null }, { status: 500 });
@@ -151,3 +151,11 @@ export default function Contact() {
       </>
   );
 }
+
+type MessageInsert = {
+  user_id: number;
+  name: string;
+  contact_type: string;
+  contact_detail: string;
+  message: string;
+};
