@@ -53,7 +53,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   } as MessageInsert);
 
   if (error) {
-    return json({ error: "提交信息失败", success: null }, { status: 500 });
+    return json({ error: error.message, success: null }, { status: 500 });
   }
 
   return json({ success: "信息提交成功", error: null });
