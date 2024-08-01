@@ -9,7 +9,17 @@ export default function CommentEditor({contentTable, contentId}: { contentTable:
   const {lang} = useOutletContext<{ lang: string }>();
   const label = getLanguageLabel(CommentText, lang);
 
-  if (session) {
+  if (!session) {
+    return (
+        <div className="flex justify-between items-center border-b pb-8">
+          <p className = "text-sm text-zinc-500">{label.login_comment}</p>
+          <div className="flex justify-between gap-4">
+            <Link to = {`/${lang}/login`} className = "grow text-center text-sm text-zinc-700 border py-3 px-4 rounded-md font-medium hover:bg-zinc-100">{label.login}</Link>
+            <Link to={`/${lang}/signup`} className = "grow text-center text-sm bg-violet-700 text-white py-3 px-4 rounded-md font-medium hover:bg-violet-400">{label.signup}</Link>
+          </div>
+        </div>
+    )
+  } else {
     return (
         <Form method = "post">
           <input name = {contentTable} type = "hidden" value = {contentId}/>
@@ -37,16 +47,6 @@ export default function CommentEditor({contentTable, contentId}: { contentTable:
             </button>
           </div>
         </Form>
-    )
-  } else {
-    return (
-        <div className="flex justify-between items-center border-b pb-8">
-          <p className = "text-sm text-zinc-500">{label.login_comment}</p>
-          <div className="flex justify-between gap-4">
-            <Link to = {`/${lang}/login`} className = "grow text-center text-sm text-zinc-700 border py-3 px-4 rounded-md font-medium hover:bg-zinc-100">{label.login}</Link>
-            <Link to={`/${lang}/signup`} className = "grow text-center text-sm bg-violet-700 text-white py-3 px-4 rounded-md font-medium hover:bg-violet-400">{label.signup}</Link>
-          </div>
-        </div>
     )
   }
 }
