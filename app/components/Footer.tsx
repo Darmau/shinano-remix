@@ -15,7 +15,7 @@ const navigation = {
     },
     {
       name: 'X',
-      href: 'https://x.com/darmaulee',
+      href: 'https://x.com/darmau8964',
       icon: (props: React.SVGProps<SVGSVGElement>) => <TwitterIcon {...props} />,
     },
     {
