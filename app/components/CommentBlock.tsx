@@ -17,7 +17,9 @@ export function CommentBlock({comment}: {comment: CommentProps}) {
   const {lang} = useOutletContext<{lang: string}>();
   return (
       <div className="pt-8">
-        <h4 className="font-medium text-zinc-800 mb-1">{comment.users.name}</h4>
+        <h4 className="font-medium text-zinc-800 mb-1">
+          {comment.is_anonymous ? 'Anonymous' : comment.users.name}
+        </h4>
         <div className="text-sm text-zinc-500">{getDate(comment.created_at, lang)}</div>
         <div className="my-4 text-base text-zinc-700 space-y-2"><CommentContent content={comment.content_text} /></div>
       </div>
