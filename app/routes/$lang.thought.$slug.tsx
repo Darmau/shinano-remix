@@ -62,7 +62,7 @@ export default function ThoughtDetail () {
                 <textarea name="content_text" className = "w-full h-32 p-2 border border-gray-300 rounded" />
                 <button type="submit" className = "bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
               </Form>
-              <div>
+              <div className="flex flex-col gap-4 divide-y">
                 {actionResponse?.error && <p className="error">{actionResponse.error}</p>}
                 {actionResponse?.comment && (
                     <CommentBlock comment={actionResponse.comment as unknown as CommentProps} />
