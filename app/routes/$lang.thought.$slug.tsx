@@ -1,5 +1,5 @@
 import Breadcrumb, {BreadcrumbProps} from "~/components/Breadcrumb";
-import {Form, useActionData, useLoaderData, useOutletContext} from "@remix-run/react";
+import {Link, useActionData, useLoaderData, useOutletContext} from "@remix-run/react";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import ThoughtText from "~/locales/thought";
 import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
@@ -11,15 +11,19 @@ import {Image} from "~/types/Image";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import {CommentBlock, CommentProps} from "~/components/CommentBlock";
+import CommentEditor from "~/components/CommentEditor";
 
-export default function ThoughtDetail () {
-  const { lang } = useOutletContext<{ lang: string }>();
+export default function ThoughtDetail() {
+  const {lang} = useOutletContext<{ lang: string }>();
   const label = getLanguageLabel(ThoughtText, lang);
 
   const {
     thoughtData,
     thoughtImages,
-    comments
+    comments,
+    page,
+    limit,
+    totalPage
   } = useLoaderData<typeof loader>();
   const actionResponse = useActionData<typeof action>();
 
@@ -38,7 +42,7 @@ export default function ThoughtDetail () {
 
   return (
       <div className = "w-full max-w-6xl mx-auto p-4 md:py-8 mb-8 lg:mb-16">
-        <Breadcrumb pages={breadcrumbPages} />
+        <Breadcrumb pages = {breadcrumbPages}/>
         <div className = "grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className = "col-span-1 lg:col-span-2">
             <ContentContainer content = {thoughtData.content_json as unknown as Json}/>
@@ -54,33 +58,45 @@ export default function ThoughtDetail () {
             )}
           </div>
 
-            <div className = "col-span-1 space-y-4">
-              <Form method="post">
-                <input name="to_thought" type="hidden" value={thoughtData.id} />
-                <input name="is_anonymous" type="checkbox" />
-                <input name="reply_to" type="hidden" />
-                <textarea name="content_text" className = "w-full h-32 p-2 border border-gray-300 rounded" />
-                <button type="submit" className = "bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
-              </Form>
-              <div className="flex flex-col gap-4 divide-y">
-                {actionResponse?.error && <p className="error">{actionResponse.error}</p>}
-                {actionResponse?.comment && (
-                    <CommentBlock comment={actionResponse.comment as unknown as CommentProps} />
-                )}
-                {comments && comments.map((comment) => (
-                    <CommentBlock key = {comment.id} comment = {comment as unknown as CommentProps} />
-                ))}
-              </div>
+          <div className = "col-span-1 space-y-4">
+            <CommentEditor contentTable={'to_thought'} contentId={thoughtData.id} />
+            <div className = "flex flex-col gap-4 divide-y">
+              {actionResponse?.error && <p className = "error">{actionResponse.error}</p>}
+              {actionResponse?.comment && (
+                  <CommentBlock comment = {actionResponse.comment as unknown as CommentProps}/>
+              )}
+              {comments && comments.map((comment) => (
+                  <CommentBlock key = {comment.id} comment = {comment as unknown as CommentProps}/>
+              ))}
             </div>
+            <div className = "py-8 flex justify-between">
+              {page > 1 && (
+                  <Link
+                      to = {{
+                        search: `?page=${page - 1}&limit=${limit}`
+                      }}
+                      className = "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >{label.previous}</Link>
+              )}
+              {page < totalPage && (
+                  <Link
+                      to = {{
+                        search: `?page=${page + 1}&limit=${limit}`
+                      }}
+                      className = "ml-auto rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                  >{label.next}</Link>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-)
+  )
 }
 
 
 export async function loader({
-  request, context, params
-}: LoaderFunctionArgs) {
+                               request, context, params
+                             }: LoaderFunctionArgs) {
   const {supabase} = createClient(request, context);
   const slug = params.slug as string;
   const url = new URL(request.url);
@@ -89,16 +105,16 @@ export async function loader({
 
   // thought详情
   const {data: thoughtData} = await supabase
-    .from('thought')
-    .select(`
+  .from('thought')
+  .select(`
       id,
       content_json,
       content_text,
       slug,
       created_at
     `)
-    .eq('slug', slug)
-    .single();
+  .eq('slug', slug)
+  .single();
 
   if (!thoughtData) {
     throw new Response(null, {
@@ -108,34 +124,49 @@ export async function loader({
   }
 
   const {data: thoughtImages} = await supabase
-    .from('thought_image')
-    .select(`
+  .from('thought_image')
+  .select(`
       order,
       image (id, alt, storage_key, width, height, caption)
     `)
-    .eq('thought_id', thoughtData.id)
-    .order('order', {ascending: true});
+  .eq('thought_id', thoughtData.id)
+  .order('order', {ascending: true});
 
   // 评论数据
   const {data: comments} = await supabase
-    .from('comment')
-    .select(`
+  .from('comment')
+  .select(`
       id,
       user_id,
       content_text,
       created_at,
+      is_anonymous,
       users (id, name)
     `)
-    .eq('to_thought', thoughtData.id)
-    .eq('is_blocked', false)
-    .eq('is_public', true)
-    .order('created_at', {ascending: true})
-    .range((page - 1) * limit, page * limit - 1);
+  .eq('to_thought', thoughtData.id)
+  .eq('is_blocked', false)
+  .eq('is_public', true)
+  .order('created_at', {ascending: false})
+  .range((page - 1) * limit, page * limit - 1);
+
+  // 评论总数
+  const {count} = await supabase
+  .from('comment')
+  .select('id', {count: 'exact'})
+  .eq('to_thought', thoughtData.id)
+  .eq('is_blocked', false)
+  .eq('is_public', true);
+
+  // 总页数
+  const totalPage = count ? Math.ceil(count / limit) : 1;
 
   return json({
     thoughtData,
     thoughtImages,
-    comments
+    comments,
+    page,
+    limit,
+    totalPage
   })
 }
 
@@ -153,10 +184,10 @@ export async function action({request, context}: ActionFunctionArgs) {
   }
 
   const {data: userProfile} = await supabase
-    .from('users')
-    .select('id, user_id')
-    .eq('user_id', session.user.id)
-    .single();
+  .from('users')
+  .select('id, user_id')
+  .eq('user_id', session.user.id)
+  .single();
 
   if (!userProfile) {
     return json({
@@ -171,21 +202,22 @@ export async function action({request, context}: ActionFunctionArgs) {
   const is_anonymous = formData.get('is_anonymous') === 'on';
 
   const {data: newComment} = await supabase
-    .from('comment')
-    .insert({
-      user_id: userProfile.id,
-      content_text,
-      to_thought,
-      is_anonymous
-    })
-    .select(`
+  .from('comment')
+  .insert({
+    user_id: userProfile.id,
+    content_text,
+    to_thought,
+    is_anonymous
+  })
+  .select(`
       id,
       user_id,
       content_text,
       created_at,
+      is_anonymous,
       users (id, name)
     `)
-    .single();
+  .single();
 
   return json({
     success: true,

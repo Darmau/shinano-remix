@@ -6,15 +6,7 @@ export interface CommentProps {
   user_id: number;
   content_text: string;
   created_at: string;
-  reply_to: {
-    id: number,
-    content_text: string,
-    created_at: string,
-    users: {
-      id: number,
-      name: string
-    }
-  } | null;
+  is_anonymous: boolean;
   users: {
     id: number,
     name: string,
@@ -27,7 +19,7 @@ export function CommentBlock({comment}: {comment: CommentProps}) {
       <div className="pt-8">
         <h4 className="font-medium text-zinc-800 mb-1">{comment.users.name}</h4>
         <div className="text-sm text-zinc-500">{getDate(comment.created_at, lang)}</div>
-        <div className="my-4 text-base text-zinc-700"><CommentContent content={comment.content_text} /></div>
+        <div className="my-4 text-base text-zinc-700 space-y-2"><CommentContent content={comment.content_text} /></div>
       </div>
   )
 }
