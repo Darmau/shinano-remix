@@ -1,6 +1,6 @@
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
-import {useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
+import {Link, useActionData, useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
 import ResponsiveImage from "~/components/ResponsiveImage";
 import {Image} from "~/types/Image";
 import getDate from "~/utils/getDate";
@@ -12,6 +12,8 @@ import Catalog from "~/components/Catalog";
 import ReadingProcess from "~/components/ReadingProcess";
 import NextAndPrev, {NeighboringPost} from "~/components/NextAndPrev";
 import Breadcrumb, {BreadcrumbProps} from "~/components/Breadcrumb";
+import CommentEditor from "~/components/CommentEditor";
+import {CommentBlock, CommentProps} from "~/components/CommentBlock";
 
 export default function ArticleDetail () {
   const { lang } = useOutletContext<{ lang: string }>();
@@ -20,7 +22,13 @@ export default function ArticleDetail () {
     domain,
     previousArticle,
     nextArticle,
+    comments,
+    page,
+    limit,
+    totalPage
   } = useLoaderData<typeof loader>();
+  const actionResponse = useActionData<typeof action>();
+
   const label = getLanguageLabel(ArticleText, lang);
   const { pathname } = useLocation();
 
@@ -93,6 +101,37 @@ export default function ArticleDetail () {
                   next = {nextArticle as NeighboringPost}
                   prev = {previousArticle as NeighboringPost}
               />
+
+              <div className = "mt-16 col-span-1 lg:col-span-2">
+                <CommentEditor contentTable = {'to_article'} contentId = {article.id}/>
+                <div className = "flex flex-col gap-4 divide-y">
+                  {actionResponse?.error && <p className = "error">{actionResponse.error}</p>}
+                  {actionResponse?.comment && (
+                      <CommentBlock comment = {actionResponse.comment as unknown as CommentProps}/>
+                  )}
+                  {comments && comments.map((comment) => (
+                      <CommentBlock key = {comment.id} comment = {comment as unknown as CommentProps}/>
+                  ))}
+                </div>
+                <div className = "py-8 flex justify-between">
+                  {page > 1 && (
+                      <Link
+                          to = {{
+                            search: `?page=${page - 1}&limit=${limit}`
+                          }}
+                          className = "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                      >{label.previous}</Link>
+                  )}
+                  {page < totalPage && (
+                      <Link
+                          to = {{
+                            search: `?page=${page + 1}&limit=${limit}`
+                          }}
+                          className = "ml-auto rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                      >{label.next}</Link>
+                  )}
+                </div>
+              </div>
             </div>
             <aside className = "hidden md:flex md:col-span-1 md:h-full">
               <Catalog
@@ -112,6 +151,9 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   const {supabase} = createClient(request, context);
   const lang = params.lang as string;
   const slug = params.slug as string;
+  const url = new URL(request.url);
+  const page = url.searchParams.get('page') ? parseInt(url.searchParams.get('page')!) : 1;
+  const limit = url.searchParams.get('limit') ? parseInt(url.searchParams.get('limit')!) : 20;
 
   // 文章详情
   const {data: articleContent} = await supabase
@@ -163,11 +205,98 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   .limit(1)
   .single();
 
+  // 评论数据
+  const {data: comments} = await supabase
+  .from('comment')
+  .select(`
+      id,
+      user_id,
+      content_text,
+      created_at,
+      is_anonymous,
+      users (id, name)
+    `)
+  .eq('to_article', articleContent.id)
+  .eq('is_blocked', false)
+  .eq('is_public', true)
+  .order('created_at', {ascending: false})
+  .range((page - 1) * limit, page * limit - 1);
+
+  // 评论总数
+  const {count} = await supabase
+  .from('comment')
+  .select('id', {count: 'exact'})
+  .eq('to_article', articleContent.id)
+  .eq('is_blocked', false)
+  .eq('is_public', true);
+
+  // 总页数
+  const totalPage = count ? Math.ceil(count / limit) : 1;
 
   return json({
     article: articleContent,
     previousArticle: previousArticle || null,
     nextArticle: nextArticle || null,
-    domain: context.cloudflare.env.BASE_URL
+    domain: context.cloudflare.env.BASE_URL,
+    comments,
+    page,
+    limit,
+    totalPage
+  })
+}
+
+export async function action({request, context}: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const {supabase} = createClient(request, context);
+  const {data: {session}} = await supabase.auth.getSession();
+
+  if (!session) {
+    return json({
+      success: false,
+      error: 'Unauthorized',
+      comment: null
+    })
+  }
+
+  const {data: userProfile} = await supabase
+  .from('users')
+  .select('id, user_id')
+  .eq('user_id', session.user.id)
+  .single();
+
+  if (!userProfile) {
+    return json({
+      success: false,
+      error: 'User not exists',
+      comment: null
+    })
+  }
+
+  const content_text = formData.get('content_text') as string;
+  const to_article = parseInt(formData.get('to_article') as string);
+  const is_anonymous = formData.get('is_anonymous') === 'on';
+
+  const {data: newComment} = await supabase
+  .from('comment')
+  .insert({
+    user_id: userProfile.id,
+    content_text,
+    to_article,
+    is_anonymous
+  })
+  .select(`
+      id,
+      user_id,
+      content_text,
+      created_at,
+      is_anonymous,
+      users (id, name)
+    `)
+  .single();
+
+  return json({
+    success: true,
+    error: null,
+    comment: newComment
   })
 }
