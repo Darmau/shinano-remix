@@ -23,7 +23,8 @@ export default function AlbumDetail() {
     comments,
     page,
     limit,
-    totalPage
+    totalPage,
+    session
   } = useLoaderData<typeof loader>();
   const actionResponse = useActionData<typeof action>();
 
@@ -73,7 +74,7 @@ export default function AlbumDetail() {
             <Mapbox mapboxToken = {MAPBOX} exifData = {albumImages![currentIndex].image!.exif as EXIF}/>
           </div>
           <div className = "mt-8 col-span-1 lg:col-span-2">
-            <CommentEditor contentTable = {'to_photo'} contentId = {albumContent.id}/>
+            <CommentEditor contentTable = {'to_photo'} contentId = {albumContent.id} session = {session}/>
             <div className = "flex flex-col gap-4 divide-y">
               {actionResponse?.error && <p className = "error">{actionResponse.error}</p>}
               {actionResponse?.comment && (
@@ -109,6 +110,7 @@ export default function AlbumDetail() {
 
 export async function loader({request, context, params}: LoaderFunctionArgs) {
   const {supabase} = createClient(request, context);
+  const {data: {session}} = await supabase.auth.getSession();
   const lang = params.lang as string;
   const slug = params.slug as string;
   const url = new URL(request.url);
@@ -184,7 +186,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     comments,
     page,
     limit,
-    totalPage
+    totalPage,
+    session
   });
 }
 
