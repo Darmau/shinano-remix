@@ -23,7 +23,8 @@ export default function ThoughtDetail() {
     comments,
     page,
     limit,
-    totalPage
+    totalPage,
+    session
   } = useLoaderData<typeof loader>();
   const actionResponse = useActionData<typeof action>();
 
@@ -59,7 +60,7 @@ export default function ThoughtDetail() {
           </div>
 
           <div className = "col-span-1 space-y-4">
-            <CommentEditor contentTable={'to_thought'} contentId={thoughtData.id} />
+            <CommentEditor contentTable = {'to_thought'} contentId = {thoughtData.id} session = {session}/>
             <div className = "flex flex-col gap-4 divide-y">
               {actionResponse?.error && <p className = "error">{actionResponse.error}</p>}
               {actionResponse?.comment && (
@@ -98,6 +99,7 @@ export async function loader({
                                request, context, params
                              }: LoaderFunctionArgs) {
   const {supabase} = createClient(request, context);
+  const {data: {session}} = await supabase.auth.getSession();
   const slug = params.slug as string;
   const url = new URL(request.url);
   const page = url.searchParams.get('page') ? parseInt(url.searchParams.get('page')!) : 1;
@@ -166,7 +168,8 @@ export async function loader({
     comments,
     page,
     limit,
-    totalPage
+    totalPage,
+    session
   })
 }
 

@@ -1,11 +1,9 @@
-import {Form, Link, useLoaderData, useOutletContext} from "@remix-run/react";
+import {Form, Link, useOutletContext} from "@remix-run/react";
 import CommentText from '~/locales/comment';
 import getLanguageLabel from "~/utils/getLanguageLabel";
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
-import {createClient} from "~/utils/supabase/server";
+import {Session} from "@supabase/supabase-js";
 
-export default function CommentEditor({contentTable, contentId}: { contentTable: string, contentId: number }) {
-  const { session } = useLoaderData<typeof loader>();
+export default function CommentEditor({contentTable, contentId, session}: { contentTable: string, contentId: number, session: Session | null }) {
   const {lang} = useOutletContext<{ lang: string }>();
   const label = getLanguageLabel(CommentText, lang);
 
@@ -49,12 +47,4 @@ export default function CommentEditor({contentTable, contentId}: { contentTable:
         </Form>
     )
   }
-}
-
-export const loader = async ({request, context}: LoaderFunctionArgs) => {
-  const { supabase } = createClient(request, context);
-  const { data: {session}} = await supabase.auth.getSession();
-  return json({
-    session
-  })
 }
