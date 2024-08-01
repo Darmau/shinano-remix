@@ -160,7 +160,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       is_anonymous,
       users (id, name)
     `)
-  .eq('to_thought', albumContent.id)
+  .eq('to_photo', albumContent.id)
   .eq('is_blocked', false)
   .eq('is_public', true)
   .order('created_at', {ascending: false})
@@ -170,7 +170,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   const {count} = await supabase
   .from('comment')
   .select('id', {count: 'exact'})
-  .eq('to_thought', albumContent.id)
+  .eq('to_photo', albumContent.id)
   .eq('is_blocked', false)
   .eq('is_public', true);
 
