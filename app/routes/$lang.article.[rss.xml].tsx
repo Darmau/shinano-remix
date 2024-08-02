@@ -1,20 +1,21 @@
-import {LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
+import {LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import HomepageText from '~/locales/homepage';
 
 export type RssEntry = {
-  title: string;
+  title: string | null;
   link: string;
-  description: string;
-  pubDate: string;
-  author: string;
-  guid: string;
+  description: string | null;
+  pubDate: string | null;
+  author: string | null;
+  guid: number;
   content: string;
+  category: string | null;
   enclosure?: {
     url: string;
     type: string;
-    length: number;
+    length: string;
   };
 };
 
@@ -37,7 +38,7 @@ export function generateRss({description, entries, link, title, language}: {
         <generator>Shinano Remix</generator>
         <image>
           <title>可可托海没有海的RSS</title>
-          <url>https://img.darmau.co/cdn-cgi/image/format=auto,width=720/https://img.darmau.co/a2b148a3-5799-4be0-a8d4-907f9355f20f</url>
+          <url>https://img.darmau.co/cdn-cgi/image/format=webp,width=720/https://img.darmau.co/a2b148a3-5799-4be0-a8d4-907f9355f20f</url>
           <link>https://darmau.co/${language}</link>
           <width>720</width>
           <height>432</height>
@@ -53,6 +54,8 @@ export function generateRss({description, entries, link, title, language}: {
               <![CDATA[${entry.content}]]>
             </content:encoded>
             <author>李大毛</author>
+            <category>${entry.category}</category>
+            ${generateEnclosure(entry.enclosure)}
           </item>`
       ).join("")}
       </channel>
@@ -99,8 +102,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       guid: post.id,
       content: getFirstThreeParagraphs(post.content_text),
       enclosure: post.cover && {
-        url: `https://img.darmau.co/cdn-cgi/image/format=auto,width=960/https://img.darmau.co/${post.cover.storage_key}`,
-        type: 'image/jpeg',
+        url: `https://img.darmau.co/cdn-cgi/image/format=webp,width=960/https://img.darmau.co/${post.cover.storage_key}`,
+        type: 'image/webp',
         length: post.cover.size,
       },
     })) : [],
@@ -122,4 +125,23 @@ function getFirstThreeParagraphs(text: string | null): string {
   .filter(paragraph => paragraph.trim() !== '')
   .slice(0, 3)
   .join('\n');
+}
+
+function generateEnclosure(enclosure: {url: string, type: string, length: string}): string {
+  if (!enclosure) {
+    return `
+      <enclosure
+        url="https://img.darmau.co/cdn-cgi/image/format=webp,width=720/https://img.darmau.co/a2b148a3-5799-4be0-a8d4-907f9355f20f"
+        type="image/webp"
+        length="373254"
+      />
+    `;
+  }
+  return `
+    <enclosure
+      url="${enclosure.url}"
+      type="${enclosure.type}"
+      length="${enclosure.length}"
+    />
+  `;
 }
