@@ -1,19 +1,19 @@
 export default {
   "zh": {
     "title": "可可托海没有海",
-    "description": "未定",
-    "recent_article": "最新文章",
+    "description": "李大毛的个人博客。包括文章、摄影和碎片想法。",
+    "recent_article": "最新文章"
   },
 
   "en": {
-    "title": "Keketuohai No Sea",
-    "description": "TBD",
+    "title": "可可托海没有海",
+    "description": "Darmau's personal blog. Includes articles, photography, and miscellaneous thoughts.",
     "recent_article": "Recent Articles",
   },
 
   "jp": {
-    "title": "ケケトハイは海がありません",
-    "description": "未定",
+    "title": "可可托海没有海",
+    "description": "李大毛の個人ブログ。記事、写真、断片的な考えを含む。",
     "recent_article": "最新の記事",
   },
 }
