@@ -107,9 +107,6 @@ export default function ArticleDetail () {
                 <CommentEditor contentTable = {'to_article'} contentId = {article.id} session={session}/>
                 <div className = "flex flex-col gap-4 divide-y">
                   {actionResponse?.error && <p className = "error">{actionResponse.error}</p>}
-                  {actionResponse?.comment && (
-                      <CommentBlock comment = {actionResponse.comment as unknown as CommentProps}/>
-                  )}
                   {comments && comments.map((comment) => (
                       <CommentBlock key = {comment.id} comment = {comment as unknown as CommentProps}/>
                   ))}
