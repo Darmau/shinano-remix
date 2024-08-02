@@ -49,13 +49,13 @@ export default function AlbumDetail() {
       <div className = "w-full max-w-8xl mx-auto p-4 md:py-8 lg:mb-16">
         <Breadcrumb pages = {breadcrumbPages}/>
         <div className = "grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className = "col-span-1 lg:col-span-2">
+          <div className = "col-span-1 lg:col-span-2 lg:self-start">
             <GallerySlide
                 albumImages = {albumImages as unknown as AlbumPhoto[]}
                 onIndexChange = {setCurrentIndex}
             />
           </div>
-          <div className = "col-span-1 space-y-4">
+          <div className = "col-span-1 lg:row-span-2 space-y-4">
             <h2 className = "text-sm text-violet-700 font-medium">{albumContent.category!.title}</h2>
             <h1 className = "text-zinc-800 font-medium text-3xl">{albumContent.title}</h1>
             <p className = "text-zinc-600 text-sm">{getDate(albumContent.published_at!, lang)}</p>
@@ -73,13 +73,10 @@ export default function AlbumDetail() {
             </div>
             <Mapbox mapboxToken = {MAPBOX} exifData = {albumImages![currentIndex].image!.exif as EXIF}/>
           </div>
-          <div className = "mt-8 col-span-1 lg:col-span-2">
+          <div className = "col-span-1 lg:col-span-2 lg:self-start">
             <CommentEditor contentTable = {'to_photo'} contentId = {albumContent.id} session = {session}/>
             <div className = "flex flex-col gap-4 divide-y">
               {actionResponse?.error && <p className = "error">{actionResponse.error}</p>}
-              {actionResponse?.comment && (
-                  <CommentBlock comment = {actionResponse.comment as unknown as CommentProps}/>
-              )}
               {comments && comments.map((comment) => (
                   <CommentBlock key = {comment.id} comment = {comment as unknown as CommentProps}/>
               ))}
