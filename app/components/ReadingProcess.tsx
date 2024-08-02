@@ -14,7 +14,7 @@ function ScrollProgressBar() {
           document.documentElement.clientHeight;
       const scrolled = (scrollPx / winHeightPx) * 100;
       setScrollProgress(scrolled);
-    }, 200);
+    }, 50);
 
     window.addEventListener('scroll', updateScrollProgress);
     updateScrollProgress(); // 初始化进度
