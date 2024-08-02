@@ -19,6 +19,12 @@ const pathMap = new Map([
   ['rss', 'about'],
 ])
 
+const langMap = new Map([
+  ['zh', '中文'],
+  ['en', 'English'],
+  ['jp', '日本語'],
+])
+
 function isCurrentTab(tab: string, path: string): boolean {
   const currentTab = pathMap.get(path.split('/')[2]);
   return currentTab === tab;
@@ -61,8 +67,9 @@ export default function Navbar({lang, items}: { lang: string, items: NavItem[] }
                 <img alt = "logo" src = "/favicon.svg" className = "h-8 w-8" width = "32" height = "32"/>
               </Link>
               <Popover>
-                <PopoverButton className = "block data-[active]:text-violet-700 data-[hover]:text-violet-700">
-                  <TranslateIcon className = "size-6 text-gray-900"/>
+                <PopoverButton className = "flex border items-center rounded text-sm px-1.5 gap-1 py-1 data-[hover]:bg-zinc-50">
+                  <TranslateIcon className = "size-4 text-gray-900"/>
+                  {langMap.get(lang)}
                 </PopoverButton>
                 <PopoverPanel
                     transition
@@ -133,8 +140,9 @@ export default function Navbar({lang, items}: { lang: string, items: NavItem[] }
                   <img alt = "logo" src = "/favicon.svg" className = "h-8 w-8" width = "32" height = "32"/>
                 </a>
                 <Popover>
-                  <PopoverButton className = "block data-[active]:text-violet-700 data-[hover]:text-violet-700">
-                    <TranslateIcon className = "size-6 text-gray-900"/>
+                  <PopoverButton className = "flex border items-center rounded text-sm px-1.5 gap-1 py-1 data-[hover]:bg-zinc-50">
+                    <TranslateIcon className = "size-4 text-gray-900"/>
+                    {langMap.get(lang)}
                   </PopoverButton>
                   <PopoverPanel
                       transition
