@@ -1,0 +1,87 @@
+const content = {
+  "zh": {
+    "title": "一个复杂的且不通用的博客",
+    "subtitle": "本站是一个独立设计开发，高度定制的，只满足我本人需求的博客。",
+    "techstack": "本站使用了以下技术栈：",
+    "feature_title": "核心功能",
+    "feature_subtitle": "开发的初衷，除了借此机会学习新技术，更重要的是，市面上的CMS并不能完全满足我的需求。",
+    "feature_1": "多语言",
+    "feature_1_desc": "多语言是本站设计的初衷之一，目前已有中文、英文和日文内容。中文以外的内容由AI翻译并由我校对。",
+    "feature_2": "图片对象存储",
+    "feature_2_desc": "摄影也是本站区别于一般博客的特色之一。由于有大量的高清图片存储和浏览需求，本站的媒体存储只支持对象存储，轻松支持数Gb的图片存储。",
+    "feature_3": "AI",
+    "feature_3_desc": "深度集成AI，用于生成摘要、图片描述、网址slug等。未来可能有更多应用。",
+    "feature_4": "各端分离",
+    "feature_4_desc": "数据库、CMS、前端、媒体存储各自独立。因此后续升级和重构会更容易。",
+    "structure_title": "网站架构",
+    "structure_subtitle": "采用无服务器架构，各端分离。部署在Cloudflare。",
+    "structure_1_title": "数据库：",
+    "structure_1_desc": "绝大部分数据存储在Supabase，少部分配置信息存储在Cloudflare Workers KV。用户认证是使用Supabase Auth。",
+    "structure_2_title": "管理后台：",
+    "structure_2_desc": "使用SvelteKit开发，部署在Cloudflare。",
+    "structure_3_title": "本站：",
+    "structure_3_desc": "使用Remix开发，全站SSR，部署在Cloudflare。",
+    "structure_4_title": "边缘函数：",
+    "structure_4_desc": "一个Cloudflare Workers负责处理图片上传、AI调用等第三方API调用任务，提高请求成功率。。",
+    "statement": "虽然CMS和本站均在GitHub开源，但目前并没有做好当成成熟产品对外开放的准备。本站部署和配置相对复杂，没有前后端技术背景的不建议尝试。"
+  },
+  "en": {
+    "title": "A Complex and Non-Universal Blog",
+    "subtitle": "This site is an independently designed and developed, highly customized blog that only meets my personal needs.",
+    "techstack": "This site uses the following technology stack:",
+    "feature_title": "Core Features",
+    "feature_subtitle": "The original intention of development, in addition to taking this opportunity to learn new technologies, is more importantly that the CMS on the market cannot fully meet my needs.",
+    "feature_1": "Multi-language",
+    "feature_1_desc": "Multi-language is one of the original intentions of this site's design. Currently, there are Chinese, English, and Japanese content. Content other than Chinese is translated by AI and proofread by me.",
+    "feature_2": "Image Object Storage",
+    "feature_2_desc": "Photography is also one of the features that distinguishes this site from general blogs. Due to the large amount of high-definition image storage and browsing requirements, the media storage of this site only supports object storage, easily supporting several Gb of image storage.",
+    "feature_3": "AI",
+    "feature_3_desc": "Deep integration of AI, used to generate summaries, image descriptions, URL slugs, etc. There may be more applications in the future.",
+    "feature_4": "Front-end and Back-end Separation",
+    "feature_4_desc": "The database, CMS, front-end, and media storage are all independent. Therefore, subsequent upgrades and refactoring will be easier.",
+    "structure_title": "Site Architecture",
+    "structure_subtitle": "Using a serverless architecture, front-end and back-end separated. Deployed on Cloudflare.",
+    "structure_1_title": "Database: ",
+    "structure_1_desc": "Most of the data is stored in Supabase, and a small amount of configuration information is stored in Cloudflare Workers KV. User authentication is done using Supabase Auth.",
+    "structure_2_title": "Admin Panel: ",
+    "structure_2_desc": "Developed using SvelteKit and deployed on Cloudflare.",
+    "structure_3_title": "This Site: ",
+    "structure_3_desc": "Developed using Remix, full-site SSR, and deployed on Cloudflare.",
+    "structure_4_title": "Edge Functions: ",
+    "structure_4_desc": "A Cloudflare Workers is responsible for handling tasks such as image uploads, AI calls, and other third-party API calls to improve request success rates.",
+    "statement": "Although the CMS and this site are open source on GitHub, there is currently no preparation to make them publicly available as mature products. The deployment and configuration of this site are relatively complex, and it is not recommended to try without a technical background in front-end and back end."
+  },
+  "jp": {
+    "title": "複雑で汎用性のないブログ",
+    "subtitle": "このサイトは、私個人のニーズにのみ対応する、独自に設計・開発された高度にカスタマイズされたブログです。",
+    "techstack": "このサイトは、以下の技術スタックを使用しています：",
+    "feature_title": "主要機能",
+    "feature_subtitle": "開発の原初の目的は、新しい技術を学ぶこの機会を利用することに加えて、市場のCMSが私のニーズを完全に満たすことができないということです。",
+    "feature_1": "多言語",
+    "feature_1_desc": "多言語はこのサイトの設計の原初の目的の1つです。現在、中国語、英語、日本語のコンテンツがあります。中国語以外のコンテンツはAIによって翻訳され、私が校正しています。",
+    "feature_2": "画像オブジェクトストレージ",
+    "feature_2_desc": "写真撮影も一般的なブログとは異なる特徴の1つです。高解像度の画像ストレージと閲覧要件が多いため、このサイトのメディアストレージはオブジェクトストレージのみをサポートし、数GBの画像ストレージを簡単にサポートします。",
+    "feature_3": "AI",
+    "feature_3_desc": "AIの深い統合を行い、要約、画像の説明、URLスラッグなどを生成するために使用されます。将来的にはさらに多くのアプリケーションがあるかもしれません。",
+    "feature_4": "フロントエンドとバックエンドの分離",
+    "feature_4_desc": "データベース、CMS、フロントエンド、メディアストレージはすべて独立しています。したがって、後続のアップグレードやリファクタリングが容易になります。",
+    "structure_title": "サイトアーキテクチャ",
+    "structure_subtitle": "サーバーレスアーキテクチャを使用し、フロントエンドとバックエンドを分離しています。Cloudflareにデプロイされています。",
+    "structure_1_title": "データベース：",
+    "structure_1_desc": "ほとんどのデータはSupabaseに保存されており、一部の構成情報はCloudflare Workers KVに保存されています。ユーザー認証はSupabase Authを使用して行われます。",
+    "structure_2_title": "管理画面：",
+    "structure_2_desc": "SvelteKitを使用して開発し、Cloudflareにデプロイされています。",
+    "structure_3_title": "このサイト：",
+    "structure_3_desc": "Remixを使用して開発され、フルサイトSSRで、Cloudflareにデプロイされています。",
+    "structure_4_title": "エッジ関数：",
+    "structure_4_desc": "Cloudflare Workersは、画像のアップロード、AIの呼び出し、その他のサードパーティAPIの呼び出しなどのタスクを処理するために責任を持ち、リクエストの成功率を向上させます。",
+    "statement": "CMSとこのサイトはGitHubでオープンソースになっていますが、現在は成熟した製品として外部に公開する準備が整っていません。このサイトのデプロイと設定は比較的複雑であり、フロントエンドとバックエンドの技術的背景がない場合は試すことをお勧めしません。"
+  }
+}
+
+export default function SiteText(lang: string) {
+  if (lang !== "zh" && lang !== "en" && lang !== "jp") {
+    return content["zh"];
+  }
+  return content[lang];
+}

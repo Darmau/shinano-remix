@@ -86,5 +86,3 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     profileImage
   });
 }
-
-//https://img.darmau.co/cdn-cgi/image/format=auto,width=480/https://img.darmau.co/ba07adad-3f02-409b-ad39-2814b6f2ede3
