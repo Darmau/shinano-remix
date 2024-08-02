@@ -5,6 +5,7 @@ export default {
     "recent_article": "最新文章",
     "article": "文章",
     "photography": "摄影",
+    "thought": "想法",
   },
 
   "en": {
@@ -13,6 +14,7 @@ export default {
     "recent_article": "Recent Articles",
     "article": "Article",
     "photography": "Photography",
+    "thought": "Thought",
   },
 
   "jp": {
@@ -21,5 +23,6 @@ export default {
     "recent_article": "最新の記事",
     "article": "記事",
     "photography": "写真",
+    "thought": "思考",
   },
 }
