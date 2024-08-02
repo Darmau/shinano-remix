@@ -2,7 +2,6 @@ import {Json} from "~/types/supabase";
 import ArticleImage from "~/components/ArticleImage";
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark-dimmed.css';
-import {useEffect, useRef} from "react";
 
 type ContentStructure = {
   content: Content[];
@@ -115,7 +114,7 @@ const Heading = ({attrs, content}: { attrs?: Content["attrs"]; content?: Content
     case 2:
       return <h2
           className = "mt-16 font-bold text-3xl text-zinc-800"
-          id={attrs?.id}
+          id = {attrs?.id}
       >
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
@@ -124,7 +123,7 @@ const Heading = ({attrs, content}: { attrs?: Content["attrs"]; content?: Content
     case 3:
       return <h3
           className = "mt-12 mb-4 font-bold text-2xl text-zinc-700"
-          id={attrs?.id}
+          id = {attrs?.id}
       >
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
@@ -133,7 +132,7 @@ const Heading = ({attrs, content}: { attrs?: Content["attrs"]; content?: Content
     case 4:
       return <h4
           className = "mt-8 mb-4 font-bold text-xl text-zinc-600"
-          id={attrs?.id}
+          id = {attrs?.id}
       >
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
@@ -142,7 +141,7 @@ const Heading = ({attrs, content}: { attrs?: Content["attrs"]; content?: Content
     default:
       return <h2
           className = "mb-4 font-bold text-3xl text-zinc-800"
-          id={attrs?.id}
+          id = {attrs?.id}
       >
         {content?.map((item, index) => (
             <TextNode key = {index} node = {item}/>
@@ -160,31 +159,26 @@ const Blockquote = ({content}: { content?: ContentItem[] }) => (
 );
 
 const CodeBlock = ({attrs, content}: { attrs?: Content["attrs"]; content?: ContentItem[] }) => {
-  const codeRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (codeRef.current) {
-      hljs.highlightElement(codeRef.current);
-    }
-  }, [attrs?.language, content]);
-
   const language = attrs?.language || '';
   const codeContent = content?.[0]?.text || '';
 
+  // 直接使用 hljs.highlight 方法高亮代码
+  const highlightedCode = hljs.highlight(codeContent, {language}).value;
+
   return (
-      <pre className = "hljs rounded-xl overflow-hidden">
-        <div className = "flex justify-between px-4 py-2">
-          {/*显示三个圆点模拟终端的窗口控制按钮*/}
-          <span className = "flex items-center gap-1">
-            <span className = "w-3 h-3 rounded-full bg-red-500"/>
-            <span className = "w-3 h-3 rounded-full bg-yellow-500"/>
-            <span className = "w-3 h-3 rounded-full bg-green-500"/>
-          </span>
-          <p>{language}</p>
-        </div>
-      <code ref = {codeRef} className = {language ? `language-${language}` : ''}>
-        {codeContent}
-      </code>
+      <pre className = "hljs rounded-xl overflow-hidden p-4">
+      <div className = "flex justify-between mb-2">
+        <span className = "flex items-center gap-1">
+          <span className = "w-3 h-3 rounded-full bg-red-500"/>
+          <span className = "w-3 h-3 rounded-full bg-yellow-500"/>
+          <span className = "w-3 h-3 rounded-full bg-green-500"/>
+        </span>
+        <p>{language}</p>
+      </div>
+      <code
+          className = {language ? `language-${language}` : ''}
+          dangerouslySetInnerHTML = {{__html: highlightedCode}}
+      />
     </pre>
   );
 };
@@ -298,7 +292,7 @@ const TextNode = ({node}: { node: Content }) => {
           content = <mark className = "bg-yellow-300">{content}</mark>;
           break;
         case 'code':
-          content = <code className="font-mono px-2">{content}</code>;
+          content = <code className = "font-mono px-2">{content}</code>;
           break;
       }
     });
