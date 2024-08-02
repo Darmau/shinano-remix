@@ -88,7 +88,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     .limit(30);
 
   const feed = generateRss({
-    title: label.title,
+    title: `${label.title} - ${label.article}`,
     description: label.description,
     language: lang,
     link: `https://darmau.co/${lang}`,
@@ -127,7 +127,7 @@ function getFirstThreeParagraphs(text: string | null): string {
   .join('\n');
 }
 
-function generateEnclosure(enclosure: {url: string, type: string, length: string}): string {
+function generateEnclosure(enclosure: {url: string, type: string, length: string} | undefined): string {
   if (!enclosure) {
     return `
       <enclosure
