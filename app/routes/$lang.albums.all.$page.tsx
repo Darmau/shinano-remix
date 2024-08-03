@@ -60,7 +60,7 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
   const multiLangLinks = i18nLinks(baseUrl,
       lang,
       data!.availableLangs,
-      ""
+      `albums/all/${data!.page}`
   );
 
   return [

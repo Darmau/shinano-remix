@@ -30,7 +30,6 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
   ];
 };
 
-
 export default function Index() {
   const {articles, label} = useLoaderData<typeof loader>();
 
