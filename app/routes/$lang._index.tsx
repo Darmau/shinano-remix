@@ -8,21 +8,25 @@ import Subnav from "~/components/Subnav";
 import NormalArticleCard from "~/components/NormalArticleCard";
 import HomeTopArticle from "~/components/HomeTopArticle";
 import CTA from "~/components/CTA";
+import i18nLinks from "~/utils/i18nLinks";
 
-export const meta: MetaFunction = ({params}) => {
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
   const lang = params.lang as string;
   const label = getLanguageLabel(HomepageText, lang);
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      ""
+  );
+
   return [
     {title: label.title},
     {
       name: "description",
       content: label.description,
     },
-    {
-      tagName: "link",
-      rel: "canonical",
-      href: `https://darmau.co/${lang}`,
-    },
+    ...multiLangLinks
   ];
 };
 
@@ -96,9 +100,12 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   .returns<Article[]>();
 
   const label = getLanguageLabel(HomepageText, lang);
+  const availableLangs = ["zh", "en", "jp"];
 
   return json({
     articles: articleData,
     label,
+    baseUrl: context.cloudflare.env.BASE_URL,
+    availableLangs
   })
 }

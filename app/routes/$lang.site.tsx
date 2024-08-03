@@ -198,7 +198,6 @@ export default function AboutSite() {
               </div>
               <figcaption className = "text-base lg:col-start-1 lg:row-start-3">
                 <div className = "font-semibold text-gray-900">李大毛</div>
-                <div className = "mt-1 text-gray-500">CEO of Workcation</div>
               </figcaption>
             </figure>
           </div>
