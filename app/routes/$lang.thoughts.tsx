@@ -156,7 +156,7 @@ export default function Thoughts() {
 
   return (
       <div className = "w-full flex-1 min-h-full max-w-8xl mx-auto p-4 md:py-8 lg:mb-16">
-        <div className = "columns-1 sm:columns-2 md:columns-3 gap-4">
+        <div className = "columns-1 sm:columns-2 md:columns-3 gap-4 pb-4">
           {thoughts.map((thought) => (
               <ThoughtCard thought = {thought as unknown as Thought} key = {thought.id}/>
           ))}
