@@ -189,7 +189,31 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
     {title: getDate(data!.thoughtData.created_at!, lang)},
     {
       name: "description",
-      content: data!.thoughtData ? data!.thoughtData.content_text : '',
+      content: data!.thoughtData.content_text ? data!.thoughtData.content_text.split(/\r?\n/).join("") : '',
+    },
+    {
+      property: "og:title",
+      content: getDate(data!.thoughtData.created_at!, lang)
+    },
+    {
+      property: "og:type",
+      content: "article"
+    },
+    {
+      property: "og:url",
+      content: `${baseUrl}/${lang}/thought/${data!.thoughtData.slug}`
+    },
+    {
+      property: "og:description",
+      content: data!.thoughtData.content_text ? data!.thoughtData.content_text.split(/\r?\n/).join("") : ''
+    },
+    {
+      property: "twitter:card",
+      content: "summary"
+    },
+    {
+      property: "twitter:creator",
+      content: "@darmau8964"
     },
     ...multiLangLinks
   ];

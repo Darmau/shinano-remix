@@ -79,6 +79,30 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
       title: "RSS",
       href: `${baseUrl}/${lang}/thought/rss.xml`,
     },
+    {
+      property: "og:title",
+      content: label.all_thoughts
+    },
+    {
+      property: "og:type",
+      content: "article"
+    },
+    {
+      property: "og:url",
+      content: `${baseUrl}/${lang}/thoughts`
+    },
+    {
+      property: "og:description",
+      content: label.description
+    },
+    {
+      property: "twitter:card",
+      content: "summary"
+    },
+    {
+      property: "twitter:creator",
+      content: "@darmau8964"
+    },
     ...multiLangLinks
   ];
 };

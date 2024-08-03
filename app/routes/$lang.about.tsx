@@ -81,6 +81,34 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
       name: "description",
       content: label.about_description,
     },
+    {
+      property: "og:title",
+      content: label.about_title
+    },
+    {
+      property: "og:type",
+      content: "profile"
+    },
+    {
+      property: "og:url",
+      content: `${baseUrl}/${lang}/about`
+    },
+    {
+      property: "og:image",
+      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/ba07adad-3f02-409b-ad39-2814b6f2ede3`
+    },
+    {
+      property: "og:description",
+      content: label.about_description
+    },
+    {
+      property: "twitter:card",
+      content: "summary_large_image"
+    },
+    {
+      property: "twitter:creator",
+      content: "@darmau8964"
+    },
     ...multiLangLinks
   ];
 };
@@ -110,6 +138,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     content,
     profileImage,
     baseUrl: context.cloudflare.env.BASE_URL,
+    prefix: context.cloudflare.env.IMG_PREFIX,
     availableLangs
   });
 }

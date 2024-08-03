@@ -18,6 +18,13 @@ export default function i18nLinks(baseUrl: string,currentLang: string, available
     };
   });
 
+  const ogLocale = langs.map((l) => {
+    return {
+      property: "og:locale:alternate",
+      content: l
+    }
+  });
+
   // 展开语言链接，返回数组
-  return [canonical, ...links];
+  return [canonical, ...links, ...ogLocale];
 }

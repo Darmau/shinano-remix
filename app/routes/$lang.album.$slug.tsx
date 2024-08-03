@@ -202,6 +202,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     totalPage,
     session,
     baseUrl: context.cloudflare.env.BASE_URL,
+    prefix: context.cloudflare.env.IMG_PREFIX,
     availableLangs
   });
 }
@@ -227,6 +228,30 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
       type: "application/rss+xml",
       title: "RSS",
       href: `${baseUrl}/${lang}/album/rss.xml`,
+    },
+    {
+      property: "og:title",
+      content: data!.albumContent.title
+    },
+    {
+      property: "og:url",
+      content: `${baseUrl}/${lang}/album/${data!.albumContent.slug}`
+    },
+    {
+      property: "og:image",
+      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/${data!.albumImages![0].image!.storage_key}`
+    },
+    {
+      property: "og:description",
+      content: data!.albumContent.abstract || data!.albumContent.content_text
+    },
+    {
+      property: "twitter:card",
+      content: "summary_large_image"
+    },
+    {
+      property: "twitter:creator",
+      content: "@darmau8964"
     },
     ...multiLangLinks
   ];

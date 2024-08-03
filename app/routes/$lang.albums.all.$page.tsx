@@ -76,6 +76,31 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
       title: "RSS",
       href: `${baseUrl}/${lang}/album/rss.xml`,
     },
+    {
+      property: "og:title",
+      content: label.albums_title
+    },
+    {
+      property: "og:url",
+      content: `${baseUrl}/${lang}/albums/all/${data!.page}`
+    },
+    {
+      property: "og:image",
+      // 没有数据的时候会有bug
+      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/${data!.albums![0].cover.storage_key || 'a2b148a3-5799-4be0-a8d4-907f9355f20f'}`
+    },
+    {
+      property: "og:description",
+      content: label.albums_description
+    },
+    {
+      property: "twitter:card",
+      content: "summary_large_image"
+    },
+    {
+      property: "twitter:creator",
+      content: "@darmau8964"
+    },
     ...multiLangLinks
   ];
 };
@@ -117,6 +142,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     count: count,
     page: Number(page),
     baseUrl: context.cloudflare.env.BASE_URL,
+    prefix: context.cloudflare.env.IMG_PREFIX,
     availableLangs
   })
 }

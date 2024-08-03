@@ -40,6 +40,34 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
       title: "RSS",
       href: `${baseUrl}/${lang}/article/rss.xml`,
     },
+    {
+      property: "og:title",
+      content: label.title
+    },
+    {
+      property: "og:type",
+      content: "website"
+    },
+    {
+      property: "og:url",
+      content: `${baseUrl}/${lang}`
+    },
+    {
+      property: "og:image",
+      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/a2b148a3-5799-4be0-a8d4-907f9355f20f`
+    },
+    {
+      property: "og:description",
+      content: label.description
+    },
+    {
+      property: "twitter:card",
+      content: "summary_large_image"
+    },
+    {
+      property: "twitter:creator",
+      content: "@darmau8964"
+    },
     ...multiLangLinks
   ];
 };
@@ -119,6 +147,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     articles: articleData,
     label,
     baseUrl: context.cloudflare.env.BASE_URL,
+    prefix: context.cloudflare.env.IMG_PREFIX,
     availableLangs
   })
 }
