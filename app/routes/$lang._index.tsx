@@ -169,14 +169,20 @@ export async function action({request, context}: ActionFunctionArgs) {
 
   const resend = new Resend(context.cloudflare.env.RESEND_KEY);
 
-  await resend.contacts.create({
-    email: email,
-    unsubscribed: false,
-    audienceId: context.cloudflare.env.RESEND_AUDIENCE_ID,
-  });
-
-  return json({
-    success: 'Thanks for subscribing!',
-    error: null,
-  })
+  try {
+    await resend.contacts.create({
+      email: email,
+      unsubscribed: false,
+      audienceId: context.cloudflare.env.RESEND_AUDIENCE_ID,
+    });
+    return json({
+      success: 'Thanks for subscribing!',
+      error: null,
+    })
+  } catch (error) {
+    return json({
+      success: false,
+      error: 'Failed to subscribe',
+    })
+  }
 }
