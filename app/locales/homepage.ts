@@ -21,6 +21,10 @@ export default {
     "article": "文章",
     "photography": "摄影",
     "thought": "想法",
+    "cta_title": "订阅本站更新",
+    "cta_description": "首选通过RSS订阅本站内容。你也可以通过邮箱订阅，我只会在写了非常满意的内容后才会发邮件。当然你也可以关注本人微信公众号“darmau”阅读非敏感类内容。",
+    "cta_placeholder": "输入你的邮箱",
+    "cta_button": "通知我",
   },
 
   "en": {
@@ -47,6 +51,10 @@ export default {
     "article": "Article",
     "photography": "Photography",
     "thought": "Thought",
+    "cta_title": "Subscribe to the Site",
+    "cta_description": "Subscribe to the site content first through RSS. You can also subscribe by email, and I will only send emails after writing very satisfactory content. Of course, you can also follow my WeChat official account 'darmau' to read non-sensitive content.",
+    "cta_placeholder": "Enter your email",
+    "cta_button": "Notify me",
   },
 
   "jp": {
@@ -71,5 +79,9 @@ export default {
     "article": "記事",
     "photography": "写真",
     "thought": "思考",
+    "cta_title": "サイトに登録",
+    "cta_description": "最初にRSSを介してサイトのコンテンツを購読します。メールで購読することもできますが、非常に満足のいくコンテンツを書いた後にのみメールを送信します。もちろん、非機密のコンテンツを読むために私のWeChat公式アカウント「darmau」をフォローすることもできます。",
+    "cta_placeholder": "メールアドレスを入力してください",
+    "cta_button": "通知する",
   },
 }
