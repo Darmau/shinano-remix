@@ -72,6 +72,13 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
       name: "description",
       content: label.description,
     },
+    {
+      tagName: "link",
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "RSS",
+      href: `${baseUrl}/${lang}/thought/rss.xml`,
+    },
     ...multiLangLinks
   ];
 };

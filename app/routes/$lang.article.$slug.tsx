@@ -1,4 +1,4 @@
-import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {ActionFunctionArgs, json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Link, useActionData, useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
 import ResponsiveImage from "~/components/ResponsiveImage";
@@ -14,9 +14,10 @@ import NextAndPrev, {NeighboringPost} from "~/components/NextAndPrev";
 import Breadcrumb, {BreadcrumbProps} from "~/components/Breadcrumb";
 import CommentEditor from "~/components/CommentEditor";
 import {CommentBlock, CommentProps} from "~/components/CommentBlock";
+import i18nLinks from "~/utils/i18nLinks";
 
-export default function ArticleDetail () {
-  const { lang } = useOutletContext<{ lang: string }>();
+export default function ArticleDetail() {
+  const {lang} = useOutletContext<{ lang: string }>();
   const {
     article,
     domain,
@@ -26,12 +27,12 @@ export default function ArticleDetail () {
     page,
     limit,
     totalPage,
-      session
+    session
   } = useLoaderData<typeof loader>();
   const actionResponse = useActionData<typeof action>();
 
   const label = getLanguageLabel(ArticleText, lang);
-  const { pathname } = useLocation();
+  const {pathname} = useLocation();
 
   if (!article) {
     throw new Response(null, {
@@ -54,9 +55,9 @@ export default function ArticleDetail () {
   ]
 
   return (
-      <div className="w-full max-w-6xl mx-auto p-4 md:py-8 mb-8 lg:mb-16">
+      <div className = "w-full max-w-6xl mx-auto p-4 md:py-8 mb-8 lg:mb-16">
         <ReadingProcess/>
-        <Breadcrumb pages={breadcrumbPages} />
+        <Breadcrumb pages = {breadcrumbPages}/>
         <div className = "grid grid-cols-1 md:grid-cols-3 gap-8">
           <header className = "md:my-4 col-span-1 md:col-span-2 space-y-3 md:space-y-4">
             <h1 className = "font-medium text-zinc-800 leading-normal text-4xl lg:text-5xl">{article.title}</h1>
@@ -104,7 +105,7 @@ export default function ArticleDetail () {
               />
 
               <div className = "mt-16 col-span-1 lg:col-span-2">
-                <CommentEditor contentTable = {'to_article'} contentId = {article.id} session={session}/>
+                <CommentEditor contentTable = {'to_article'} contentId = {article.id} session = {session}/>
                 <div className = "flex flex-col gap-4 divide-y">
                   {actionResponse?.error && <p className = "error">{actionResponse.error}</p>}
                   {comments && comments.map((comment) => (
@@ -232,6 +233,19 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   // 总页数
   const totalPage = count ? Math.ceil(count / limit) : 1;
 
+  // 查询同样的slug是否有其他语言版本
+  const {data: availableArticle} = await supabase
+  .from('article')
+  .select(`
+    language!inner (lang)
+  `)
+  .eq('slug', slug)
+
+  // 转换成lang的数组，如['zh', 'en']
+  const availableLangs = availableArticle!.map((item: { language: { lang: string | null } }) => {
+    return item.language.lang as string
+  });
+
   return json({
     article: articleContent,
     previousArticle: previousArticle || null,
@@ -241,9 +255,37 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     page,
     limit,
     totalPage,
-    session
+    session,
+    baseUrl: context.cloudflare.env.BASE_URL,
+    availableLangs
   })
 }
+
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      `article/${data!.article.slug}`
+  );
+
+  return [
+    {title: data!.article.title},
+    {
+      name: "description",
+      content: data!.article.abstract || data!.article.subtitle,
+    },
+    {
+      tagName: "link",
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "RSS",
+      href: `${baseUrl}/${lang}/article/rss.xml`,
+    },
+    ...multiLangLinks
+  ];
+};
 
 export async function action({request, context}: ActionFunctionArgs) {
   const formData = await request.formData();
