@@ -1,16 +1,23 @@
 import Subnav from "~/components/Subnav";
-import { json } from "@remix-run/cloudflare";
+import {json, MetaFunction} from "@remix-run/cloudflare";
 import {Form, useActionData, useLoaderData, Link, useOutletContext} from "@remix-run/react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import ContactText from "~/locales/contact";
+import HomepageText from "~/locales/homepage";
+import i18nLinks from "~/utils/i18nLinks";
 
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const { supabase } = createClient(request, context);
   const { data: { session } } = await supabase.auth.getSession();
+
+  const availableLangs = ["zh", "en", "jp"];
+
   return json({
-    session
+    session,
+    baseUrl: context.cloudflare.env.BASE_URL,
+    availableLangs
   });
 };
 
@@ -158,4 +165,24 @@ type MessageInsert = {
   contact_type: string;
   contact_detail: string;
   message: string;
+};
+
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const label = getLanguageLabel(HomepageText, lang);
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      "contact"
+  );
+
+  return [
+    {title: label.contact_title},
+    {
+      name: "description",
+      content: label.contact_description,
+    },
+    ...multiLangLinks
+  ];
 };

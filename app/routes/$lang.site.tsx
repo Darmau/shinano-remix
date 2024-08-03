@@ -1,5 +1,5 @@
 import Subnav from "~/components/Subnav";
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import SiteText from "~/locales/site";
 import {useLoaderData} from "@remix-run/react";
 import Supabase from '~/icons/Supabase.svg';
@@ -9,6 +9,7 @@ import Remix from '~/icons/Remix.svg';
 import Tiptap from '~/icons/Tiptap.svg';
 import OpenAI from '~/icons/Openai.svg';
 import {ServerStackIcon, LanguageIcon, SparklesIcon, Square3Stack3DIcon} from "@heroicons/react/24/outline";
+import i18nLinks from "~/utils/i18nLinks";
 
 export default function AboutSite() {
   const {content} = useLoaderData<typeof loader>();
@@ -206,11 +207,35 @@ export default function AboutSite() {
   )
 }
 
-export async function loader({params}: LoaderFunctionArgs) {
+export async function loader({params, context}: LoaderFunctionArgs) {
   const lang = params.lang as string;
   const content = SiteText(lang);
 
+  const availableLangs = ["zh", "en", "jp"];
+
   return json({
-    content
+    content,
+    baseUrl: context.cloudflare.env.BASE_URL,
+    availableLangs
   })
 }
+
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      "site"
+  );
+
+  return [
+    {title: data!.content.title},
+    {
+      name: "description",
+      content: data!.content.subtitle,
+    },
+    ...multiLangLinks
+  ];
+};

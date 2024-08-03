@@ -1,10 +1,11 @@
-import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {ActionFunctionArgs, json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {useFetcher, useLoaderData, useOutletContext} from "@remix-run/react";
 import {useEffect, useState} from "react";
 import ThoughtCard from "~/components/ThoughtCard";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import ThoughtText from "~/locales/thought";
+import i18nLinks from "~/utils/i18nLinks";
 
 export interface Thought {
   id: number,
@@ -46,10 +47,34 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     })
   }
 
+  const availableLangs = ["zh", "en", "jp"];
+
   return json({
-    thoughts
+    thoughts,
+    baseUrl: context.cloudflare.env.BASE_URL,
+    availableLangs
   })
 }
+
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const label = getLanguageLabel(ThoughtText, lang);
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      "thoughts"
+  );
+
+  return [
+    {title: label.all_thoughts},
+    {
+      name: "description",
+      content: label.description,
+    },
+    ...multiLangLinks
+  ];
+};
 
 export async function action({request, context}: ActionFunctionArgs) {
   const formData = await request.formData();

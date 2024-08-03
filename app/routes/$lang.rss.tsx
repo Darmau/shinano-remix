@@ -2,9 +2,10 @@ import Subnav from "~/components/Subnav";
 import {useLoaderData, useOutletContext} from "@remix-run/react";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import RSSText from "~/locales/rss";
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {useState} from "react";
+import i18nLinks from "~/utils/i18nLinks";
 
 export default function RSS() {
   const {lang, prefix} = useOutletContext<{ lang: string, prefix: string }>();
@@ -118,6 +119,26 @@ export default function RSS() {
   )
 }
 
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const label = getLanguageLabel(RSSText, lang);
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      "rss"
+  );
+
+  return [
+    {title: label.page_title},
+    {
+      name: "description",
+      content: label.page_description,
+    },
+    ...multiLangLinks
+  ];
+};
+
 export async function loader({request, context, params}: LoaderFunctionArgs) {
   const {supabase} = createClient(request, context);
   const lang = params.lang as string;
@@ -159,11 +180,15 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       created_at
     `)
   .order('created_at', {ascending: false})
-  .limit(7)
+  .limit(7);
+
+  const availableLangs = ["zh", "en", "jp"];
 
   return json({
     articles,
     photos,
-    thoughts
+    thoughts,
+    baseUrl: context.cloudflare.env.BASE_URL,
+    availableLangs
   })
 }
