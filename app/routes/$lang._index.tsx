@@ -18,6 +18,11 @@ export const meta: MetaFunction = ({params}) => {
       name: "description",
       content: label.description,
     },
+    {
+      tagName: "link",
+      rel: "canonical",
+      href: `https://darmau.co/${lang}`,
+    },
   ];
 };
 
