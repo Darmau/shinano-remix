@@ -50,7 +50,7 @@ export default function RSS() {
             <section className = "rounded-2xl border shadow-lg">
               <div className="p-4 lg:p-8 border-b space-y-4">
                 <h3 className = "font-medium text-lg text-zinc-700">{label.article}</h3>
-                <code className = "block font-mono text-zinc-600">{`https://darmau.co/${lang}/article/rss.xml`}</code>
+                <code className = "text-sm block font-mono text-zinc-600">{`https://darmau.co/${lang}/article/rss.xml`}</code>
                 <button
                     onClick = {() => copyToClipboard(`https://darmau.co/${lang}/article/rss.xml`, 'article')}
                     className="bg-violet-600 text-white font-medium py-3 w-full rounded-md"
@@ -70,7 +70,7 @@ export default function RSS() {
             <section className = "rounded-2xl border shadow-lg">
               <div className = "p-4 lg:p-8 border-b space-y-4">
                 <h3 className = "font-medium text-lg text-zinc-700">{label.photography}</h3>
-                <code className = "block font-mono text-zinc-600">{`https://darmau.co/${lang}/album/rss.xml`}</code>
+                <code className = "text-sm block font-mono text-zinc-600">{`https://darmau.co/${lang}/album/rss.xml`}</code>
                 <button
                     onClick = {() => copyToClipboard(`https://darmau.co/${lang}/album/rss.xml`, 'photo')}
                     className = "bg-violet-600 text-white font-medium py-3 w-full rounded-md"
@@ -96,7 +96,7 @@ export default function RSS() {
             <section className = "rounded-2xl border shadow-lg">
               <div className = "p-4 lg:p-8 border-b space-y-4">
                 <h3 className = "font-medium text-lg text-zinc-700">{label.thought}</h3>
-                <code className = "block font-mono text-zinc-600">{`https://darmau.co/${lang}/thought/rss.xml`}</code>
+                <code className = "text-sm block font-mono text-zinc-600">{`https://darmau.co/${lang}/thought/rss.xml`}</code>
                 <button
                     onClick = {() => copyToClipboard(`https://darmau.co/${lang}/thought/rss.xml`, 'thought')}
                     className = "bg-violet-600 text-white font-medium py-3 w-full rounded-md"
@@ -104,9 +104,9 @@ export default function RSS() {
                   {copiedThought ? label.copied : label.copy}
                 </button>
               </div>
-              {thoughts && <ol className = "space-y-4 p-4 lg:p-8 list-decimal">
+              {thoughts && <ol className = "space-y-4 p-4 lg:p-8 pl-8 lg:pl-12 list-decimal">
                 {thoughts.map((thought) => (
-                    <li key = {thought.id} className = "relative">
+                    <li key = {thought.id}>
                       <p className = "text-zinc-700">{thought.content_text}</p>
                     </li>
                 ))}

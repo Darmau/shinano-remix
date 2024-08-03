@@ -68,7 +68,7 @@ export default function Contact() {
   return (
       <>
         <Subnav active="about" />
-        <div className = "max-w-md mx-auto my-8 lg:my-12">
+        <div className = "max-w-md mx-auto my-8 lg:my-12 px-4 lg:p-0">
           <header className = "text-center space-y-4">
             <h2 className = "font-medium text-sm text-violet-700">{label.contact_us}</h2>
             <h1 className = "font-medium text-3xl text-zinc-700">{label.get_in_touch}</h1>
