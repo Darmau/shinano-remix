@@ -59,7 +59,7 @@ export default function Navbar({lang, items}: { lang: string, items: NavItem[] }
   }, []);
 
   return (
-      <header id = "navbar" className = "bg-white isolate z-10 fixed top-0 w-full transition-all duration-300">
+      <header id = "navbar" className = "bg-white isolate z-40 fixed top-0 w-full transition-all duration-300">
         <nav aria-label = "Global" className = "border-b">
           <div className = "max-w-8xl mx-auto flex items-center justify-between p-5 lg:px-8">
             <div className = "hidden lg:flex lg:gap-2 lg:items-center">
@@ -74,7 +74,7 @@ export default function Navbar({lang, items}: { lang: string, items: NavItem[] }
                 <PopoverPanel
                     transition
                     anchor = "bottom"
-                    className = "z-20 shadow-2xl divide-y divide-zinc-100 rounded-md bg-white text-sm transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+                    className = "z-50 shadow-2xl divide-y divide-zinc-100 rounded-md bg-white text-sm transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
                 >
                   <Link
                       reloadDocument

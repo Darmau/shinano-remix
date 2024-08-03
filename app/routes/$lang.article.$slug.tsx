@@ -59,7 +59,7 @@ export default function ArticleDetail() {
         <ReadingProcess/>
         <Breadcrumb pages = {breadcrumbPages}/>
         <div className = "flex flex-col gap-8 md:gap-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 mt-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 mt-4 gap-6 md:gap-8">
             <header className = "space-y-4">
               <h3 className = "text-sm text-violet-700 font-medium">{article.category!.title}</h3>
               <h1 className = "font-medium text-zinc-800 leading-normal text-4xl lg:text-5xl">{article.title}</h1>
@@ -79,14 +79,12 @@ export default function ArticleDetail() {
                   </ol>
               )}
             </header>
-            <div className = "w-full">
-              {article.cover && (
-                  <ResponsiveImage
-                      image = {article.cover as unknown as Image} width = {960}
-                      classList = "w-full h-full rounded-md overflow-hiden object-cover"
+            {article.cover && (
+                <ResponsiveImage
+                    image = {article.cover as unknown as Image} width = {960}
+                    classList = "w-full rounded-md overflow-hiden object-cover aspect-[3/2]"
                 />
-              )}
-            </div>
+            )}
           </div>
 
           {/*正文*/}

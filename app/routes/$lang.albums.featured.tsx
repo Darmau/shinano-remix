@@ -23,12 +23,12 @@ export default function AllFeaturedAlbums () {
           <ServerPhotoAlbum
               layout = "masonry"
               photos = {photos}
-              breakpoints = {[480, 720, 1080]}
+              breakpoints = {[480, 720, 960]}
               spacing={0}
               render={{
                 // eslint-disable-next-line no-empty-pattern
                 photo: ({}, { photo}) => (
-                    <Link to={photo.href} className="group m-2 relative rounded-md overflow-hidden" key={photo.key}>
+                    <Link to={photo.href} className="group m-1 md:m-2 relative rounded-md overflow-hidden" key={photo.key}>
                       <div className = "z-20 absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent">
                         <div
                             className = "transform translate-y-full transition-transform duration-300 group-hover:translate-y-0 p-4"
