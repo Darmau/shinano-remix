@@ -1,4 +1,4 @@
-import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {ActionFunctionArgs, json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Link, useActionData, useLoaderData, useOutletContext} from "@remix-run/react";
 import {Json} from "~/types/supabase";
@@ -13,6 +13,7 @@ import getLanguageLabel from "~/utils/getLanguageLabel";
 import AlbumText from "~/locales/album";
 import CommentEditor from "~/components/CommentEditor";
 import {CommentBlock, CommentProps} from "~/components/CommentBlock";
+import i18nLinks from "~/utils/i18nLinks";
 
 export default function AlbumDetail() {
   const {lang} = useOutletContext<{ lang: string }>();
@@ -121,8 +122,10 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       id,
       title,
       slug,
+      abstract,
       published_at,
       content_json,
+      content_text,
       topic,
       category (title, slug),
       language!inner (lang)
@@ -176,6 +179,19 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   // 总页数
   const totalPage = count ? Math.ceil(count / limit) : 1;
 
+  // 查询同样的slug是否有其他语言版本
+  const {data: availableAlbums} = await supabase
+  .from('photo')
+  .select(`
+    language!inner (lang)
+  `)
+  .eq('slug', slug)
+
+  // 转换成lang的数组，如['zh', 'en']
+  const availableLangs = availableAlbums!.map((item: {language: {lang: string | null}}) => {
+    return item.language.lang as string
+  });
+
   return json({
     albumContent,
     albumImages,
@@ -184,9 +200,62 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     page,
     limit,
     totalPage,
-    session
+    session,
+    baseUrl: context.cloudflare.env.BASE_URL,
+    prefix: context.cloudflare.env.IMG_PREFIX,
+    availableLangs
   });
 }
+
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      `album/${data!.albumContent.slug}`
+  );
+
+  return [
+    {title: data!.albumContent.title},
+    {
+      name: "description",
+      content: data!.albumContent.abstract || data!.albumContent.content_text,
+    },
+    {
+      tagName: "link",
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "RSS",
+      href: `${baseUrl}/${lang}/album/rss.xml`,
+    },
+    {
+      property: "og:title",
+      content: data!.albumContent.title
+    },
+    {
+      property: "og:url",
+      content: `${baseUrl}/${lang}/album/${data!.albumContent.slug}`
+    },
+    {
+      property: "og:image",
+      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/${data!.albumImages![0].image!.storage_key}`
+    },
+    {
+      property: "og:description",
+      content: data!.albumContent.abstract || data!.albumContent.content_text
+    },
+    {
+      property: "twitter:card",
+      content: "summary_large_image"
+    },
+    {
+      property: "twitter:creator",
+      content: "@darmau8964"
+    },
+    ...multiLangLinks
+  ];
+};
 
 export async function action({request, context}: ActionFunctionArgs) {
   const formData = await request.formData();

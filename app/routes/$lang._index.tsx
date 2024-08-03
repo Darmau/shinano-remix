@@ -8,19 +8,69 @@ import Subnav from "~/components/Subnav";
 import NormalArticleCard from "~/components/NormalArticleCard";
 import HomeTopArticle from "~/components/HomeTopArticle";
 import CTA from "~/components/CTA";
+import i18nLinks from "~/utils/i18nLinks";
 
-export const meta: MetaFunction = ({params}) => {
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
   const lang = params.lang as string;
   const label = getLanguageLabel(HomepageText, lang);
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      ""
+  );
+
   return [
     {title: label.title},
     {
       name: "description",
       content: label.description,
     },
+    {
+      tagName: "link",
+      rel: "sitemap",
+      type: "application/xml",
+      href: `${baseUrl}/sitemap-index.xml`,
+      title: "Sitemap",
+    },
+    {
+      tagName: "link",
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "RSS",
+      href: `${baseUrl}/${lang}/article/rss.xml`,
+    },
+    {
+      property: "og:title",
+      content: label.title
+    },
+    {
+      property: "og:type",
+      content: "website"
+    },
+    {
+      property: "og:url",
+      content: `${baseUrl}/${lang}`
+    },
+    {
+      property: "og:image",
+      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/a2b148a3-5799-4be0-a8d4-907f9355f20f`
+    },
+    {
+      property: "og:description",
+      content: label.description
+    },
+    {
+      property: "twitter:card",
+      content: "summary_large_image"
+    },
+    {
+      property: "twitter:creator",
+      content: "@darmau8964"
+    },
+    ...multiLangLinks
   ];
 };
-
 
 export default function Index() {
   const {articles, label} = useLoaderData<typeof loader>();
@@ -91,9 +141,13 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   .returns<Article[]>();
 
   const label = getLanguageLabel(HomepageText, lang);
+  const availableLangs = ["zh", "en", "jp"];
 
   return json({
     articles: articleData,
     label,
+    baseUrl: context.cloudflare.env.BASE_URL,
+    prefix: context.cloudflare.env.IMG_PREFIX,
+    availableLangs
   })
 }

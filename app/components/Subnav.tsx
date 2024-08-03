@@ -6,7 +6,7 @@ export default function Subnav ({active}: {active: string}) {
   const subnavItems = SubNavItems(lang, active);
 
   return (
-      <div className = "flex gap-8 justify-center p-4 border-b">
+      <div className = "flex gap-8 justify-center p-4 border-b z-20 relative">
         {subnavItems.map((item, index) => {
           return (
               <Link

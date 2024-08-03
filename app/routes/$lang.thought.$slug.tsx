@@ -2,7 +2,7 @@ import Breadcrumb, {BreadcrumbProps} from "~/components/Breadcrumb";
 import {Link, useActionData, useLoaderData, useOutletContext} from "@remix-run/react";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import ThoughtText from "~/locales/thought";
-import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {ActionFunctionArgs, json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Json} from "~/types/supabase";
 import ContentContainer from "~/components/ContentContainer";
@@ -12,6 +12,8 @@ import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import {CommentBlock, CommentProps} from "~/components/CommentBlock";
 import CommentEditor from "~/components/CommentEditor";
+import i18nLinks from "~/utils/i18nLinks";
+import getDate from "~/utils/getDate";
 
 export default function ThoughtDetail() {
   const {lang} = useOutletContext<{ lang: string }>();
@@ -159,6 +161,8 @@ export async function loader({
   // 总页数
   const totalPage = count ? Math.ceil(count / limit) : 1;
 
+  const availableLangs = ["zh", "en", "jp"];
+
   return json({
     thoughtData,
     thoughtImages,
@@ -166,9 +170,54 @@ export async function loader({
     page,
     limit,
     totalPage,
-    session
+    session,
+    baseUrl: context.cloudflare.env.BASE_URL,
+    availableLangs
   })
 }
+
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      `thought/${data!.thoughtData.slug}`
+  );
+
+  return [
+    {title: getDate(data!.thoughtData.created_at!, lang)},
+    {
+      name: "description",
+      content: data!.thoughtData.content_text ? data!.thoughtData.content_text.split(/\r?\n/).join("") : '',
+    },
+    {
+      property: "og:title",
+      content: getDate(data!.thoughtData.created_at!, lang)
+    },
+    {
+      property: "og:type",
+      content: "article"
+    },
+    {
+      property: "og:url",
+      content: `${baseUrl}/${lang}/thought/${data!.thoughtData.slug}`
+    },
+    {
+      property: "og:description",
+      content: data!.thoughtData.content_text ? data!.thoughtData.content_text.split(/\r?\n/).join("") : ''
+    },
+    {
+      property: "twitter:card",
+      content: "summary"
+    },
+    {
+      property: "twitter:creator",
+      content: "@darmau8964"
+    },
+    ...multiLangLinks
+  ];
+};
 
 export async function action({request, context}: ActionFunctionArgs) {
   const formData = await request.formData();

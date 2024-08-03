@@ -1,5 +1,5 @@
 import Subnav from "~/components/Subnav";
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Link, useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
 import {FeaturedPhoto, generatePhotoAlbum} from "~/utils/generatePhotoAlbum";
@@ -7,6 +7,9 @@ import {UnstableServerPhotoAlbum as ServerPhotoAlbum} from "react-photo-album/se
 import GalleryImage from "~/components/GalleryImage";
 import "react-photo-album/columns.css";
 import Pagination from "~/components/Pagination";
+import getLanguageLabel from "~/utils/getLanguageLabel";
+import HomepageText from "~/locales/homepage";
+import i18nLinks from "~/utils/i18nLinks";
 
 export default function AllAlbums () {
   const {prefix, lang} = useOutletContext<{prefix: string, lang: string}>();
@@ -50,6 +53,58 @@ export default function AllAlbums () {
   )
 }
 
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const label = getLanguageLabel(HomepageText, lang);
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      `albums/all/${data!.page}`
+  );
+
+  return [
+    {title: label.albums_title},
+    {
+      name: "description",
+      content: label.albums_description,
+    },
+    {
+      tagName: "link",
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "RSS",
+      href: `${baseUrl}/${lang}/album/rss.xml`,
+    },
+    {
+      property: "og:title",
+      content: label.albums_title
+    },
+    {
+      property: "og:url",
+      content: `${baseUrl}/${lang}/albums/all/${data!.page}`
+    },
+    {
+      property: "og:image",
+      // 没有数据的时候会有bug
+      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/${data!.albums![0].cover.storage_key || 'a2b148a3-5799-4be0-a8d4-907f9355f20f'}`
+    },
+    {
+      property: "og:description",
+      content: label.albums_description
+    },
+    {
+      property: "twitter:card",
+      content: "summary_large_image"
+    },
+    {
+      property: "twitter:creator",
+      content: "@darmau8964"
+    },
+    ...multiLangLinks
+  ];
+};
+
 export async function loader({request, context, params}: LoaderFunctionArgs) {
   const {supabase} = createClient(request, context);
   const lang = params.lang as string;
@@ -80,9 +135,14 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   .eq('is_draft', false)
   .eq('language.lang', lang);
 
+  const availableLangs = [lang];
+
   return json({
     albums: albums,
     count: count,
-    page: Number(page)
+    page: Number(page),
+    baseUrl: context.cloudflare.env.BASE_URL,
+    prefix: context.cloudflare.env.IMG_PREFIX,
+    availableLangs
   })
 }

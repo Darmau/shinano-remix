@@ -1,16 +1,43 @@
 import {Form, redirect, useActionData, useOutletContext} from "@remix-run/react";
-import {ActionFunctionArgs, json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {ActionFunctionArgs, json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import GithubLogin from "~/components/GithubLogin";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import SignupText from "~/locales/signup";
 import EmailSignup from "~/components/EmailSignup";
 import {createClient} from "~/utils/supabase/server";
+import i18nLinks from "~/utils/i18nLinks";
 
-export async function loader({request}: LoaderFunctionArgs) {
+export async function loader({request, context}: LoaderFunctionArgs) {
   const origin = new URL(request.url).origin;
 
-  return json({origin});
+  const availableLangs = ["zh", "en", "jp"];
+
+  return json({
+    origin,
+    baseUrl: context.cloudflare.env.BASE_URL,
+    availableLangs
+  });
 }
+
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const label = getLanguageLabel(SignupText, lang);
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      "signup"
+  );
+
+  return [
+    {title: label.sign_up_title},
+    {
+      name: "description",
+      content: label.sign_up_description,
+    },
+    ...multiLangLinks
+  ];
+};
 
 export default function Signup() {
   const {lang} = useOutletContext<{lang: string}>();

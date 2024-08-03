@@ -1,11 +1,14 @@
 import Subnav from "~/components/Subnav";
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Link, useLoaderData, useOutletContext} from "@remix-run/react";
 import {UnstableServerPhotoAlbum as ServerPhotoAlbum} from "react-photo-album/server";
 import "react-photo-album/masonry.css";
 import {FeaturedPhoto, generatePhotoAlbum} from "~/utils/generatePhotoAlbum";
 import GalleryImage from "~/components/GalleryImage";
+import getLanguageLabel from "~/utils/getLanguageLabel";
+import HomepageText from "~/locales/homepage";
+import i18nLinks from "~/utils/i18nLinks";
 
 export default function AllFeaturedAlbums () {
   const {prefix, lang} = useOutletContext<{prefix: string, lang: string}>();
@@ -43,6 +46,58 @@ export default function AllFeaturedAlbums () {
   )
 }
 
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const label = getLanguageLabel(HomepageText, lang);
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      "albums/featured"
+  );
+
+  return [
+    {title: label.featured_albums_title},
+    {
+      name: "description",
+      content: label.featured_albums_description,
+    },
+    {
+      tagName: "link",
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "RSS",
+      href: `${baseUrl}/${lang}/album/rss.xml`,
+    },
+    {
+      property: "og:title",
+      content: label.featured_albums_title
+    },
+    {
+      property: "og:url",
+      content: `${baseUrl}/${lang}/albums/featured`
+    },
+    {
+      property: "og:image",
+      // 没有推荐摄影的时候会有bug
+      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/${data!.featuredPhotos![0].cover.storage_key || "a2b148a3-5799-4be0-a8d4-907f9355f20f"}`
+    },
+    {
+      property: "og:description",
+      content: label.featured_albums_description
+    },
+    {
+      property: "twitter:card",
+      content: "summary_large_image"
+    },
+    {
+      property: "twitter:creator",
+      content: "@darmau8964"
+    },
+    ...multiLangLinks
+  ];
+};
+
 export async function loader({request, context, params}: LoaderFunctionArgs) {
   const {supabase} = createClient(request, context);
   const lang = params.lang as string;
@@ -61,7 +116,12 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       `)
     .limit(24);
 
+  const availableLangs = ["zh", "en", "jp"];
+
   return json({
-    featuredPhotos: featuredPhotos
+    featuredPhotos: featuredPhotos,
+    baseUrl: context.cloudflare.env.BASE_URL,
+    prefix: context.cloudflare.env.IMG_PREFIX,
+    availableLangs
   })
 }
