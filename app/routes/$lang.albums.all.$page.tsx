@@ -1,5 +1,5 @@
 import Subnav from "~/components/Subnav";
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Link, useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
 import {FeaturedPhoto, generatePhotoAlbum} from "~/utils/generatePhotoAlbum";
@@ -7,6 +7,9 @@ import {UnstableServerPhotoAlbum as ServerPhotoAlbum} from "react-photo-album/se
 import GalleryImage from "~/components/GalleryImage";
 import "react-photo-album/columns.css";
 import Pagination from "~/components/Pagination";
+import getLanguageLabel from "~/utils/getLanguageLabel";
+import HomepageText from "~/locales/homepage";
+import i18nLinks from "~/utils/i18nLinks";
 
 export default function AllAlbums () {
   const {prefix, lang} = useOutletContext<{prefix: string, lang: string}>();
@@ -50,6 +53,26 @@ export default function AllAlbums () {
   )
 }
 
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const label = getLanguageLabel(HomepageText, lang);
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      ""
+  );
+
+  return [
+    {title: label.albums_title},
+    {
+      name: "description",
+      content: label.albums_description,
+    },
+    ...multiLangLinks
+  ];
+};
+
 export async function loader({request, context, params}: LoaderFunctionArgs) {
   const {supabase} = createClient(request, context);
   const lang = params.lang as string;
@@ -80,9 +103,13 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   .eq('is_draft', false)
   .eq('language.lang', lang);
 
+  const availableLangs = ["zh", "en", "jp"];
+
   return json({
     albums: albums,
     count: count,
-    page: Number(page)
+    page: Number(page),
+    baseUrl: context.cloudflare.env.BASE_URL,
+    availableLangs
   })
 }
