@@ -159,6 +159,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       slug,
       subtitle,
       abstract,
+      updated_at,
       published_at,
       is_premium,
       is_featured,
@@ -306,6 +307,23 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
     {
       property: "twitter:creator",
       content: "@darmau8964"
+    },
+    {
+      tagName: "script",
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": data!.article.title,
+        "description": data!.article.abstract || data!.article.subtitle,
+        "image": `${data!.prefix}/cdn-cgi/image/format=webp,width=960/${data!.article.cover?.storage_key || 'a2b148a3-5799-4be0-a8d4-907f9355f20f'}`,
+        "author": {
+          "@type": "Person",
+          "name": "李大毛"
+        },
+        "datePublished": data!.article.published_at,
+        "dateModified": data!.article.updated_at
+      })
     },
     ...multiLangLinks
   ];
