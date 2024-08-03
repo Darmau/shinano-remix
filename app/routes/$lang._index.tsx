@@ -1,4 +1,4 @@
-import {json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
+import {ActionFunctionArgs, json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import HomepageText from "~/locales/homepage";
 import {createClient} from "~/utils/supabase/server";
@@ -9,6 +9,7 @@ import NormalArticleCard from "~/components/NormalArticleCard";
 import HomeTopArticle from "~/components/HomeTopArticle";
 import CTA from "~/components/CTA";
 import i18nLinks from "~/utils/i18nLinks";
+import {Resend} from "resend";
 
 export const meta: MetaFunction<typeof loader> = ({params, data}) => {
   const lang = params.lang as string;
@@ -150,4 +151,38 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     prefix: context.cloudflare.env.IMG_PREFIX,
     availableLangs
   })
+}
+
+export async function action({request, context}: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const {supabase} = createClient(request, context);
+  const {data: {session}} = await supabase.auth.getSession();
+
+  if (!session) {
+    return json({
+      success: false,
+      error: 'Unauthorized',
+    })
+  }
+
+  const email = formData.get('email') as string;
+
+  const resend = new Resend(context.cloudflare.env.RESEND_KEY);
+
+  try {
+    await resend.contacts.create({
+      email: email,
+      unsubscribed: false,
+      audienceId: context.cloudflare.env.RESEND_AUDIENCE_ID,
+    });
+    return json({
+      success: 'Thanks for subscribing!',
+      error: null,
+    })
+  } catch (error) {
+    return json({
+      success: false,
+      error: 'Failed to subscribe',
+    })
+  }
 }
