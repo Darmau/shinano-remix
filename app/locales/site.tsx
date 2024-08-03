@@ -22,7 +22,7 @@ const content = {
     "structure_3_title": "本站：",
     "structure_3_desc": "使用Remix开发，全站SSR，部署在Cloudflare。",
     "structure_4_title": "边缘函数：",
-    "structure_4_desc": "一个Cloudflare Workers负责处理图片上传、AI调用等第三方API调用任务，提高请求成功率。。",
+    "structure_4_desc": "一个Cloudflare Workers负责处理图片上传、AI调用等第三方API调用任务，提高请求成功率。",
     "statement": "虽然CMS和本站均在GitHub开源，但目前并没有做好当成成熟产品对外开放的准备。本站部署和配置相对复杂，没有前后端技术背景的不建议尝试。"
   },
   "en": {
