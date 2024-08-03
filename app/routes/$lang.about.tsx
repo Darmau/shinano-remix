@@ -1,6 +1,7 @@
 import Subnav from "~/components/Subnav";
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import AboutText from "~/locales/about";
+import HomepageText from "~/locales/homepage";
 import {useLoaderData} from "@remix-run/react";
 import ResponsiveImage from "~/components/ResponsiveImage";
 import {createClient} from "~/utils/supabase/server";
@@ -9,6 +10,8 @@ import TwitterIcon from "~/icons/Twitter";
 import GithubIcon from "~/icons/Github";
 import InstagramIcon from "~/icons/Instagram";
 import YoutubeIcon from "~/icons/Youtube";
+import getLanguageLabel from "~/utils/getLanguageLabel";
+import i18nLinks from "~/utils/i18nLinks";
 
 export default function AboutMe () {
   const {content, profileImage} = useLoaderData<typeof loader>();
@@ -62,6 +65,26 @@ export default function AboutMe () {
   )
 }
 
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const label = getLanguageLabel(HomepageText, lang);
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      "about"
+  );
+
+  return [
+    {title: label.about_title},
+    {
+      name: "description",
+      content: label.about_description,
+    },
+    ...multiLangLinks
+  ];
+};
+
 export async function loader({request, context, params}: LoaderFunctionArgs) {
   const lang = params.lang as string;
   const {supabase} = createClient(request, context);
@@ -81,8 +104,12 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     .eq('storage_key', 'ba07adad-3f02-409b-ad39-2814b6f2ede3')
     .single();
 
+  const availableLangs = ["zh", "en", "jp"];
+
   return json({
     content,
-    profileImage
+    profileImage,
+    baseUrl: context.cloudflare.env.BASE_URL,
+    availableLangs
   });
 }
