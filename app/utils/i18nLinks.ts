@@ -14,7 +14,7 @@ export default function i18nLinks(baseUrl: string,currentLang: string, available
       tagName: "link",
       rel: "alternate",
       href: `${baseUrl}/${l}/${url}`,
-      hrefLang: l,
+      hrefLang: langMap.get(l),
     };
   });
 
@@ -28,3 +28,9 @@ export default function i18nLinks(baseUrl: string,currentLang: string, available
   // 展开语言链接，返回数组
   return [canonical, ...links, ...ogLocale];
 }
+
+const langMap = new Map([
+    ['en', 'en'],
+    ['zh', 'zh-Hans'],
+    ['jp', 'ja'],
+])
