@@ -57,10 +57,17 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
   );
 
   return [
-    {title: label.title},
+    {title: label.featured_albums_title},
     {
       name: "description",
-      content: label.description,
+      content: label.featured_albums_description,
+    },
+    {
+      tagName: "link",
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "RSS",
+      href: `${baseUrl}/${lang}/album/rss.xml`,
     },
     ...multiLangLinks
   ];

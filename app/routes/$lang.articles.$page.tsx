@@ -1,5 +1,5 @@
 import Subnav from "~/components/Subnav";
-import {json, LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {json, LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Article} from "~/types/Article";
 import {Link, useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
@@ -7,6 +7,8 @@ import NormalArticleCard from "~/components/NormalArticleCard";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import ArticlesText from "~/locales/articles";
 import Pagination from "~/components/Pagination";
+import HomepageText from "~/locales/homepage";
+import i18nLinks from "~/utils/i18nLinks";
 
 export default function AllArticles() {
   const {articles, countByYear, countByCategory, articleCount, page} = useLoaderData<typeof loader>();
@@ -87,6 +89,33 @@ export default function AllArticles() {
   )
 }
 
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const label = getLanguageLabel(HomepageText, lang);
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      `articles/${data!.page}`
+  );
+
+  return [
+    {title: label.recent_article},
+    {
+      name: "description",
+      content: label.recent_article_description,
+    },
+    {
+      tagName: "link",
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "RSS",
+      href: `${baseUrl}/${lang}/article/rss.xml`,
+    },
+    ...multiLangLinks
+  ];
+};
+
 export async function loader({request, context, params}: LoaderFunctionArgs) {
   const {supabase} = createClient(request, context);
   const lang = params.lang as string;
@@ -134,12 +163,16 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     count: number
   }[]>();
 
+  const availableLangs = [lang];
+
   return json({
     articles: data,
     countByYear: countByYear,
     countByCategory: countByCategory,
     articleCount: count,
-    page: Number(page)
+    page: Number(page),
+    baseUrl: context.cloudflare.env.BASE_URL,
+    availableLangs
   })
 
 }

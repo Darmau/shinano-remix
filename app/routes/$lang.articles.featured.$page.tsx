@@ -1,10 +1,13 @@
 import Subnav from "~/components/Subnav";
-import {LoaderFunctionArgs} from "@remix-run/cloudflare";
+import {LoaderFunctionArgs, MetaFunction} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import {Article} from "~/types/Article";
 import {useLoaderData, useLocation} from "@remix-run/react";
 import Pagination from "~/components/Pagination";
 import FeaturedArticle from "~/components/FeaturedArticle";
+import getLanguageLabel from "~/utils/getLanguageLabel";
+import HomepageText from "~/locales/homepage";
+import i18nLinks from "~/utils/i18nLinks";
 
 export default function AllFeaturedArticles() {
   const {articles, articleCount, page} = useLoaderData<typeof loader>();
@@ -36,6 +39,33 @@ export default function AllFeaturedArticles() {
       </>
   )
 }
+
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const label = getLanguageLabel(HomepageText, lang);
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      data!.availableLangs,
+      `articles/featured`
+  );
+
+  return [
+    {title: label.featured_article_title},
+    {
+      name: "description",
+      content: label.featured_article_description,
+    },
+    {
+      tagName: "link",
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "RSS",
+      href: `${baseUrl}/${lang}/article/rss.xml`,
+    },
+    ...multiLangLinks
+  ];
+};
 
 export async function loader({request, context, params}: LoaderFunctionArgs) {
   const {supabase} = createClient(request, context);
@@ -77,11 +107,14 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   .filter('is_featured', 'eq', true)
   .eq('language.lang', lang);
 
+  const availableLangs = ['zh', 'en', 'jp'];
 
   return {
     articles: data,
     articleCount: count,
-    page: Number(page)
+    page: Number(page),
+    baseUrl: context.cloudflare.env.BASE_URL,
+    availableLangs
   }
 
 }

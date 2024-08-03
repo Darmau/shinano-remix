@@ -69,6 +69,13 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
       name: "description",
       content: label.albums_description,
     },
+    {
+      tagName: "link",
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "RSS",
+      href: `${baseUrl}/${lang}/album/rss.xml`,
+    },
     ...multiLangLinks
   ];
 };
@@ -103,7 +110,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   .eq('is_draft', false)
   .eq('language.lang', lang);
 
-  const availableLangs = ["zh", "en", "jp"];
+  const availableLangs = [lang];
 
   return json({
     albums: albums,

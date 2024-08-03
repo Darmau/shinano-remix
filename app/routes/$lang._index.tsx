@@ -26,6 +26,20 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
       name: "description",
       content: label.description,
     },
+    {
+      tagName: "link",
+      rel: "sitemap",
+      type: "application/xml",
+      href: `${baseUrl}/sitemap-index.xml`,
+      title: "Sitemap",
+    },
+    {
+      tagName: "link",
+      rel: "alternate",
+      type: "application/rss+xml",
+      title: "RSS",
+      href: `${baseUrl}/${lang}/article/rss.xml`,
+    },
     ...multiLangLinks
   ];
 };
