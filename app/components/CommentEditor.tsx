@@ -27,9 +27,10 @@ export default function CommentEditor({contentTable, contentId, session}: { cont
               Add your comment
             </label>
             <textarea
+                rows={5}
                 name = "content_text"
                 placeholder = {label.add_comment}
-                className = "block w-full resize-none border-0 border-b border-transparent p-0 pb-2 text-gray-900 placeholder:text-gray-400 focus:border-violet-600 focus:ring-0 sm:text-sm sm:leading-6"
+                className = "block w-full resize-y border-0 border-b border-transparent p-0 pb-2 text-gray-900 placeholder:text-gray-400 focus:border-violet-600 focus:ring-0 sm:text-sm sm:leading-6"
             />
           </div>
           <div className="flex justify-between items-center mt-3">
