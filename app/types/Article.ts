@@ -8,6 +8,7 @@ export interface Article {
   is_premium: boolean,
   topic: string[] | null,
   published_at: string,
+  page_view: number,
   cover: {
     alt: string | null,
     storage_key: string,

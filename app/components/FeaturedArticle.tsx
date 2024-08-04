@@ -2,6 +2,7 @@ import {Article} from "~/types/Article";
 import {Link, useOutletContext} from "@remix-run/react";
 import getDate from "~/utils/getDate";
 import ResponsiveImage from "~/components/ResponsiveImage";
+import {EyeIcon} from "@heroicons/react/24/solid";
 
 export default function FeaturedArticle({article}: {
   article: Article,
@@ -41,6 +42,10 @@ export default function FeaturedArticle({article}: {
                   ))}
                 </div>
             )}
+            <div className = "inline-flex gap-1 justify-start items-center">
+              <EyeIcon className = "h-4 w-4 inline-block text-zinc-400"/>
+              <span className = "text-zinc-500 text-sm">{article.page_view}</span>
+            </div>
           </div>
         </Link>
 

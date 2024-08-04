@@ -181,6 +181,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       is_premium,
       topic,
       published_at,
+      page_view,
       category!inner (title, slug),
       language!inner (lang)
       `)

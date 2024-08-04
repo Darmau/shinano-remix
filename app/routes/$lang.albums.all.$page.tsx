@@ -116,6 +116,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       id,
       title,
       slug,
+      page_view,
       cover (id, alt, storage_key, width, height),
       language!inner (lang)
     `)
