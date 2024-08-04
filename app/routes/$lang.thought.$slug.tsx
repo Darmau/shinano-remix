@@ -169,7 +169,7 @@ export async function loader({
       created_at,
       is_anonymous,
       page_view,
-      users (id, name)
+      users (id, name, role)
     `)
   .eq('to_thought', thoughtData.id)
   .eq('is_blocked', false)

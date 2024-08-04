@@ -229,7 +229,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       content_text,
       created_at,
       is_anonymous,
-      users (id, name)
+      users (id, name, role)
     `)
   .eq('to_article', articleContent.id)
   .eq('is_blocked', false)

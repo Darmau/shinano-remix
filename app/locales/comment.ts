@@ -6,7 +6,8 @@ export default {
     "add_comment": "添加评论",
     "login_comment": "请登录后发表评论",
     "signup": "注册",
-    "login": "登录"
+    "login": "登录",
+    "author": "作者"
   },
   "en": {
     "submit": "Submit",
@@ -15,7 +16,8 @@ export default {
     "add_comment": "Add your comment",
     "login_comment": "Please login to comment",
     "signup": "Sign up",
-    "login": "Log in"
+    "login": "Log in",
+    "author": "Author"
   },
   "jp": {
     "submit": "提出",
@@ -24,6 +26,7 @@ export default {
     "add_comment": "コメントを追加",
     "login_comment": "コメントするにはログインして",
     "signup": "サインアップ",
-    "login": "ログイン"
+    "login": "ログイン",
+    "author": "著者"
   }
 }

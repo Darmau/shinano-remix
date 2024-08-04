@@ -1,5 +1,7 @@
 import {useOutletContext} from "@remix-run/react";
 import getDate from "~/utils/getDate";
+import getLanguageLabel from "~/utils/getLanguageLabel";
+import CommentText from '~/locales/comment';
 
 export interface CommentProps {
   id: number;
@@ -10,15 +12,20 @@ export interface CommentProps {
   users: {
     id: number,
     name: string,
+    role: string
   }
 }
 
 export function CommentBlock({comment}: {comment: CommentProps}) {
   const {lang} = useOutletContext<{lang: string}>();
+  const label = getLanguageLabel(CommentText, lang);
   return (
       <div className="pt-8">
-        <h4 className="font-medium text-zinc-800 mb-1">
+        <h4 className="font-medium text-zinc-800 mb-2">
           {comment.is_anonymous ? 'Anonymous' : comment.users.name}
+          {comment.users.role === 'admin' && (
+              <span className="rounded bg-violet-100 border border-violet-500 text-violet-700 text-xs p-1 ml-2">{label.author}</span>
+          )}
         </h4>
         <div className="text-sm text-zinc-500">{getDate(comment.created_at, lang)}</div>
         <div className="my-4 text-base text-zinc-700 space-y-2"><CommentContent content={comment.content_text} /></div>

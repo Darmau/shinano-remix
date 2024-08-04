@@ -182,7 +182,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       content_text,
       created_at,
       is_anonymous,
-      users (id, name)
+      users (id, name, role)
     `)
   .eq('to_photo', albumContent.id)
   .eq('is_blocked', false)
