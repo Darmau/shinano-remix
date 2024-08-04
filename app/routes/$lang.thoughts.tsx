@@ -12,6 +12,7 @@ export interface Thought {
   slug: string,
   content_json: JSON,
   created_at: string,
+  page_view: number,
   thought_image: {
     image: {
       id: number,
@@ -33,6 +34,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       slug,
       content_json,
       created_at,
+      page_view,
       thought_image (
         image (id, alt, storage_key, width, height)
       )
@@ -119,6 +121,7 @@ export async function action({request, context}: ActionFunctionArgs) {
     slug,
     content_json,
     created_at,
+    page_view,
     thought_image (
       image (id, alt, storage_key, width, height)
     )

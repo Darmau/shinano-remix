@@ -1000,6 +1000,12 @@ export type Database = {
       }
     }
     Functions: {
+      article_page_view: {
+        Args: {
+          article_id: number
+        }
+        Returns: number
+      }
       get_article_count_by_category: {
         Args: {
           lang_name: string
@@ -1041,6 +1047,18 @@ export type Database = {
       is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      photo_page_view: {
+        Args: {
+          article_id: number
+        }
+        Returns: number
+      }
+      thought_page_view: {
+        Args: {
+          article_id: number
+        }
+        Returns: number
       }
       user_is_blocked: {
         Args: Record<PropertyKey, never>

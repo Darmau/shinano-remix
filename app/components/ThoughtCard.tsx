@@ -4,6 +4,7 @@ import {Json} from "~/types/supabase";
 import ResponsiveImage from "~/components/ResponsiveImage";
 import getDate from "~/utils/getDate";
 import {Link, useOutletContext} from "@remix-run/react";
+import {EyeIcon} from "@heroicons/react/24/solid";
 
 export default function ThoughtCard({thought}: {thought: Thought}) {
   const {lang} = useOutletContext<{lang: string}>();
@@ -19,7 +20,14 @@ export default function ThoughtCard({thought}: {thought: Thought}) {
         </svg>
         <div className="relative mb-4 space-y-4">
           <ContentContainer content = {thought.content_json as unknown as Json}/>
-          <p className="text-sm text-zinc-400">{getDate(thought.created_at, lang)}</p>
+          <div className="flex justify-start items-center gap-1">
+            <div className = "flex gap-1 items-center justify-start">
+              <EyeIcon className = "h-4 w-4 inline-block text-zinc-500"/>
+              <p className = "text-zinc-500 text-sm">{thought.page_view}</p>
+            </div>
+            ·
+            <p className = "text-sm text-zinc-500">{getDate(thought.created_at, lang)}</p>
+          </div>
           {thought.thought_image && thought.thought_image.length > 0 && (
               <div className = "grid grid-cols-3 gap-4">
                 {thought.thought_image.map((image) => (
