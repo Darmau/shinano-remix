@@ -53,6 +53,8 @@ export default function RSS() {
                 <h3 className = "font-medium text-lg text-zinc-700">{label.article}</h3>
                 <code className = "text-sm block font-mono text-zinc-600">{`https://darmau.co/${lang}/article/rss.xml`}</code>
                 <button
+                    data-umami-event = "RSS"
+                    data-umami-type = "Article"
                     onClick = {() => copyToClipboard(`https://darmau.co/${lang}/article/rss.xml`, 'article')}
                     className="bg-violet-600 text-white font-medium py-3 w-full rounded-md"
                 >
@@ -73,6 +75,8 @@ export default function RSS() {
                 <h3 className = "font-medium text-lg text-zinc-700">{label.photography}</h3>
                 <code className = "text-sm block font-mono text-zinc-600">{`https://darmau.co/${lang}/album/rss.xml`}</code>
                 <button
+                    data-umami-event = "RSS"
+                    data-umami-type = "Photography"
                     onClick = {() => copyToClipboard(`https://darmau.co/${lang}/album/rss.xml`, 'photo')}
                     className = "bg-violet-600 text-white font-medium py-3 w-full rounded-md"
                 >
@@ -99,6 +103,8 @@ export default function RSS() {
                 <h3 className = "font-medium text-lg text-zinc-700">{label.thought}</h3>
                 <code className = "text-sm block font-mono text-zinc-600">{`https://darmau.co/${lang}/thought/rss.xml`}</code>
                 <button
+                    data-umami-event = "RSS"
+                    data-umami-type = "Thought"
                     onClick = {() => copyToClipboard(`https://darmau.co/${lang}/thought/rss.xml`, 'thought')}
                     className = "bg-violet-600 text-white font-medium py-3 w-full rounded-md"
                 >

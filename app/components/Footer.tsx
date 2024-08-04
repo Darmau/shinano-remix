@@ -67,12 +67,18 @@ export default function Footer({lang, currentYear, items}: {lang: string, curren
 
           <div className = "mt-8 border-t border-gray-900/10 pt-8 md:flex md:items-center md:justify-between">
             <div className = "flex space-x-6 md:order-2">
-              <Link to = {`${lang}/rss`} className = "text-gray-400 hover:text-gray-500">
+              <Link
+                  data-umami-event = "RSS"
+                  data-umami-type = "Footer"
+                  to = {`${lang}/rss`}
+                  className = "text-gray-400 hover:text-gray-500"
+              >
                 <span className = "sr-only">RSS</span>
                 <RSSIcon className = "h-6 w-6"/>
               </Link>
               {navigation.social.map((item) => (
                   <a
+                      data-umami-event = "Social Link" data-umami-social = {item.name}
                       key = {item.name} href = {item.href} target = "_blank" rel = "noreferrer"
                       className = "text-gray-400 hover:text-gray-500"
                   >
