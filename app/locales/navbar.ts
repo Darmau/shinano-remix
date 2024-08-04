@@ -45,12 +45,12 @@ const Navbar: NavbarType = {
     },
     {
       "name": "Thoughts",
-      "link": "/thoughts",
+      "link": "/en/thoughts",
       "type": "thought"
     },
     {
       "name": "About",
-      "link": "/about",
+      "link": "/en/about",
       "type": "about"
     }
   ],
