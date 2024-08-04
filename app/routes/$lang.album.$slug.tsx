@@ -5,7 +5,7 @@ import {Json} from "~/types/supabase";
 import ContentContainer from "~/components/ContentContainer";
 import getDate from "~/utils/getDate";
 import GallerySlide, {AlbumPhoto} from "~/components/GallerySlide";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Mapbox, {EXIF} from "~/components/Mapbox";
 import {MapPinIcon} from "@heroicons/react/20/solid";
 import Breadcrumb, {BreadcrumbProps} from "~/components/Breadcrumb";
@@ -14,9 +14,11 @@ import AlbumText from "~/locales/album";
 import CommentEditor from "~/components/CommentEditor";
 import {CommentBlock, CommentProps} from "~/components/CommentBlock";
 import i18nLinks from "~/utils/i18nLinks";
+import {SupabaseClient} from "@supabase/supabase-js";
+import {EyeIcon} from "@heroicons/react/24/solid";
 
 export default function AlbumDetail() {
-  const {lang} = useOutletContext<{ lang: string }>();
+  const {lang, supabase} = useOutletContext<{ lang: string, supabase: SupabaseClient }>();
   const {
     albumContent,
     albumImages,
@@ -46,6 +48,19 @@ export default function AlbumDetail() {
     }
   ]
 
+  // 阅读量计算
+  const [pageView, setPageView] = useState(albumContent.page_view);
+  useEffect(() => {
+    supabase.rpc('photo_page_view', { photo_id: albumContent.id })
+    .then(({ data, error }) => {
+      if (error) {
+        console.error('阅读量增加失败:', error);
+      } else if (data !== null) {
+        setPageView(data);
+      }
+    });
+  }, [albumContent.id, supabase]);
+
   return (
       <div className = "w-full max-w-8xl mx-auto p-4 md:py-8 lg:mb-16">
         <Breadcrumb pages = {breadcrumbPages}/>
@@ -56,10 +71,16 @@ export default function AlbumDetail() {
                 onIndexChange = {setCurrentIndex}
             />
           </div>
+
           <div className = "col-span-1 lg:row-span-2 space-y-4">
             <h2 className = "text-sm text-violet-700 font-medium">{albumContent.category!.title}</h2>
             <h1 className = "text-zinc-800 font-medium text-3xl">{albumContent.title}</h1>
             <p className = "text-zinc-600 text-sm">{getDate(albumContent.published_at!, lang)}</p>
+            <div className = "flex gap-1 items-center justify-start">
+              <EyeIcon className = "h-4 w-4 inline-block text-zinc-500"/>
+              <p className = "text-zinc-500 text-sm">{pageView}</p>
+            </div>
+
             <ContentContainer content = {albumContent.content_json as Json}/>
             {albumContent.topic && (
                 <ol className = "flex gap-2 flex-wrap">
@@ -127,6 +148,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       content_json,
       content_text,
       topic,
+      page_view,
       category (title, slug),
       language!inner (lang)
     `)

@@ -14,9 +14,12 @@ import {CommentBlock, CommentProps} from "~/components/CommentBlock";
 import CommentEditor from "~/components/CommentEditor";
 import i18nLinks from "~/utils/i18nLinks";
 import getDate from "~/utils/getDate";
+import {EyeIcon} from "@heroicons/react/24/solid";
+import {SupabaseClient} from "@supabase/supabase-js";
+import {useEffect, useState} from "react";
 
 export default function ThoughtDetail() {
-  const {lang} = useOutletContext<{ lang: string }>();
+  const {lang, supabase} = useOutletContext<{ lang: string, supabase: SupabaseClient }>();
   const label = getLanguageLabel(ThoughtText, lang);
 
   const {
@@ -43,6 +46,19 @@ export default function ThoughtDetail() {
     }
   ]
 
+  // 阅读量计算
+  const [pageView, setPageView] = useState(thoughtData.page_view);
+  useEffect(() => {
+    supabase.rpc('thought_page_view', { thought_id: thoughtData.id })
+    .then(({ data, error }) => {
+      if (error) {
+        console.error('阅读量增加失败:', error);
+      } else if (data !== null) {
+        setPageView(data);
+      }
+    });
+  }, [thoughtData.id, supabase]);
+
   return (
       <div className = "w-full max-w-6xl mx-auto p-4 md:py-8 mb-8 lg:mb-16">
         <Breadcrumb pages = {breadcrumbPages}/>
@@ -59,6 +75,15 @@ export default function ThoughtDetail() {
                   ))}
                 </div>
             )}
+
+            <div className = "flex justify-start items-center gap-1 mt-4">
+              <div className = "flex gap-1 items-center justify-start">
+                <EyeIcon className = "h-4 w-4 inline-block text-zinc-500"/>
+                <p className = "text-zinc-500 text-sm">{pageView}</p>
+              </div>
+              ·
+              <p className = "text-sm text-zinc-500">{getDate(thoughtData.created_at!, lang)}</p>
+            </div>
           </div>
 
           <div className = "col-span-1 space-y-4">
@@ -112,6 +137,7 @@ export async function loader({
       content_json,
       content_text,
       slug,
+      page_view,
       created_at
     `)
   .eq('slug', slug)
@@ -142,6 +168,7 @@ export async function loader({
       content_text,
       created_at,
       is_anonymous,
+      page_view,
       users (id, name)
     `)
   .eq('to_thought', thoughtData.id)
