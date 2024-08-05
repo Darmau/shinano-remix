@@ -9,6 +9,14 @@ export interface CommentProps {
   content_text: string;
   created_at: string;
   is_anonymous: boolean;
+  reply_to: {
+    id: number,
+    content_text: string,
+    users: {
+      id: number;
+      name: string;
+    }
+  }
   users: {
     id: number,
     name: string,
@@ -16,19 +24,32 @@ export interface CommentProps {
   }
 }
 
-export function CommentBlock({comment}: {comment: CommentProps}) {
+export function CommentBlock({comment, onReply}: {comment: CommentProps, onReply: (comment: CommentProps) => void}) {
   const {lang} = useOutletContext<{lang: string}>();
   const label = getLanguageLabel(CommentText, lang);
   return (
-      <div className="pt-8">
-        <h4 className="font-medium text-zinc-800 mb-2">
+      <div className = "pt-8">
+        <h4 className = "font-medium text-zinc-800 mb-2">
           {comment.is_anonymous ? 'Anonymous' : comment.users.name}
           {comment.users.role === 'admin' && (
-              <span className="rounded bg-violet-100 border border-violet-500 text-violet-700 text-xs p-1 ml-2">{label.author}</span>
+              <span
+                  className = "rounded bg-violet-100 border border-violet-500 text-violet-700 text-xs p-1 ml-2"
+              >{label.author}</span>
           )}
         </h4>
-        <div className="text-sm text-zinc-500">{getDate(comment.created_at, lang)}</div>
-        <div className="my-4 text-base text-zinc-700 space-y-2"><CommentContent content={comment.content_text} /></div>
+        <div className = "text-sm text-zinc-500">{getDate(comment.created_at, lang)}</div>
+
+        {comment.reply_to && (
+            <div>
+              <p className = "text-sm text-zinc-500">{`回复 ${comment.reply_to.users.name}: ${comment.reply_to.content_text.substring(0, 50)}...`}</p>
+            </div>
+        )}
+
+        <div className = "my-4 text-base text-zinc-700 space-y-2"><CommentContent content = {comment.content_text}/>
+        </div>
+        <button onClick = {() => onReply(comment)} className = "mt-2 text-blue-500">
+          回复
+        </button>
       </div>
   )
 }
