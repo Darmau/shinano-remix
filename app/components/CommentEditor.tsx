@@ -41,7 +41,7 @@ export default function CommentEditor({contentTable, contentId, session, replyin
             </label>
             {replyingTo &&
                 <div className="p-4 bg-zinc-100 text-sm text text-zinc-700 mb-4">
-                  {`${label.reply} ${replyingTo.users.name}: ${replyingTo.content_text.substring(0, 100)}...`}
+                  {`${label.reply} ${replyingTo.is_anonymous ? 'Anonymous' : replyingTo.users.name}: ${replyingTo.content_text.substring(0, 100)}...`}
                 </div>
             }
             <textarea
