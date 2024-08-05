@@ -14,7 +14,6 @@ export default function CommentEditor({contentTable, contentId, session, replyin
   const {lang} = useOutletContext<{ lang: string }>();
   const label = getLanguageLabel(CommentText, lang);
 
-
   if (!session) {
     return (
         <div className = "flex justify-between items-center border-b pb-8">
@@ -33,7 +32,7 @@ export default function CommentEditor({contentTable, contentId, session, replyin
     )
   } else {
     return (
-        <Form method = "post" id="comment-editor" key={resetKey}>
+        <Form method = "post" id="comment-editor">
           <input name = {contentTable} type = "hidden" value = {contentId}/>
           <input name = "reply_to" type = "hidden" value = {replyingTo ? replyingTo.id : ''}/>
           <div className = "border-b border-gray-200 focus-within:border-violet-600">

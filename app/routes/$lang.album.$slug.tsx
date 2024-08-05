@@ -48,6 +48,18 @@ export default function AlbumDetail() {
     }
   ]
 
+  // 存储被回复评论的id
+  const [replyingTo, setReplyingTo] = useState<CommentProps | null>(null);
+
+  const handleReply = (comment: CommentProps) => {
+    setReplyingTo(comment);
+    document.getElementById('comment-editor')?.scrollIntoView({behavior: 'smooth'});
+  };
+
+  const handleCancelReply = () => {
+    setReplyingTo(null);
+  };
+
   // 阅读量计算
   const [pageView, setPageView] = useState(albumContent.page_view);
   useEffect(() => {
@@ -96,11 +108,21 @@ export default function AlbumDetail() {
             <Mapbox mapboxToken = {MAPBOX} exifData = {albumImages![currentIndex].image!.exif as EXIF}/>
           </div>
           <div className = "col-span-1 lg:col-span-2 lg:self-start">
-            <CommentEditor contentTable = {'to_photo'} contentId = {albumContent.id} session = {session}/>
+            <CommentEditor
+                contentTable = {'to_photo'}
+                contentId = {albumContent.id}
+                session = {session}
+                replyingTo = {replyingTo}
+                onCancelReply = {handleCancelReply}
+            />
             <div className = "flex flex-col gap-4 divide-y">
               {actionResponse?.error && <p className = "error">{actionResponse.error}</p>}
               {comments && comments.map((comment) => (
-                  <CommentBlock key = {comment.id} comment = {comment as unknown as CommentProps}/>
+                  <CommentBlock
+                      key = {comment.id}
+                      comment = {comment as unknown as CommentProps}
+                      onReply = {handleReply}
+                  />
               ))}
             </div>
             <div className = "py-8 flex justify-between">
@@ -182,7 +204,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       content_text,
       created_at,
       is_anonymous,
-      users (id, name, role)
+      users (id, name, role),
+      reply_to (id, content_text, users (id, name))
     `)
   .eq('to_photo', albumContent.id)
   .eq('is_blocked', false)
@@ -309,6 +332,7 @@ export async function action({request, context}: ActionFunctionArgs) {
   const content_text = formData.get('content_text') as string;
   const to_photo = parseInt(formData.get('to_photo') as string);
   const is_anonymous = formData.get('is_anonymous') === 'on';
+  const reply_to = formData.get('reply_to') ? parseInt(formData.get('reply_to') as string) : null;
 
   const {data: newComment} = await supabase
   .from('comment')
@@ -316,7 +340,8 @@ export async function action({request, context}: ActionFunctionArgs) {
     user_id: userProfile.id,
     content_text,
     to_photo,
-    is_anonymous
+    is_anonymous,
+    reply_to
   })
   .select(`
       id,
@@ -324,7 +349,8 @@ export async function action({request, context}: ActionFunctionArgs) {
       content_text,
       created_at,
       is_anonymous,
-      users (id, name)
+      users (id, name),
+      reply_to (id, content_text, users (id, name))
     `)
   .single();
 

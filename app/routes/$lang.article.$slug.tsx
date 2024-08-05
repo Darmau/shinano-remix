@@ -393,7 +393,7 @@ export async function action({request, context}: ActionFunctionArgs) {
     content_text,
     to_article,
     is_anonymous,
-    reply_to,
+    reply_to
   })
   .select(`
       id,
@@ -401,7 +401,8 @@ export async function action({request, context}: ActionFunctionArgs) {
       content_text,
       created_at,
       is_anonymous,
-      users (id, name)
+      users (id, name),
+      reply_to (id, content_text, users (id, name))
     `)
   .single();
 
