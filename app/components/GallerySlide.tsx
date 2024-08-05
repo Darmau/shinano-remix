@@ -7,7 +7,7 @@ import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import {ArrowsPointingOutIcon, ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/solid";
 import pkg from 'lodash';
-import EXIF, {EXIFProps} from "~/icons/EXIF";
+import EXIF, {EXIFProps} from "~/components/EXIF";
 const {debounce} = pkg;
 
 export interface AlbumPhoto {

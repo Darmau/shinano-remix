@@ -37,7 +37,7 @@ export default function EXIF ({exif}: { exif: EXIFProps }) {
         </div>
         <div className="flex justify-start gap-2 items-center">
           <ApertureIcon />
-          <p>ƒ{exif.FNumber}</p>
+          <p>ƒ {exif.FNumber}</p>
         </div>
         <div className="flex justify-start gap-2 items-center">
           <ShutterIcon />
