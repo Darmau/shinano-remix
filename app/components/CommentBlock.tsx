@@ -40,15 +40,18 @@ export function CommentBlock({comment, onReply}: {comment: CommentProps, onReply
         <div className = "text-sm text-zinc-500">{getDate(comment.created_at, lang)}</div>
 
         {comment.reply_to && (
-            <div>
-              <p className = "text-sm text-zinc-500">{`回复 ${comment.reply_to.users.name}: ${comment.reply_to.content_text.substring(0, 50)}...`}</p>
+            <div className="mt-2">
+              <p className = "p-4 bg-zinc-100 text-sm text text-zinc-700 mb-4">{`回复 ${comment.reply_to.users.name}: ${comment.reply_to.content_text.substring(0, 120)}...`}</p>
             </div>
         )}
 
         <div className = "my-4 text-base text-zinc-700 space-y-2"><CommentContent content = {comment.content_text}/>
         </div>
-        <button onClick = {() => onReply(comment)} className = "mt-2 text-blue-500">
-          回复
+        <button
+            onClick = {() => onReply(comment)}
+            className = "text-sm text-violet-700 hover:text-violet-500"
+        >
+          {label.reply}
         </button>
       </div>
   )

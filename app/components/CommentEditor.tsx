@@ -40,8 +40,8 @@ export default function CommentEditor({contentTable, contentId, session, replyin
               Add your comment
             </label>
             {replyingTo &&
-                <div>
-                  {`回复 ${replyingTo.users.name}: ${replyingTo.content_text.substring(0, 50)}...`}
+                <div className="p-4 bg-zinc-100 text-sm text text-zinc-700 mb-4">
+                  {`${label.reply} ${replyingTo.users.name}: ${replyingTo.content_text.substring(0, 100)}...`}
                 </div>
             }
             <textarea
@@ -56,17 +56,22 @@ export default function CommentEditor({contentTable, contentId, session, replyin
               <input name = "is_anonymous" type = "checkbox"/>
               <label htmlFor = "is_anonymous" className = "text-sm text-zinc-500">{label.set_anonymous}</label>
             </div>
-            {replyingTo && (
-                <button type = "button" onClick = {onCancelReply} className = "mr-2">
-                  取消回复
-                </button>
-            )}
-            <button
-                type = "submit"
-                className = "inline-flex items-center rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
-            >
-              {label.submit}
-            </button>
+            <div className="space-x-4">
+              {replyingTo && (
+                  <button
+                      type = "button"
+                      onClick = {onCancelReply}
+                      className = "text-sm font-medium text-red-400">
+                    {label.cancel_reply}
+                  </button>
+              )}
+              <button
+                  type = "submit"
+                  className = "inline-flex items-center rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
+              >
+                {label.submit}
+              </button>
+            </div>
           </div>
         </Form>
     )
