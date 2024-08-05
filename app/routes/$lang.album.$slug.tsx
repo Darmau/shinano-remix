@@ -291,6 +291,18 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
       content: data!.albumContent.abstract || data!.albumContent.content_text
     },
     {
+      property: "twitter:image",
+      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/${data!.albumImages![0].image!.storage_key}`
+    },
+    {
+      property: "twitter:title",
+      content: data!.albumContent.title
+    },
+    {
+      property: "twitter:description",
+      content: data!.albumContent.abstract || data!.albumContent.content_text
+    },
+    {
       property: "twitter:card",
       content: "summary_large_image"
     },

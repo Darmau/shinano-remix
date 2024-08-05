@@ -58,6 +58,18 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
       content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/a2b148a3-5799-4be0-a8d4-907f9355f20f`
     },
     {
+      property: "twitter:image",
+      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/a2b148a3-5799-4be0-a8d4-907f9355f20f`
+    },
+    {
+      property: "twitter:title",
+      content: label.title
+    },
+    {
+      property: "twitter:description",
+      content: label.description
+    },
+    {
       property: "og:description",
       content: label.description
     },

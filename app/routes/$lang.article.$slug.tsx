@@ -340,7 +340,19 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
     },
     {
       property: "og:description",
-      content: data!.article.abstract || data!.article.subtitle
+      content: data!.article.subtitle
+    },
+    {
+      property: "twitter:image",
+      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/${data!.article.cover?.storage_key || 'a2b148a3-5799-4be0-a8d4-907f9355f20f'}`
+    },
+    {
+      property: "twitter:title",
+      content: data!.article.title
+    },
+    {
+      property: "twitter:description",
+      content: data!.article.subtitle
     },
     {
       property: "twitter:card",
