@@ -46,6 +46,18 @@ export default function ThoughtDetail() {
     }
   ]
 
+  // 存储被回复评论的id
+  const [replyingTo, setReplyingTo] = useState<CommentProps | null>(null);
+
+  const handleReply = (comment: CommentProps) => {
+    setReplyingTo(comment);
+    document.getElementById('comment-editor')?.scrollIntoView({behavior: 'smooth'});
+  };
+
+  const handleCancelReply = () => {
+    setReplyingTo(null);
+  };
+
   // 阅读量计算
   const [pageView, setPageView] = useState(thoughtData.page_view);
   useEffect(() => {
@@ -87,11 +99,21 @@ export default function ThoughtDetail() {
           </div>
 
           <div className = "col-span-1 space-y-4">
-            <CommentEditor contentTable = {'to_thought'} contentId = {thoughtData.id} session = {session}/>
+            <CommentEditor
+                contentTable = {'to_thought'}
+                contentId = {thoughtData.id}
+                session = {session}
+                replyingTo = {replyingTo}
+                onCancelReply = {handleCancelReply}
+            />
             <div className = "flex flex-col gap-4 divide-y">
               {actionResponse?.error && <p className = "error">{actionResponse.error}</p>}
               {comments && comments.map((comment) => (
-                  <CommentBlock key = {comment.id} comment = {comment as unknown as CommentProps}/>
+                  <CommentBlock
+                      key = {comment.id}
+                      comment = {comment as unknown as CommentProps}
+                      onReply = {handleReply}
+                  />
               ))}
             </div>
             <div className = "py-8 flex justify-between">
@@ -168,8 +190,8 @@ export async function loader({
       content_text,
       created_at,
       is_anonymous,
-      page_view,
-      users (id, name, role)
+      users (id, name, role),
+      reply_to (id, content_text, users (id, name))
     `)
   .eq('to_thought', thoughtData.id)
   .eq('is_blocked', false)
@@ -276,6 +298,7 @@ export async function action({request, context}: ActionFunctionArgs) {
   const content_text = formData.get('content_text') as string;
   const to_thought = parseInt(formData.get('to_thought') as string);
   const is_anonymous = formData.get('is_anonymous') === 'on';
+  const reply_to = formData.get('reply_to') ? parseInt(formData.get('reply_to') as string) : null;
 
   const {data: newComment} = await supabase
   .from('comment')
@@ -283,7 +306,8 @@ export async function action({request, context}: ActionFunctionArgs) {
     user_id: userProfile.id,
     content_text,
     to_thought,
-    is_anonymous
+    is_anonymous,
+    reply_to,
   })
   .select(`
       id,
