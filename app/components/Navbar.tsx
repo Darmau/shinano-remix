@@ -130,48 +130,15 @@ export default function Navbar({lang, items}: { lang: string, items: NavItem[] }
           </div>
         </nav>
         <Dialog open = {mobileMenuOpen} onClose = {setMobileMenuOpen} className = "lg:hidden">
-          <div className = "fixed inset-0 z-10"/>
+          <div className = "fixed inset-0"/>
           <DialogPanel
-              className = "fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+              className = "bg-white z-50 fixed inset-y-0 right-0 w-full overflow-y-auto px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
           >
             <div className = "flex items-center justify-between">
               <div className = "flex items-center gap-4">
                 <a href = "/" className = "-m-1.5 p-1.5">
                   <img alt = "logo" src = "/favicon.svg" className = "h-8 w-8" width = "32" height = "32"/>
                 </a>
-                <Popover>
-                  <PopoverButton className = "flex border items-center rounded text-sm px-1.5 gap-1 py-1 data-[hover]:bg-zinc-50">
-                    <TranslateIcon className = "size-4 text-gray-900"/>
-                    {langMap.get(lang)}
-                  </PopoverButton>
-                  <PopoverPanel
-                      transition
-                      anchor = "bottom"
-                      className = "z-20 shadow-2xl divide-y divide-zinc-100 rounded-md bg-white text-sm transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
-                  >
-                    <Link
-                        reloadDocument
-                        to = "/zh/"
-                        className = "block p-4 w-32 transition hover:bg-zinc-50"
-                    >
-                      中文
-                    </Link>
-                    <Link
-                        reloadDocument
-                        to = "/en/"
-                        className = "block p-4 w-32 transition hover:bg-zinc-50"
-                    >
-                      English
-                    </Link>
-                    <Link
-                        reloadDocument
-                        to = "/jp/"
-                        className = "block p-4 w-32 transition hover:bg-zinc-50"
-                    >
-                      日本語
-                    </Link>
-                  </PopoverPanel>
-                </Popover>
               </div>
               <button
                   type = "button"
@@ -198,7 +165,40 @@ export default function Navbar({lang, items}: { lang: string, items: NavItem[] }
                     )
                   })}
                 </div>
-                <div className = "pt-8">
+                <div className = "pt-8 flex justify-between items-center">
+                  <Popover>
+                    <PopoverButton className = "flex border items-center rounded text-sm px-1.5 gap-1 py-1 data-[hover]:bg-zinc-50">
+                      <TranslateIcon className = "size-4 text-gray-900"/>
+                      {langMap.get(lang)}
+                    </PopoverButton>
+                    <PopoverPanel
+                        transition
+                        anchor = "bottom"
+                        className = "z-[60] shadow-2xl divide-y divide-zinc-100 rounded-md bg-white text-sm transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+                    >
+                      <Link
+                          reloadDocument
+                          to = "/zh/"
+                          className = "block p-4 w-32 transition hover:bg-zinc-50"
+                      >
+                        中文
+                      </Link>
+                      <Link
+                          reloadDocument
+                          to = "/en/"
+                          className = "block p-4 w-32 transition hover:bg-zinc-50"
+                      >
+                        English
+                      </Link>
+                      <Link
+                          reloadDocument
+                          to = "/jp/"
+                          className = "block p-4 w-32 transition hover:bg-zinc-50"
+                      >
+                        日本語
+                      </Link>
+                    </PopoverPanel>
+                  </Popover>
                   <Profile lang = {lang}/>
                 </div>
               </div>
