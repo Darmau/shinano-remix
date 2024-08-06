@@ -80,7 +80,7 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
     {
       property: "og:image",
       // 没有推荐摄影的时候会有bug
-      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/${data!.featuredPhotos![0].cover.storage_key || "a2b148a3-5799-4be0-a8d4-907f9355f20f"}`
+      content: `${data!.prefix}/cdn-cgi/image/format=jpeg,width=960/${data!.featuredPhotos![0].cover.storage_key || "a2b148a3-5799-4be0-a8d4-907f9355f20f"}`
     },
     {
       property: "og:description",

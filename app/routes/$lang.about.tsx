@@ -103,7 +103,7 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
     },
     {
       property: "og:image",
-      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/ba07adad-3f02-409b-ad39-2814b6f2ede3`
+      content: `${data!.prefix}/cdn-cgi/image/format=jpeg,width=960/ba07adad-3f02-409b-ad39-2814b6f2ede3`
     },
     {
       property: "og:description",
@@ -111,7 +111,7 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
     },
     {
       property: "twitter:image",
-      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/ba07adad-3f02-409b-ad39-2814b6f2ede3`
+      content: `${data!.prefix}/cdn-cgi/image/format=jpeg,width=960/ba07adad-3f02-409b-ad39-2814b6f2ede3`
     },
     {
       property: "twitter:title",

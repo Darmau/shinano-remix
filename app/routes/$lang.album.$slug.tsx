@@ -284,7 +284,7 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
     },
     {
       property: "og:image",
-      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/${data!.albumImages![0].image!.storage_key}`
+      content: `${data!.prefix}/cdn-cgi/image/format=jpeg,width=960/${data!.albumImages![0].image!.storage_key}`
     },
     {
       property: "og:description",
@@ -292,7 +292,7 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
     },
     {
       property: "twitter:image",
-      content: `${data!.prefix}/cdn-cgi/image/format=webp,width=960/${data!.albumImages![0].image!.storage_key}`
+      content: `${data!.prefix}/cdn-cgi/image/format=jpeg,width=960/${data!.albumImages![0].image!.storage_key}`
     },
     {
       property: "twitter:title",

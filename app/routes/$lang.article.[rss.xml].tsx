@@ -38,7 +38,7 @@ export function generateRss({description, entries, link, title, language}: {
         <generator>Shinano Remix</generator>
         <image>
           <title>可可托海没有海的RSS</title>
-          <url>https://img.darmau.co/cdn-cgi/image/format=webp,width=720/https://img.darmau.co/a2b148a3-5799-4be0-a8d4-907f9355f20f</url>
+          <url>https://img.darmau.co/cdn-cgi/image/format=jpeg,width=720/https://img.darmau.co/a2b148a3-5799-4be0-a8d4-907f9355f20f</url>
           <link>https://darmau.co/${language}</link>
           <width>720</width>
           <height>432</height>
@@ -102,8 +102,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       guid: post.id,
       content: getFirstThreeParagraphs(post.content_text),
       enclosure: post.cover && {
-        url: `https://img.darmau.co/cdn-cgi/image/format=webp,width=960/https://img.darmau.co/${post.cover.storage_key}`,
-        type: 'image/webp',
+        url: `https://img.darmau.co/cdn-cgi/image/format=jpeg,width=960/https://img.darmau.co/${post.cover.storage_key}`,
+        type: 'image/jpeg',
         length: post.cover.size,
       },
     })) : [],
@@ -131,8 +131,8 @@ function generateEnclosure(enclosure: {url: string, type: string, length: string
   if (!enclosure) {
     return `
       <enclosure
-        url="https://img.darmau.co/cdn-cgi/image/format=webp,width=720/https://img.darmau.co/a2b148a3-5799-4be0-a8d4-907f9355f20f"
-        type="image/webp"
+        url="https://img.darmau.co/cdn-cgi/image/format=jpeg,width=720/https://img.darmau.co/a2b148a3-5799-4be0-a8d4-907f9355f20f"
+        type="image/jpeg"
         length="373254"
       />
     `;
