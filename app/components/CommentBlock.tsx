@@ -2,12 +2,13 @@ import {useOutletContext} from "@remix-run/react";
 import getDate from "~/utils/getDate";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import CommentText from '~/locales/comment';
+import {LinkIcon} from "@heroicons/react/24/solid";
 
 export interface CommentProps {
   id: number;
   user_id: number | null;
   name: string | null;
-  email: string | null;
+  website: string | null;
   content_text: string;
   created_at: string;
   is_anonymous: boolean;
@@ -32,14 +33,27 @@ export function CommentBlock({comment, onReply}: {comment: CommentProps, onReply
   const label = getLanguageLabel(CommentText, lang);
   return (
       <div className = "pt-8">
-        <h4 className = "font-medium text-zinc-800 mb-2">
-          {comment.is_anonymous ? comment.name : comment.users!.name}
+        {/*匿名用户名*/}
+        {comment.is_anonymous && <h4 className = "font-medium text-zinc-800 mb-2 hover:text-violet-700">
+          {comment.website ? (
+              <a href={comment.website} target="_blank" rel="noreferrer">
+                {comment.name}
+              </a>
+          ) : (
+              <span>{comment.name}</span>
+          )}
+        </h4>}
+
+        {/*实名用户名*/}
+        {!comment.is_anonymous && <h4 className = "font-medium text-zinc-800 mb-2">
+          {comment.users!.name}
           {comment.users && comment.users.role === 'admin' && (
               <span
                   className = "rounded bg-violet-100 border border-violet-500 text-violet-700 text-xs p-1 ml-2"
               >{label.author}</span>
           )}
-        </h4>
+        </h4>}
+
         <div className = "text-sm text-zinc-500">{getDate(comment.created_at, lang)}</div>
 
         {comment.reply_to && (
