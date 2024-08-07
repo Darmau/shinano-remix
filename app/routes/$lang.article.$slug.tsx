@@ -378,6 +378,30 @@ export async function action({request, context}: ActionFunctionArgs) {
   const reply_to = formData.get('reply_to') ? parseInt(formData.get('reply_to') as string) : null;
 
   if (!session) {
+    const turnstileToken = formData.get('cf-turnstile-response');
+    const turnstileResponse = await fetch(
+        'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            secret: context.cloudflare.env.TURNSTILE_SECRET_KEY,
+            response: turnstileToken,
+          }),
+        }
+    );
+
+    const outcome = await turnstileResponse.json();
+    if (!outcome.success) {
+      return json({
+        success: false,
+        error: '验证失败,请重试。',
+        comment: null
+      });
+    }
+
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
     const website = formData.get('website') as string;
