@@ -14,6 +14,8 @@ interface Env {
   RESEND_KEY: string;
   RESEND_AUDIENCE_ID: string;
   MAPBOX_TOKEN: string;
+  TURNSTILE_SITE_KEY: string;
+  TURNSTILE_SECRET_KEY: string;
 }
 
 type Cloudflare = Omit<PlatformProxy<Env>, "dispose">;

@@ -40,7 +40,8 @@ export const loader = async ({request, context}: LoaderFunctionArgs) => {
   const env = {
     SUPABASE_URL: context.cloudflare.env.SUPABASE_URL,
     SUPABASE_ANON_KEY: context.cloudflare.env.SUPABASE_ANON_KEY,
-    PREFIX: context.cloudflare.env.IMG_PREFIX
+    PREFIX: context.cloudflare.env.IMG_PREFIX,
+    TURNSTILE_SITE_KEY: context.cloudflare.env.TURNSTILE_SITE_KEY,
   };
 
   const response = new Response();
@@ -80,7 +81,8 @@ export default function App() {
     footerItems
   } = useLoaderData<typeof loader>();
 
-  const prefix = env.PREFIX
+  const prefix = env.PREFIX;
+  const turnstileSiteKey = env.TURNSTILE_SITE_KEY;
 
   const {revalidate} = useRevalidator()
 
@@ -123,7 +125,7 @@ export default function App() {
       <Navbar lang = {lang} items = {navbarItems}/>
       <PendingNavigation/>
       <main className = {`flex-1 w-full mt-[76px] ${navigation.state === 'loading' && 'opacity-30'}`}>
-        <Outlet context = {{supabase, lang, prefix}}/>
+        <Outlet context = {{supabase, lang, prefix, turnstileSiteKey}}/>
       </main>
       <Footer lang = {lang} currentYear = {currentYear} items = {footerItems}/>
       <ScrollRestoration/>
