@@ -22,7 +22,7 @@ export default function ShareButton({url, title, lang}: {url: string, title: str
 
   const encodeUrl = encodeURIComponent(url);
   const encodeTitle = encodeURIComponent(title);
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeTitle}&url=${encodeUrl}&via=darmaulee`;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeTitle}&url=${encodeUrl}&via=darmau8964`;
 
   return (
       <div className="flex justify-start gap-3 items-center">
