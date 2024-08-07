@@ -154,54 +154,60 @@ export type Database = {
           content_json: Json | null
           content_text: string | null
           created_at: string | null
+          email: string | null
           id: number
           is_anonymous: boolean | null
           is_blocked: boolean | null
           is_public: boolean | null
+          name: string | null
           receive_notification: boolean | null
           reply_to: number | null
           to_article: number | null
           to_photo: number | null
           to_thought: number | null
-          to_video: number | null
           toxic_score: number | null
           user_id: number | null
+          website: string | null
         }
         Insert: {
           content_html?: string | null
           content_json?: Json | null
           content_text?: string | null
           created_at?: string | null
+          email?: string | null
           id?: number
           is_anonymous?: boolean | null
           is_blocked?: boolean | null
           is_public?: boolean | null
+          name?: string | null
           receive_notification?: boolean | null
           reply_to?: number | null
           to_article?: number | null
           to_photo?: number | null
           to_thought?: number | null
-          to_video?: number | null
           toxic_score?: number | null
           user_id?: number | null
+          website?: string | null
         }
         Update: {
           content_html?: string | null
           content_json?: Json | null
           content_text?: string | null
           created_at?: string | null
+          email?: string | null
           id?: number
           is_anonymous?: boolean | null
           is_blocked?: boolean | null
           is_public?: boolean | null
+          name?: string | null
           receive_notification?: boolean | null
           reply_to?: number | null
           to_article?: number | null
           to_photo?: number | null
           to_thought?: number | null
-          to_video?: number | null
           toxic_score?: number | null
           user_id?: number | null
+          website?: string | null
         }
         Relationships: [
           {
@@ -251,13 +257,6 @@ export type Database = {
             columns: ["to_thought"]
             isOneToOne: false
             referencedRelation: "thought"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "comment_to_video_fkey"
-            columns: ["to_video"]
-            isOneToOne: false
-            referencedRelation: "video"
             referencedColumns: ["id"]
           },
           {
@@ -533,7 +532,6 @@ export type Database = {
           to_comment: number | null
           to_photo: number | null
           to_thought: number | null
-          to_video: number | null
           user_id: number | null
         }
         Insert: {
@@ -544,7 +542,6 @@ export type Database = {
           to_comment?: number | null
           to_photo?: number | null
           to_thought?: number | null
-          to_video?: number | null
           user_id?: number | null
         }
         Update: {
@@ -555,7 +552,6 @@ export type Database = {
           to_comment?: number | null
           to_photo?: number | null
           to_thought?: number | null
-          to_video?: number | null
           user_id?: number | null
         }
         Relationships: [
@@ -609,13 +605,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "reaction_to_video_fkey"
-            columns: ["to_video"]
-            isOneToOne: false
-            referencedRelation: "video"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "reaction_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
@@ -635,7 +624,6 @@ export type Database = {
           photo_count: number | null
           thought_count: number | null
           user_count: number | null
-          video_count: number | null
         }
         Insert: {
           article_count?: number | null
@@ -647,7 +635,6 @@ export type Database = {
           photo_count?: number | null
           thought_count?: number | null
           user_count?: number | null
-          video_count?: number | null
         }
         Update: {
           article_count?: number | null
@@ -659,7 +646,6 @@ export type Database = {
           photo_count?: number | null
           thought_count?: number | null
           user_count?: number | null
-          video_count?: number | null
         }
         Relationships: []
       }
@@ -766,97 +752,6 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      video: {
-        Row: {
-          abstract: string | null
-          category: number | null
-          content_html: string | null
-          content_json: Json | null
-          content_text: string | null
-          cover: number | null
-          created_at: string | null
-          embed: string | null
-          id: number
-          is_draft: boolean | null
-          is_featured: boolean | null
-          is_top: boolean | null
-          lang: number | null
-          link: string | null
-          page_view: number | null
-          published_at: string | null
-          slug: string | null
-          title: string | null
-          topic: string[] | null
-          updated_at: string | null
-        }
-        Insert: {
-          abstract?: string | null
-          category?: number | null
-          content_html?: string | null
-          content_json?: Json | null
-          content_text?: string | null
-          cover?: number | null
-          created_at?: string | null
-          embed?: string | null
-          id?: number
-          is_draft?: boolean | null
-          is_featured?: boolean | null
-          is_top?: boolean | null
-          lang?: number | null
-          link?: string | null
-          page_view?: number | null
-          published_at?: string | null
-          slug?: string | null
-          title?: string | null
-          topic?: string[] | null
-          updated_at?: string | null
-        }
-        Update: {
-          abstract?: string | null
-          category?: number | null
-          content_html?: string | null
-          content_json?: Json | null
-          content_text?: string | null
-          cover?: number | null
-          created_at?: string | null
-          embed?: string | null
-          id?: number
-          is_draft?: boolean | null
-          is_featured?: boolean | null
-          is_top?: boolean | null
-          lang?: number | null
-          link?: string | null
-          page_view?: number | null
-          published_at?: string | null
-          slug?: string | null
-          title?: string | null
-          topic?: string[] | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "video_category_fkey"
-            columns: ["category"]
-            isOneToOne: false
-            referencedRelation: "category"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "video_cover_fkey"
-            columns: ["cover"]
-            isOneToOne: false
-            referencedRelation: "image"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "video_lang_fkey"
-            columns: ["lang"]
-            isOneToOne: false
-            referencedRelation: "language"
             referencedColumns: ["id"]
           },
         ]
@@ -1025,38 +920,19 @@ export type Database = {
           count: number
         }[]
       }
-      get_photography_count_by_category: {
-        Args: {
-          lang_name: string
-        }
-        Returns: {
-          title: string
-          slug: string
-          count: number
-        }[]
-      }
-      get_photography_count_by_year: {
-        Args: {
-          lang_name: string
-        }
-        Returns: {
-          year: string
-          count: number
-        }[]
-      }
       is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
       photo_page_view: {
         Args: {
-          article_id: number
+          photo_id: number
         }
         Returns: number
       }
       thought_page_view: {
         Args: {
-          article_id: number
+          thought_id: number
         }
         Returns: number
       }

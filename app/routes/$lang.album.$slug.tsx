@@ -116,7 +116,8 @@ export default function AlbumDetail() {
                 onCancelReply = {handleCancelReply}
             />
             <div className = "flex flex-col gap-4 divide-y">
-              {actionResponse?.error && <p className = "error">{actionResponse.error}</p>}
+              {actionResponse?.error && <p className = "mt-2 text-sm text-red-500">{actionResponse.error}</p>}
+              {actionResponse?.success && <p className = "mt-2 text-sm text-green-500">{actionResponse.success}</p>}
               {comments && comments.map((comment) => (
                   <CommentBlock
                       key = {comment.id}
@@ -201,6 +202,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   .select(`
       id,
       user_id,
+      name,
+      website,
       content_text,
       created_at,
       is_anonymous,
@@ -318,12 +321,48 @@ export async function action({request, context}: ActionFunctionArgs) {
   const formData = await request.formData();
   const {supabase} = createClient(request, context);
   const {data: {session}} = await supabase.auth.getSession();
+  const content_text = formData.get('content_text') as string;
+  const to_photo = parseInt(formData.get('to_photo') as string);
+  const reply_to = formData.get('reply_to') ? parseInt(formData.get('reply_to') as string) : null;
 
   if (!session) {
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const website = formData.get('website') as string;
+
+    const { data: newComment, error } = await supabase
+    .from('comment')
+    .insert({
+      name,
+      email,
+      website,
+      content_text,
+      to_photo,
+      is_anonymous: true,
+      reply_to
+    })
+    .select(`
+        id,
+        name,
+        content_text,
+        created_at,
+        is_anonymous,
+        reply_to (id, content_text, is_anonymous)
+      `)
+    .single();
+
+    if (error) {
+      return json({
+        success: false,
+        error: error.message,
+        comment: null
+      })
+    }
+
     return json({
-      success: false,
-      error: 'Unauthorized',
-      comment: null
+      success: '提交成功，请等待审核。Please wait for review.',
+      error: null,
+      comment: newComment
     })
   }
 
@@ -341,18 +380,13 @@ export async function action({request, context}: ActionFunctionArgs) {
     })
   }
 
-  const content_text = formData.get('content_text') as string;
-  const to_photo = parseInt(formData.get('to_photo') as string);
-  const is_anonymous = formData.get('is_anonymous') === 'on';
-  const reply_to = formData.get('reply_to') ? parseInt(formData.get('reply_to') as string) : null;
-
   const {data: newComment} = await supabase
   .from('comment')
   .insert({
     user_id: userProfile.id,
     content_text,
     to_photo,
-    is_anonymous,
+    is_anonymous: false,
     reply_to
   })
   .select(`
@@ -367,7 +401,7 @@ export async function action({request, context}: ActionFunctionArgs) {
   .single();
 
   return json({
-    success: true,
+    success: '评论成功。Comment success.',
     error: null,
     comment: newComment
   })
