@@ -5,7 +5,9 @@ import CommentText from '~/locales/comment';
 
 export interface CommentProps {
   id: number;
-  user_id: number;
+  user_id: number | null;
+  name: string | null;
+  email: string | null;
   content_text: string;
   created_at: string;
   is_anonymous: boolean;
@@ -22,7 +24,7 @@ export interface CommentProps {
     id: number,
     name: string,
     role: string
-  }
+  } | null;
 }
 
 export function CommentBlock({comment, onReply}: {comment: CommentProps, onReply: (comment: CommentProps) => void}) {
@@ -31,8 +33,8 @@ export function CommentBlock({comment, onReply}: {comment: CommentProps, onReply
   return (
       <div className = "pt-8">
         <h4 className = "font-medium text-zinc-800 mb-2">
-          {comment.is_anonymous ? 'Anonymous' : comment.users.name}
-          {comment.users.role === 'admin' && (
+          {comment.is_anonymous ? comment.name : comment.users!.name}
+          {comment.users && comment.users.role === 'admin' && (
               <span
                   className = "rounded bg-violet-100 border border-violet-500 text-violet-700 text-xs p-1 ml-2"
               >{label.author}</span>
