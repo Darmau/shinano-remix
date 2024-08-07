@@ -78,7 +78,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       description: post.content_text,
       pubDate: post.created_at,
       author: '李大毛',
-      link: `https://darmau.co/thought/${post.slug}`,
+      link: `https://darmau.co/zh/thought/${post.slug}`,
       guid: post.id,
     })) : [],
   });
