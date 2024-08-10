@@ -128,6 +128,15 @@ export default function Index() {
 export async function loader({request, context, params}: LoaderFunctionArgs) {
   const {supabase} = createClient(request, context);
   const lang = params.lang as string;
+  const availableLangs = ["zh", "en", "jp"];
+
+  // 如果lang不在availableLangs里，返回404
+  if (!availableLangs.includes(lang)) {
+    throw new Response(null, {
+      status: 404,
+      statusText: 'No such language'
+    })
+  }
 
   // 获取指定语言的文章，is_top为true的排第一，剩下按published_at倒序排列
   const {data: articleData} = await supabase
@@ -155,7 +164,6 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   .returns<Article[]>();
 
   const label = getLanguageLabel(HomepageText, lang);
-  const availableLangs = ["zh", "en", "jp"];
 
   return json({
     articles: articleData,

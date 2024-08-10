@@ -8,6 +8,8 @@ export const loader = ({context}: LoaderFunctionArgs) => {
 
     User-agent: *
     Allow: /
+    Disallow: /*/login
+    Disallow: /*/signup
 
     Sitemap: ${baseUrl}/sitemap-index.xml
     `
