@@ -325,6 +325,8 @@ export async function action({request, context}: ActionFunctionArgs) {
   const to_photo = parseInt(formData.get('to_photo') as string);
   const reply_to = formData.get('reply_to') ? parseInt(formData.get('reply_to') as string) : null;
 
+  const bark = context.cloudflare.env.BARK_SERVER;
+
   if (!session) {
     const turnstileToken = formData.get('cf-turnstile-response');
     const turnstileResponse = await fetch(
@@ -383,6 +385,8 @@ export async function action({request, context}: ActionFunctionArgs) {
       })
     }
 
+    await fetch(`${bark}/${name}评论了摄影/${content_text}`)
+
     return json({
       success: '提交成功，请等待审核。Please wait for review.',
       error: null,
@@ -392,7 +396,7 @@ export async function action({request, context}: ActionFunctionArgs) {
 
   const {data: userProfile} = await supabase
   .from('users')
-  .select('id, user_id')
+  .select('id, user_id, name')
   .eq('user_id', session.user.id)
   .single();
 
@@ -423,6 +427,8 @@ export async function action({request, context}: ActionFunctionArgs) {
       reply_to (id, content_text, users (id, name))
     `)
   .single();
+
+  await fetch(`${bark}/${userProfile.name}评论了摄影/${content_text}`)
 
   return json({
     success: '评论成功。Comment success.',

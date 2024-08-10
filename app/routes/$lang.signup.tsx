@@ -80,14 +80,15 @@ export async function action({request, context}: ActionFunctionArgs) {
   const formData = await request.formData()
   const intent = formData.get("intent") as string;
 
-  const {supabase, headers} = createClient(request, context)
+  const {supabase, headers} = createClient(request, context);
+  const bark = context.cloudflare.env.BARK_SERVER;
 
   if (intent === 'email') {
     const username = formData.get("username") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    const {error} = await supabase.auth.signUp({
+    const { error} = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -101,6 +102,9 @@ export async function action({request, context}: ActionFunctionArgs) {
       console.error(error);
       return json({success: false, error: error.message}, {headers});
     }
+
+    // 推送注册新用户的消息
+    await fetch(`${bark}/${username}注册了账号/${email}`);
 
     return json({
       success: true,
@@ -120,6 +124,7 @@ export async function action({request, context}: ActionFunctionArgs) {
     }
 
     if (data.url) {
+      await fetch(`${bark}/新用户使用Github登录`);
       return redirect(data.url, {headers});
     }
   }
