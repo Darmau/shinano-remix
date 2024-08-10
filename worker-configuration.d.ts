@@ -11,4 +11,5 @@ interface Env {
 	MAPBOX_TOKEN: string;
 	TURNSTILE_SECRET_KEY: string;
 	TURNSTILE_SITE_KEY: string;
+	BARK_SERVER: string;
 }
