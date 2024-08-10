@@ -161,6 +161,11 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   const year = params.year as string;
   const page = params.page as string;
 
+  // 如果page无法转换为数字，返回404
+  if (isNaN(Number(page))) {
+    return new Response(null, {status: 404});
+  }
+
   // 查询指定语言，published_at在年份之间，排除草稿
   const {data: articles} = await supabase
   .from('article')

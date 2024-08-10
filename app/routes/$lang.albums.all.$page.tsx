@@ -110,6 +110,11 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   const lang = params.lang as string;
   const page = params.page as string;
 
+  // 如果page无法转换为数字，返回404
+  if (isNaN(Number(page))) {
+    return new Response(null, {status: 404});
+  }
+
   const {data: albums} = await supabase
   .from('photo')
   .select(`
