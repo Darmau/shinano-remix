@@ -100,7 +100,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       category: post.category!.title,
       link: `https://darmau.co/${lang}/article/${post.slug}`,
       guid: post.id,
-      content: getFirstThreeParagraphs(post.content_text),
+      content: appendText(post.content_text),
       enclosure: post.cover && {
         url: `https://img.darmau.co/cdn-cgi/image/format=jpeg,width=960/https://img.darmau.co/${post.cover.storage_key}`,
         type: 'image/jpeg',
@@ -117,14 +117,11 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   });
 }
 
-function getFirstThreeParagraphs(text: string | null): string {
+function appendText(text: string | null): string {
   if (!text) {
     return '本文没有内容';
   }
-  return text.split('\n')
-  .filter(paragraph => paragraph.trim() !== '')
-  .slice(0, 3)
-  .join('\n');
+  return '完整格式和图片请前往原文阅读。For the complete format and images, please go to the original article.' + '\n' + text;
 }
 
 function generateEnclosure(enclosure: {url: string, type: string, length: string} | undefined): string {
