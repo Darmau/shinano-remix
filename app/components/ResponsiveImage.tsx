@@ -23,7 +23,7 @@ export default function ResponsiveImage({ image, width, classList }: { image: Im
         {/* Low resolution blurred image */}
         <img
             className={`scale-105 brightness-110 absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}
-            src={`${prefix}/cdn-cgi/image/format=auto,${base}=24}/${image.storage_key}`}
+            src={`${prefix}/cdn-cgi/image/format=auto,${base}=24/${image.storage_key}`}
             alt={image.alt || ''}
             width={width}
             style={{ filter: 'blur(32px)' }}
