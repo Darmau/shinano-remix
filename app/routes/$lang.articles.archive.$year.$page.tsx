@@ -44,7 +44,7 @@ export default function ArchiveArticles() {
           <h1 className = "font-bold text-3xl md:text-4xl">{year}</h1>
         </header>
         <div
-            className = "w-full max-w-6xl mx-auto p-4 flex flex-col-reverse gap-8 md:py-8 mb-8 lg:mb-16 md:grid md:grid-cols-3"
+            className = "w-full max-w-6xl mx-auto p-4 flex flex-col gap-8 md:py-8 mb-8 lg:mb-16 md:grid md:grid-cols-3"
         >
           <div className = "grow flex flex-col gap-8 md:gap-12 md:col-span-2">
             {articles.map((article) => (
@@ -52,7 +52,7 @@ export default function ArchiveArticles() {
             ))}
             <Pagination count = {articleCount || 0} limit = {12} page = {page} path = {path}/>
           </div>
-          <aside className = "border-b pb-4 md:border-0 space-y-8 md:col-span-1">
+          <aside className = "pb-4 space-y-8 md:col-span-1">
             <div className = "space-y-4">
               <h3 className = "text-sm font-semibold text-violet-600">{label.year}</h3>
               <ol className = "">
