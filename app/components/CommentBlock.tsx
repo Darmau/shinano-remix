@@ -16,6 +16,7 @@ export interface CommentProps {
     id: number,
     content_text: string,
     is_anonymous: boolean,
+    name: string,
     users: {
       id: number;
       name: string;
@@ -58,7 +59,7 @@ export function CommentBlock({comment, onReply}: {comment: CommentProps, onReply
 
         {comment.reply_to && (
             <div className="mt-2">
-              <p className = "p-4 bg-zinc-100 text-sm text text-zinc-700 mb-4">{`回复 ${comment.reply_to.is_anonymous ? 'Anonymous' : comment.reply_to.users.name}: ${comment.reply_to.content_text.substring(0, 120)}...`}</p>
+              <p className = "p-4 bg-zinc-100 text-sm text text-zinc-700 mb-4">{`回复 ${comment.reply_to.is_anonymous ? comment.reply_to.name : comment.reply_to.users.name}: ${comment.reply_to.content_text.substring(0, 120)}...`}</p>
             </div>
         )}
 
