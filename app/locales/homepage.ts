@@ -1,6 +1,6 @@
 export default {
   "zh": {
-    "title": "可可托海没有海",
+    "title": "积薪",
     "description": "李大毛的个人博客。包括文章、摄影和碎片想法。",
     "about_title": "关于作者",
     "about_description": "李大毛的个人简介。",
@@ -28,7 +28,7 @@ export default {
   },
 
   "en": {
-    "title": "可可托海没有海",
+    "title": "Firewood",
     "description": "Darmau's personal blog. Includes articles, photography, and miscellaneous thoughts.",
     "about_title": "About the Author",
     "about_description": "A brief introduction of Darmau.",
@@ -58,7 +58,7 @@ export default {
   },
 
   "jp": {
-    "title": "可可托海没有海",
+    "title": "積薪",
     "description": "李大毛の個人ブログ。記事、写真、断片的な考えを含む。",
     "about_title": "作者について",
     "about_description": "李大毛の簡単な紹介。",
