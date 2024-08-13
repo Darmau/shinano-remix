@@ -42,7 +42,7 @@ export default function Footer({lang, currentYear, items}: {lang: string, curren
           <div className = "xl:grid xl:grid-cols-2 xl:gap-8">
             <img
                 alt = "积薪"
-                src = "/favicon.svg"
+                src = "/favicon.ico"
                 className = "h-12"
             />
             <div className = "my-16 grid grid-cols-2 lg:grid-cols-4 gap-8 xl:mt-0">
