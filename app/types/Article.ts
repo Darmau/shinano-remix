@@ -19,5 +19,6 @@ export interface Article {
     title: string,
     slug: string
   },
+  comments: [{ count: number }],
   content_json: JSON,
 }
