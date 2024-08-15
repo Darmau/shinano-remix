@@ -152,7 +152,8 @@ export default function ArticleDetail() {
                   {page > 1 && (
                       <Link
                           to = {{
-                            search: `?page=${page - 1}&limit=${limit}`
+                            search: `?page=${page - 1}&limit=${limit}`,
+                            hash: '#comment-editor'
                           }}
                           className = "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                       >{label.previous}</Link>
@@ -160,7 +161,8 @@ export default function ArticleDetail() {
                   {page < totalPage && (
                       <Link
                           to = {{
-                            search: `?page=${page + 1}&limit=${limit}`
+                            search: `?page=${page + 1}&limit=${limit}`,
+                            hash: '#comment-editor'
                           }}
                           className = "ml-auto rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                       >{label.next}</Link>

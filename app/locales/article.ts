@@ -3,8 +3,8 @@ export default {
     "category": "分类",
     "topic": "主题",
     "published_at": "发布时间",
-    "next": "下一篇",
-    "previous": "上一篇",
+    "next": "下一页",
+    "previous": "上一页",
     "latest_articles": "最新文章",
   },
   "en": {
