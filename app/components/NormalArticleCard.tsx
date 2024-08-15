@@ -1,7 +1,7 @@
 import {Article} from "~/types/Article";
 import {Link, useOutletContext} from "@remix-run/react";
 import getDate from "~/utils/getDate";
-import {EyeIcon} from "@heroicons/react/24/solid";
+import {ChatBubbleOvalLeftIcon, EyeIcon} from "@heroicons/react/24/outline";
 
 export default function NormalArticleCard({article, showAbstract}: {
   article: Article
@@ -41,9 +41,15 @@ export default function NormalArticleCard({article, showAbstract}: {
           {showAbstract && article.abstract && (
               <div className="bg-zinc-100 p-2 text-sm text-zinc-700 mt-3 rounded-md md:p-4 leading-6">{article.abstract}</div>
           )}
-          <div className="mt-1 flex gap-1 items-center justify-start">
-            <EyeIcon className="h-4 w-4 inline-block text-zinc-500"/>
-            <span className="text-zinc-500 text-sm">{article.page_view}</span>
+          <div className = "flex gap-3 justify-start items-center mt-2">
+            <div className = "flex gap-1 items-center">
+              <EyeIcon className = "h-4 w-4 inline-block text-zinc-400"/>
+              <span className = "text-zinc-500 text-sm">{article.page_view}</span>
+            </div>
+            <div className = "flex gap-1 items-center">
+              <ChatBubbleOvalLeftIcon className = "h-4 w-4 inline-block text-zinc-400"/>
+              <span className = "text-zinc-500 text-sm">{article.comments[0].count}</span>
+            </div>
           </div>
         </Link>
 

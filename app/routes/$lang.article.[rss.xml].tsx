@@ -2,6 +2,7 @@ import {LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import HomepageText from '~/locales/homepage';
+import {contentToHtml} from "~/components/RSSContainer";
 
 export type RssEntry = {
   title: string | null;
@@ -76,7 +77,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       slug,
       subtitle,
       abstract,
-      content_text,
+      content_json,
       published_at,
       category (title),
       cover (alt, size, storage_key),
@@ -100,7 +101,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       category: post.category!.title,
       link: `https://darmau.co/${lang}/article/${post.slug}`,
       guid: post.id,
-      content: appendText(post.content_text),
+      content: appendText(post.content_json),
       enclosure: post.cover && {
         url: `https://img.darmau.co/cdn-cgi/image/format=jpeg,width=960/https://img.darmau.co/${post.cover.storage_key}`,
         type: 'image/jpeg',
@@ -117,11 +118,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   });
 }
 
-function appendText(text: string | null): string {
-  if (!text) {
-    return '本文没有内容';
-  }
-  return '完整格式和图片请前往原文阅读。For the complete format and images, please go to the original article.' + '\n' + text;
+function appendText(text) {
+  return contentToHtml(text);
 }
 
 function generateEnclosure(enclosure: {url: string, type: string, length: string} | undefined): string {

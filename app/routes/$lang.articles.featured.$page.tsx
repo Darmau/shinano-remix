@@ -120,7 +120,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       page_view,
       category (title, slug),
       cover (alt, storage_key, width, height),
-      language!inner (lang)
+      language!inner (lang),
+      comments:comment(count)
     `)
   .eq('language.lang', lang)
   .limit(12)

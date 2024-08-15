@@ -13,6 +13,7 @@ export interface Thought {
   content_json: JSON,
   created_at: string,
   page_view: number,
+  comments: [{ count: number }],
   thought_image: {
     image: {
       id: number,
@@ -35,6 +36,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       content_json,
       created_at,
       page_view,
+      comments:comment(count)
       thought_image (
         image (id, alt, storage_key, width, height)
       )
@@ -122,6 +124,7 @@ export async function action({request, context}: ActionFunctionArgs) {
     content_json,
     created_at,
     page_view,
+    comments:comment(count),
     thought_image (
       image (id, alt, storage_key, width, height)
     )

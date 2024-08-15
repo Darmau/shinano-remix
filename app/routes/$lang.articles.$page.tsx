@@ -168,7 +168,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       published_at,
       page_view,
       category (title, slug),
-      language!inner (lang)
+      language!inner (lang),
+      comments:comment(count)
     `)
   .eq('language.lang', lang)
   .eq('is_draft', false)

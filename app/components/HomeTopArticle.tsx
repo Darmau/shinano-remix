@@ -2,7 +2,7 @@ import {Article} from "~/types/Article";
 import {Link, useOutletContext} from "@remix-run/react";
 import getDate from "~/utils/getDate";
 import ResponsiveImage from "~/components/ResponsiveImage";
-import {EyeIcon} from "@heroicons/react/24/solid";
+import {ChatBubbleOvalLeftIcon, EyeIcon} from "@heroicons/react/24/outline";
 
 export default function HomeTopArticle({article, isTop, classList}: {
   article: Article,
@@ -59,9 +59,15 @@ export default function HomeTopArticle({article, isTop, classList}: {
             {isTop && article.abstract && (
                 <p className = "text-sm bg-zinc-50 p-2 rounded-md text-zinc-500 mt-2 lg:p-4">{article.abstract}</p>
             )}
-            <div className = "inline-flex gap-1 justify-start items-center">
-              <EyeIcon className = "h-4 w-4 inline-block text-zinc-400"/>
-              <span className = "text-zinc-500 text-sm">{article.page_view}</span>
+            <div className = "flex gap-3 justify-start items-center">
+              <div className="flex gap-1 items-center">
+                <EyeIcon className = "h-4 w-4 inline-block text-zinc-400"/>
+                <span className = "text-zinc-500 text-sm">{article.page_view}</span>
+              </div>
+              <div className="flex gap-1 items-center">
+                <ChatBubbleOvalLeftIcon className = "h-4 w-4 inline-block text-zinc-400"/>
+                <span className = "text-zinc-500 text-sm">{article.comments[0].count}</span>
+              </div>
             </div>
           </div>
         </Link>

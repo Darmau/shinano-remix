@@ -154,7 +154,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       page_view,
       cover (alt, storage_key, width, height),
       category (title, slug),
-      language!inner (lang)
+      language!inner (lang),
+      comments:comment(count)
       `)
   .eq('language.lang', lang)
   .filter('is_draft', 'eq', false)
