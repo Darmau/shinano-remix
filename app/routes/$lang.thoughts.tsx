@@ -36,7 +36,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       content_json,
       created_at,
       page_view,
-      comments:comment(count)
+      comments:comment(count),
       thought_image (
         image (id, alt, storage_key, width, height)
       )
