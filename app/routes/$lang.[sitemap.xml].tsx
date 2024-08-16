@@ -36,8 +36,40 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     `)
     .order('created_at', {ascending: false});
 
+  const now = new Date().toISOString();
+
   const sitemap = `
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        <url>
+            <loc>${baseUrl}/${lang}</loc>
+            <lastmod>${now}</lastmod>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>${baseUrl}/${lang}/about</loc>
+            <lastmod>${now}</lastmod>
+            <changefreq>monthly</changefreq>
+            <priority>0.5</priority>
+        </url>
+        <url>
+            <loc>${baseUrl}/${lang}/site</loc>
+            <lastmod>${now}</lastmod>
+            <changefreq>monthly</changefreq>
+            <priority>0.5</priority>
+        </url>
+        <url>
+            <loc>${baseUrl}/${lang}/contact</loc>
+            <lastmod>${now}</lastmod>
+            <changefreq>monthly</changefreq>
+            <priority>0.5</priority>
+        </url>
+        <url>
+            <loc>${baseUrl}/${lang}/rss</loc>
+            <lastmod>${now}</lastmod>
+            <changefreq>monthly</changefreq>
+            <priority>0.5</priority>
+        </url>
         ${articles && articles.map(article => `
             <url>
                 <loc>${baseUrl}/${lang}/article/${article.slug}</loc>
