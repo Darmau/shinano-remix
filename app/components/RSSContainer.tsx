@@ -60,7 +60,8 @@ export function contentToHtml(content: Json): string {
 
 function renderImage(node: Content): string {
   const { alt, storage_key, caption, prefix } = node.attrs as unknown as ImageAttrs;
-  return `<figure><img src="${prefix}/cdn-cgi/image/format=auto,width=960/${storage_key}" alt="${alt}" /><figcaption>${caption}</figcaption></figure>`;
+  return `<figure><img src="${prefix}/cdn-cgi/image/format=auto,width=960/${storage_key}" alt="${alt}" />${caption &&
+  <figcaption>${caption}</figcaption>}</figure>`;
 }
 
 function renderNode(node: Content): string {
@@ -140,5 +141,11 @@ function renderTableRow(row: ContentItem): string {
 
 function renderList(content?: ContentItem[]): string {
   if (!content) return "";
-  return content.map(item => `<li>${renderContent(item.content)}</li>`).join("");
+  return content.map(item => {
+    let listItemContent = "";
+    if (item.type === "listItem" && item.content) {
+      listItemContent = item.content.map(renderNode).join("");
+    }
+    return `<li>${listItemContent}</li>`;
+  }).join("");
 }
