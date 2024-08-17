@@ -35,7 +35,7 @@ export default function AboutMe () {
               <TwitterIcon className = "w-6 h-6 text-zinc-700 group-hover:text-violet-700"/>
               <a
                   data-umami-event = "Social Link"
-                  data-umami-social = "X"
+                  data-umami-event-social = "X"
                   href = "https://x.com/darmau8964" target = "_blank" rel = "noreferrer"
                   className = "font-medium text-gray-700 group-hover:text-violet-700"
               >Twitter</a>
@@ -44,7 +44,7 @@ export default function AboutMe () {
               <GithubIcon className = "w-6 h-6 text-zinc-700 group-hover:text-violet-700"/>
               <a
                   data-umami-event = "Social Link"
-                  data-umami-social = "GitHub"
+                  data-umami-event-social = "GitHub"
                   href = "https://github.com/Darmau" target = "_blank" rel = "noreferrer"
                   className = "font-medium text-gray-700 group-hover:text-violet-700"
               >Github</a>
@@ -53,7 +53,7 @@ export default function AboutMe () {
               <InstagramIcon className = "w-6 h-6 text-zinc-700 group-hover:text-violet-700"/>
               <a
                   data-umami-event = "Social Link"
-                  data-umami-social = "Instagram"
+                  data-umami-event-social = "Instagram"
                   href = "https://www.instagram.com/ridamoe" target = "_blank" rel = "noreferrer"
                   className = "font-medium text-gray-700 group-hover:text-violet-700"
               >Instagram</a>
@@ -62,7 +62,7 @@ export default function AboutMe () {
               <YoutubeIcon className = "w-6 h-6 text-zinc-700 group-hover:text-violet-700"/>
               <a
                   data-umami-event = "Social Link"
-                  data-umami-social = "YouTube"
+                  data-umami-event-social = "YouTube"
                   href = "https://www.youtube.com/@darmau" target = "_blank" rel = "noreferrer"
                   className = "font-medium text-gray-700 group-hover:text-violet-700"
               >YouTube</a>

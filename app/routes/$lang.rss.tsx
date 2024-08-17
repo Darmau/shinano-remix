@@ -54,7 +54,7 @@ export default function RSS() {
                 <code className = "text-sm block font-mono text-zinc-600">{`https://darmau.co/${lang}/article/rss.xml`}</code>
                 <button
                     data-umami-event = "RSS"
-                    data-umami-type = "Article"
+                    data-umami-event-type = "Article"
                     onClick = {() => copyToClipboard(`https://darmau.co/${lang}/article/rss.xml`, 'article')}
                     className="bg-violet-600 text-white font-medium py-3 w-full rounded-md"
                 >
@@ -76,7 +76,7 @@ export default function RSS() {
                 <code className = "text-sm block font-mono text-zinc-600">{`https://darmau.co/${lang}/album/rss.xml`}</code>
                 <button
                     data-umami-event = "RSS"
-                    data-umami-type = "Photography"
+                    data-umami-event-type = "Photography"
                     onClick = {() => copyToClipboard(`https://darmau.co/${lang}/album/rss.xml`, 'photo')}
                     className = "bg-violet-600 text-white font-medium py-3 w-full rounded-md"
                 >
@@ -104,7 +104,7 @@ export default function RSS() {
                 <code className = "text-sm block font-mono text-zinc-600">{`https://darmau.co/${lang}/thought/rss.xml`}</code>
                 <button
                     data-umami-event = "RSS"
-                    data-umami-type = "Thought"
+                    data-umami-event-type = "Thought"
                     onClick = {() => copyToClipboard(`https://darmau.co/${lang}/thought/rss.xml`, 'thought')}
                     className = "bg-violet-600 text-white font-medium py-3 w-full rounded-md"
                 >

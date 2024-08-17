@@ -64,10 +64,10 @@ export default function GallerySlide({albumImages, onIndexChange}: { albumImages
               borderColor: '#52525b'
             }}
             render={{
-              iconPrev: () => <div className="p-2 rounded-full bg-white/60 backdrop-blur-2xl">
+              iconPrev: () => <div className="p-2 rounded-full bg-white/60 backdrop-blur-2xl" data-umami-event="Image Gallery" data-umami-event-action="previous">
                 <ChevronLeftIcon aria-hidden = "true" className = "h-5 w-5 text-black"/>
               </div>,
-              iconNext: () => <div className="p-2 rounded-full bg-white/60 backdrop-blur-2xl">
+              iconNext: () => <div className="p-2 rounded-full bg-white/60 backdrop-blur-2xl" data-umami-event="Image Gallery" data-umami-event-action="next">
                 <ChevronRightIcon aria-hidden = "true" className = "h-5 w-5 text-black"/>
               </div>,
               slideFooter: () => (
@@ -89,7 +89,7 @@ export default function GallerySlide({albumImages, onIndexChange}: { albumImages
           <button
               onClick = {() => setOpen(true)}
               type = "button"
-              data-umami-event = "open-fullscreen"
+              data-umami-event = "Full Screen"
               className = "absolute top-8 right-8 z-50 p-2 rounded-full bg-white/60 backdrop-blur-2xl"
           >
             <ArrowsPointingOutIcon aria-hidden = "true" className = "h-5 w-5"/>

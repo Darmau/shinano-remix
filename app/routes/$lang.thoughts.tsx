@@ -168,7 +168,7 @@ export default function Thoughts() {
           ))}
         </div>
         <button
-            data-umami-event = "load more thoughts"
+            data-umami-event = "Load more thoughts"
             className="bg-violet-700 font-medium px-4 py-2 text-white rounded-md mt-4 mx-auto block text-sm"
             onClick = {loadMore} disabled = {fetcher.state === "submitting"}
         >

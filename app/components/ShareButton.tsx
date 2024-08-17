@@ -27,7 +27,7 @@ export default function ShareButton({url, title, lang}: {url: string, title: str
   return (
       <div className="flex justify-start gap-3 items-center">
         {showMessage && <p className="text-sm text-green-600">{label.coppied}</p>}
-        <button onClick={copyToClipboard} className="group flex gap-2 border rounded-md shadow-sm p-2 justify-between">
+        <button onClick={copyToClipboard} className="group flex gap-2 border rounded-md shadow-sm p-2 justify-between" data-umami-event="Copy Link">
           <CopyIcon className="h-5 w-5 group-hover:text-zinc-900" />
           <span className="text-sm text-zinc-700 group-hover:font-medium">{label.copy_link}</span>
         </button>
