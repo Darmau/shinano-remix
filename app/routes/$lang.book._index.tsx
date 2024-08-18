@@ -47,11 +47,13 @@ export default function Book () {
                     key = {book.id}
                     className = "flex gap-4 justify-between items-start lg:my-4"
                 >
-                  <img
-                      src = {`${loaderData.prefix}/cdn-cgi/image/format=auto,width=120/${book.cover.storage_key}`}
-                      alt = {book.cover.alt}
-                      className = "h-32 aspect-[3/4] object-cover shadow-lg"
-                  />
+                  {book.cover && (
+                      <img
+                          src = {`${loaderData.prefix}/cdn-cgi/image/format=auto,width=120/${book.cover.storage_key}`}
+                          alt = {book.cover.alt}
+                          className = "h-32 aspect-[3/4] object-cover shadow-lg"
+                      />
+                  )}
                   <div className = "w-full space-y-2 lg:space-y-3">
                     <h3 className = "font-medium text-lg text-zinc-800">{book.title}</h3>
                     <RateStars n = {book.rate}/>
