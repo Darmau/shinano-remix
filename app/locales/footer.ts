@@ -27,12 +27,16 @@ const FooterText = {
       ]
     },
     {
-      "name": "想法",
+      "name": "其他",
       items: [
         {
           "name": "所有想法",
           "href": "/zh/thoughts"
         },
+        {
+          "name": "读书记录",
+          "href": "/zh/book"
+        }
       ]
     },
     {
@@ -85,12 +89,16 @@ const FooterText = {
       ]
     },
     {
-      "name": "Thought",
+      "name": "Others",
       items: [
         {
           "name": "All",
           "href": "/en/thoughts"
         },
+        {
+          "name": "Books",
+          "href": "/en/book"
+        }
       ]
     },
     {
@@ -143,12 +151,16 @@ const FooterText = {
       ]
     },
     {
-      "name": "考え",
+      "name": "その他",
       items: [
         {
           "name": "すべて",
           "href": "/jp/thoughts"
         },
+        {
+          "name": "読書記録",
+          "href": "/jp/book"
+        }
       ]
     },
     {
