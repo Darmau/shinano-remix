@@ -65,13 +65,19 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     `)
     .order('date', {ascending: false});
 
+  // 总数
+  const {count} = await supabase
+    .from('book')
+    .select('id', {count: 'exact'});
+
   const availableLangs = ["zh", "en", "jp"];
 
   return json({
     books: bookData,
     prefix: context.cloudflare.env.IMG_PREFIX,
     baseUrl: context.cloudflare.env.BASE_URL,
-    availableLangs
+    availableLangs,
+    count
   })
 }
 
@@ -86,7 +92,7 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
   );
 
   return [
-    {title: label.title},
+    {title: label.title + '(' + data!.count + ')'},
     {
       name: "description",
       content: label.description,
