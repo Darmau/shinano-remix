@@ -70,6 +70,12 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
             <changefreq>monthly</changefreq>
             <priority>0.5</priority>
         </url>
+        <url>
+            <loc>${baseUrl}/${lang}/book</loc>
+            <lastmod>${now}</lastmod>
+            <changefreq>monthly</changefreq>
+            <priority>0.5</priority>
+        </url>
         ${articles && articles.map(article => `
             <url>
                 <loc>${baseUrl}/${lang}/article/${article.slug}</loc>

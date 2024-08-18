@@ -3,7 +3,7 @@ import {createClient} from "~/utils/supabase/server";
 import {Link, useActionData, useLoaderData, useOutletContext} from "@remix-run/react";
 import {Json} from "~/types/supabase";
 import ContentContainer from "~/components/ContentContainer";
-import getDate from "~/utils/getDate";
+import getTime from "~/utils/getTime";
 import GallerySlide, {AlbumPhoto} from "~/components/GallerySlide";
 import {useEffect, useState} from "react";
 import Mapbox, {EXIF} from "~/components/Mapbox";
@@ -87,7 +87,7 @@ export default function AlbumDetail() {
           <div className = "col-span-1 lg:row-span-2 space-y-4">
             <h2 className = "text-sm text-violet-700 font-medium">{albumContent.category!.title}</h2>
             <h1 className = "text-zinc-800 font-medium text-3xl">{albumContent.title}</h1>
-            <p className = "text-zinc-600 text-sm">{getDate(albumContent.published_at!, lang)}</p>
+            <p className = "text-zinc-600 text-sm">{getTime(albumContent.published_at!, lang)}</p>
             <div className = "flex gap-1 items-center justify-start">
               <EyeIcon className = "h-4 w-4 inline-block text-zinc-500"/>
               <p className = "text-zinc-500 text-sm">{pageView}</p>

@@ -1,6 +1,6 @@
 import {Article} from "~/types/Article";
 import {Link, useOutletContext} from "@remix-run/react";
-import getDate from "~/utils/getDate";
+import getTime from "~/utils/getTime";
 import {ChatBubbleOvalLeftIcon, EyeIcon} from "@heroicons/react/24/outline";
 
 export default function NormalArticleCard({article, showAbstract}: {
@@ -22,7 +22,7 @@ export default function NormalArticleCard({article, showAbstract}: {
           <div className = "text-zinc-400 text-sm">
             <span className="text-violet-700 font-medium">{article.category.title}</span>
             &nbsp;·&nbsp;
-            <span>{getDate(article.published_at, lang)}</span>
+            <span>{getTime(article.published_at, lang)}</span>
           </div>
           <h3 className = "text-2xl font-medium text-zinc-800 group-hover:text-violet-900">{article.title}</h3>
           <h4 className = "text-base text-zinc-500 leading-7">{article.subtitle}</h4>

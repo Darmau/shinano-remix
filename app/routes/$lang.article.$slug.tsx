@@ -3,7 +3,7 @@ import {createClient} from "~/utils/supabase/server";
 import {Link, useActionData, useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
 import ResponsiveImage from "~/components/ResponsiveImage";
 import {Image} from "~/types/Image";
-import getDate from "~/utils/getDate";
+import getTime from "~/utils/getTime";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import ArticleText from '~/locales/article';
 import ContentContainer from "~/components/ContentContainer";
@@ -91,7 +91,7 @@ export default function ArticleDetail() {
             <header className = "space-y-4">
               <div className = "flex gap-4 flex-wrap justify-start items-center">
                 <h3 className = "text-sm text-violet-700 font-medium">{article.category!.title}</h3>
-                <time className = "text-zinc-600 text-sm">{getDate(article.published_at!, lang)}</time>
+                <time className = "text-zinc-600 text-sm">{getTime(article.published_at!, lang)}</time>
               </div>
               <h1 className = "font-medium text-zinc-800 leading-normal text-4xl lg:text-5xl">{article.title}</h1>
               <h2 className = "text-zinc-600 text-lg lg:text-xl">{article.subtitle}</h2>

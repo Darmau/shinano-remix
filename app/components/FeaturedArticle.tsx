@@ -1,6 +1,6 @@
 import {Article} from "~/types/Article";
 import {Link, useOutletContext} from "@remix-run/react";
-import getDate from "~/utils/getDate";
+import getTime from "~/utils/getTime";
 import ResponsiveImage from "~/components/ResponsiveImage";
 import {ChatBubbleOvalLeftIcon, EyeIcon} from "@heroicons/react/24/outline";
 
@@ -26,7 +26,7 @@ export default function FeaturedArticle({article}: {
             <div className = "text-zinc-400 text-sm">
               <span className = "text-violet-700 font-medium">{article.category.title}</span>
               &nbsp;·&nbsp;
-              <span>{getDate(article.published_at, lang)}</span>
+              <span>{getTime(article.published_at, lang)}</span>
             </div>
             <h3 className = "font-medium text-zinc-800 group-hover:text-violet-900 text-xl lg:text-2xl">{article.title}</h3>
             <h4 className = "text-base text-zinc-500 leading-7">{article.subtitle}</h4>

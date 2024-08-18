@@ -36,10 +36,14 @@ const Subnav: SubnavType = {
         "link": "/zh/albums/all/1"
       }
     ],
-    "thought": [
+    "others": [
       {
-        "name": "最新",
+        "name": "想法",
         "link": "/zh/thoughts"
+      },
+      {
+        "name": "读书",
+        "link": "/zh/book"
       }
     ],
     "about": [
@@ -86,10 +90,14 @@ const Subnav: SubnavType = {
         "link": "/en/albums/all/1"
       }
     ],
-    "thought": [
+    "others": [
       {
-        "name": "Latest",
+        "name": "Thoughts",
         "link": "/en/thoughts"
+      },
+      {
+        "name": "Book",
+        "link": "/en/book"
       }
     ],
     "about": [
@@ -136,10 +144,14 @@ const Subnav: SubnavType = {
         "link": "/jp/albums/all/1"
       }
     ],
-    "thought": [
+    "others": [
       {
-        "name": "最新",
+        "name": "思考",
         "link": "/jp/thoughts"
+      },
+      {
+        "name": "本",
+        "link": "/jp/book"
       }
     ],
     "about": [

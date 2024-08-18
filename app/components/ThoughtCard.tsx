@@ -2,7 +2,7 @@ import {Thought} from "~/routes/$lang.thoughts";
 import ContentContainer from "~/components/ContentContainer";
 import {Json} from "~/types/supabase";
 import ResponsiveImage from "~/components/ResponsiveImage";
-import getDate from "~/utils/getDate";
+import getTime from "~/utils/getTime";
 import {Link, useOutletContext} from "@remix-run/react";
 import {EyeIcon} from "@heroicons/react/24/solid";
 import {ChatBubbleOvalLeftIcon} from "@heroicons/react/24/outline";
@@ -30,7 +30,7 @@ export default function ThoughtCard({thought}: { thought: Thought }) {
               <ChatBubbleOvalLeftIcon className = "h-4 w-4 inline-block text-zinc-400"/>
               <span className = "text-zinc-500 text-sm">{thought.comments[0].count}</span>
             </div>
-            <p className = "text-sm text-zinc-500">{getDate(thought.created_at, lang)}</p>
+            <p className = "text-sm text-zinc-500">{getTime(thought.created_at, lang)}</p>
           </div>
           {thought.thought_image && thought.thought_image.length > 0 && (
               <div className = "grid grid-cols-3 gap-4">

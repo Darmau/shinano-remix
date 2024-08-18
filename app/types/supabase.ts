@@ -100,6 +100,47 @@ export type Database = {
           },
         ]
       }
+      book: {
+        Row: {
+          comment: string | null
+          cover: number | null
+          created_at: string | null
+          date: string | null
+          id: number
+          link: string | null
+          rate: number | null
+          title: string | null
+        }
+        Insert: {
+          comment?: string | null
+          cover?: number | null
+          created_at?: string | null
+          date?: string | null
+          id?: number
+          link?: string | null
+          rate?: number | null
+          title?: string | null
+        }
+        Update: {
+          comment?: string | null
+          cover?: number | null
+          created_at?: string | null
+          date?: string | null
+          id?: number
+          link?: string | null
+          rate?: number | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "book_cover_fkey"
+            columns: ["cover"]
+            isOneToOne: false
+            referencedRelation: "image"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       category: {
         Row: {
           cover: number | null

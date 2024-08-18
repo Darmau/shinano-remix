@@ -6,6 +6,7 @@ import ThoughtCard from "~/components/ThoughtCard";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import ThoughtText from "~/locales/thought";
 import i18nLinks from "~/utils/i18nLinks";
+import Subnav from "~/components/Subnav";
 
 export interface Thought {
   id: number,
@@ -161,19 +162,22 @@ export default function Thoughts() {
   };
 
   return (
-      <div className = "w-full flex-1 min-h-full max-w-8xl mx-auto p-4 md:py-8 lg:mb-16">
-        <div className = "columns-1 sm:columns-2 md:columns-3 gap-4">
-          {thoughts.map((thought) => (
-              <ThoughtCard thought = {thought as unknown as Thought} key = {thought.id}/>
-          ))}
+      <>
+        <Subnav active="others" />
+        <div className = "w-full flex-1 min-h-full max-w-8xl mx-auto p-4 md:py-8 lg:mb-16">
+          <div className = "columns-1 sm:columns-2 md:columns-3 gap-4">
+            {thoughts.map((thought) => (
+                <ThoughtCard thought = {thought as unknown as Thought} key = {thought.id}/>
+            ))}
+          </div>
+          <button
+              data-umami-event = "Load more thoughts"
+              className = "bg-violet-700 font-medium px-4 py-2 text-white rounded-md mt-4 mx-auto block text-sm"
+              onClick = {loadMore} disabled = {fetcher.state === "submitting"}
+          >
+            {fetcher.state === "submitting" ? label.loading : label.loadmore}
+          </button>
         </div>
-        <button
-            data-umami-event = "Load more thoughts"
-            className="bg-violet-700 font-medium px-4 py-2 text-white rounded-md mt-4 mx-auto block text-sm"
-            onClick = {loadMore} disabled = {fetcher.state === "submitting"}
-        >
-          {fetcher.state === "submitting" ? label.loading : label.loadmore}
-        </button>
-      </div>
+      </>
   )
 }

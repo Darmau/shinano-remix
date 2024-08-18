@@ -2,7 +2,7 @@ import {LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import HomepageText from '~/locales/homepage';
-import getDate from "~/utils/getDate";
+import getTime from "~/utils/getTime";
 
 export type RssEntry = {
   title: string | null;
@@ -74,7 +74,7 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     language: lang,
     link: `https://darmau.co/${lang}`,
     entries: posts ? posts.map((post) => ({
-      title: getDate(post.created_at!, lang),
+      title: getTime(post.created_at!, lang),
       description: post.content_text,
       pubDate: post.created_at,
       author: '李大毛',

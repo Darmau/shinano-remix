@@ -12,6 +12,8 @@ export const loader = ({context}: LoaderFunctionArgs) => {
     Disallow: /*/signup
     Disallow: /en/thought/
     Disallow: /jp/thought/
+    Disallow: /en/book
+    Disallow: /jp/book
 
     Sitemap: ${baseUrl}/sitemap-index.xml
     `

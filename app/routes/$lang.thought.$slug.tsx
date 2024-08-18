@@ -13,7 +13,7 @@ import "yet-another-react-lightbox/plugins/captions.css";
 import {CommentBlock, CommentProps} from "~/components/CommentBlock";
 import CommentEditor from "~/components/CommentEditor";
 import i18nLinks from "~/utils/i18nLinks";
-import getDate from "~/utils/getDate";
+import getTime from "~/utils/getTime";
 import {EyeIcon} from "@heroicons/react/24/solid";
 import {SupabaseClient} from "@supabase/supabase-js";
 import {useEffect, useState} from "react";
@@ -94,7 +94,7 @@ export default function ThoughtDetail() {
                 <p className = "text-zinc-500 text-sm">{pageView}</p>
               </div>
               ·
-              <p className = "text-sm text-zinc-500">{getDate(thoughtData.created_at!, lang)}</p>
+              <p className = "text-sm text-zinc-500">{getTime(thoughtData.created_at!, lang)}</p>
             </div>
           </div>
 
@@ -240,14 +240,14 @@ export const meta: MetaFunction<typeof loader> = ({params, data}) => {
   );
 
   return [
-    {title: getDate(data!.thoughtData.created_at!, lang)},
+    {title: getTime(data!.thoughtData.created_at!, lang)},
     {
       name: "description",
       content: data!.thoughtData.content_text ? data!.thoughtData.content_text.split(/\r?\n/).join("") : '',
     },
     {
       property: "og:title",
-      content: getDate(data!.thoughtData.created_at!, lang)
+      content: getTime(data!.thoughtData.created_at!, lang)
     },
     {
       property: "og:type",
