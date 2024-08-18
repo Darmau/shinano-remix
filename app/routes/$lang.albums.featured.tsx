@@ -25,6 +25,12 @@ export default function AllFeaturedAlbums () {
               photos = {photos}
               breakpoints = {[480, 720, 960]}
               spacing={0}
+              columns={(containerWidth) => {
+                if (containerWidth < 480) return 1;
+                if (containerWidth < 720) return 2;
+                if (containerWidth < 960) return 3;
+                return 4;
+              }}
               render={{
                 // eslint-disable-next-line no-empty-pattern
                 photo: ({}, { photo}) => (

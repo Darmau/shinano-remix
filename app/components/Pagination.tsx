@@ -33,7 +33,7 @@ export default function Pagination({count, limit, page, path}: {
   const label = getLanguageLabel(Labels, lang);
 
   return (
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-wrap gap-4 items-center">
         <div className="text-sm text-zinc-500">
           {label.total}: {count}
         </div>

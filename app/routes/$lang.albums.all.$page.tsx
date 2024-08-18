@@ -28,6 +28,12 @@ export default function AllAlbums () {
               layout = "columns"
               photos = {photos}
               breakpoints = {[480, 720, 1080]}
+              columns={(containerWidth) => {
+                if (containerWidth < 480) return 1;
+                if (containerWidth < 720) return 2;
+                if (containerWidth < 960) return 3;
+                return 4;
+              }}
               spacing = {0}
               render = {{
                 // eslint-disable-next-line no-empty-pattern
