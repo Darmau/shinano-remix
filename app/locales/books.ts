@@ -1,7 +1,7 @@
 export default {
   "zh": {
     title: "我读的书",
-    description: "豆瓣其实并不一定能持续很多年，更何况还有很多禁书不存在。于是在这里记录我读的书。"
+    description: "豆瓣其实并不一定能持续很多年，更何况还有很多禁书不存在。于是在这里记录我读的书。",
   },
   "en": {
     title: "Books I Read",
