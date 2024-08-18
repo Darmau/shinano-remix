@@ -64,10 +64,10 @@ export default function GallerySlide({albumImages, onIndexChange}: { albumImages
               borderColor: '#52525b'
             }}
             render={{
-              iconPrev: () => <div className="p-2 rounded-full bg-white/60 backdrop-blur-2xl" data-umami-event="Image Gallery" data-umami-event-action="previous">
+              iconPrev: () => <div className="p-2 rounded-full bg-white/60 backdrop-blur-2xl">
                 <ChevronLeftIcon aria-hidden = "true" className = "h-5 w-5 text-black"/>
               </div>,
-              iconNext: () => <div className="p-2 rounded-full bg-white/60 backdrop-blur-2xl" data-umami-event="Image Gallery" data-umami-event-action="next">
+              iconNext: () => <div className="p-2 rounded-full bg-white/60 backdrop-blur-2xl">
                 <ChevronRightIcon aria-hidden = "true" className = "h-5 w-5 text-black"/>
               </div>,
               slideFooter: () => (
