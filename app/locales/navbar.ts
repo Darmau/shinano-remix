@@ -22,7 +22,7 @@ const Navbar: NavbarType = {
       "type": "album"
     },
     {
-      "name": "想法",
+      "name": "其他",
       "link": "/zh/thoughts",
       "type": "thought"
     },
@@ -44,7 +44,7 @@ const Navbar: NavbarType = {
       "type": "album"
     },
     {
-      "name": "Thoughts",
+      "name": "Others",
       "link": "/en/thoughts",
       "type": "thought"
     },
@@ -66,7 +66,7 @@ const Navbar: NavbarType = {
       "type": "album"
     },
     {
-      "name": "思考",
+      "name": "その他",
       "link": "/jp/thoughts",
       "type": "thought"
     },

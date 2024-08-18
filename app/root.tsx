@@ -27,7 +27,7 @@ import FooterText from "~/locales/footer";
 export const loader = async ({request, context}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const lang = url.pathname.split('/')[1];
-  const multiLangContent = ['', 'article', 'articles', 'album', 'albums', 'thoughts', 'thought', 'about', 'contact', 'site', 'rss', 'signup', 'login']
+  const multiLangContent = ['', 'article', 'articles', 'album', 'albums', 'thoughts', 'thought', 'about', 'contact', 'site', 'rss', 'signup', 'login', 'book']
 
   if (!['zh', 'en', 'jp'].includes(lang) && multiLangContent.includes(lang)) {
     // 检测浏览器语言

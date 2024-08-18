@@ -1,5 +1,5 @@
 import {useOutletContext} from "@remix-run/react";
-import getDate from "~/utils/getDate";
+import getTime from "~/utils/getTime";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import CommentText from '~/locales/comment';
 import {LinkIcon} from "@heroicons/react/24/solid";
@@ -55,7 +55,7 @@ export function CommentBlock({comment, onReply}: {comment: CommentProps, onReply
           )}
         </h4>}
 
-        <div className = "text-sm text-zinc-500">{getDate(comment.created_at, lang)}</div>
+        <div className = "text-sm text-zinc-500">{getTime(comment.created_at, lang)}</div>
 
         {comment.reply_to && (
             <div className="mt-2">
