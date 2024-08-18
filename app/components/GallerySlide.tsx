@@ -37,7 +37,7 @@ export default function GallerySlide({albumImages, onIndexChange}: { albumImages
   );
 
   const defaultSlides = generateSlides(albumImages, prefix, 1080);
-  const fullscreenSlides = generateSlides(albumImages, prefix, 1600);
+  const fullscreenSlides = generateSlides(albumImages, prefix, 2400);
 
   return (
       <div>
