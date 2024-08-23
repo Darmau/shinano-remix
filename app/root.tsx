@@ -89,6 +89,7 @@ export default function App() {
   const [supabase] = useState(() =>
       createBrowserClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY)
   )
+  const [isMounted, setIsMounted] = useState(false);
 
   const serverAccessToken = session?.access_token
 
@@ -107,6 +108,17 @@ export default function App() {
     }
   }, [serverAccessToken, supabase, revalidate])
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !isMounted) {
+      setIsMounted(true);
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "nruhirdt4f");
+    }
+  }, [isMounted]);
+
   const navigation = useNavigation();
 
   return (
@@ -115,9 +127,6 @@ export default function App() {
         <meta charSet = "utf-8"/>
         <meta name = "viewport" content = "width=device-width, initial-scale=1"/>
         <link rel = "icon" href = "/favicon.ico" type="image/x-icon" />
-        <script
-            defer src = "https://umami.darmau.dev/script.js" data-website-id = "7d41f3c9-9169-4795-85e2-c7327dbc7d88"
-        ></script>
         <Meta/>
         <Links/>
       </head>
