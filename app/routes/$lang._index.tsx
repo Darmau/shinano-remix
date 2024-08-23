@@ -99,6 +99,7 @@ export default function Index() {
   return (
       <>
         <Subnav active = "article"/>
+        <h1 className="sr-only">积薪</h1>
         <div className = "w-full max-w-8xl mx-auto px-4 space-y-8 lg:space-y-12 mb-8 lg:mb-16">
           <div className = "flex flex-col gap-8 mt-4 border-b pb-8 lg:pb-12 lg:mt-8 lg:grid lg:grid-cols-2">
             <HomeTopArticle isTop = {true} article = {articles[0] as Article} classList = "group"/>

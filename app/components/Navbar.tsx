@@ -63,11 +63,12 @@ export default function Navbar({lang, items}: { lang: string, items: NavItem[] }
         <nav aria-label = "Global" className = "border-b">
           <div className = "max-w-8xl mx-auto flex items-center justify-between p-5 lg:px-8">
             <div className = "hidden lg:flex lg:gap-2 lg:items-center">
-              <Link to = {`/${lang}`} className = "-m-1.5 p-1.5">
+              <Link to = {`/${lang}`} className = "-m-1.5 p-1.5 flex items-center gap-2">
                 <img alt = "logo" src = "/logo.svg" className = "h-8 w-8" width = "32" height = "32"/>
+                <header className="font-medium font-serif text-lg">积薪</header>
               </Link>
               <Popover>
-                <PopoverButton className = "flex border items-center rounded text-sm px-1.5 gap-1 py-1 data-[hover]:bg-zinc-50">
+                <PopoverButton className = "flex border items-center rounded text-sm ml-2 px-1.5 gap-1 py-1 data-[hover]:bg-zinc-50">
                   <TranslateIcon className = "size-4 text-gray-900"/>
                   {langMap.get(lang)}
                 </PopoverButton>
@@ -139,6 +140,7 @@ export default function Navbar({lang, items}: { lang: string, items: NavItem[] }
                 <a href = "/" className = "-m-1.5 p-1.5">
                   <img alt = "logo" src = "/logo.svg" className = "h-8 w-8" width = "32" height = "32"/>
                 </a>
+                <header className="font-medium font-serif text-lg">积薪</header>
               </div>
               <button
                   type = "button"

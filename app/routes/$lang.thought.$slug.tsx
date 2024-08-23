@@ -74,6 +74,7 @@ export default function ThoughtDetail() {
   return (
       <div className = "w-full max-w-6xl mx-auto p-4 md:py-8 mb-8 lg:mb-16">
         <Breadcrumb pages = {breadcrumbPages}/>
+        <h1 className = "sr-only">Thoughts</h1>
         <div className = "grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className = "col-span-1 lg:col-span-2">
             <ContentContainer content = {thoughtData.content_json as unknown as Json}/>

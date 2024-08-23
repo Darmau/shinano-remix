@@ -32,14 +32,15 @@ export default function AllArticles() {
   return (
       <>
         <Subnav active = "article"/>
+        <h1 className = "sr-only">Articles</h1>
         <div
             className = "w-full max-w-6xl mx-auto p-4 md:py-8 mb-8 lg:mb-16 flex flex-col gap-8 md:grid md:grid-cols-3"
         >
           <div className = "grow flex flex-col gap-8 py-8 md:py-0 md:gap-12 md:col-span-2">
             {articles.map((article) => (
-                <NormalArticleCard article = {article as Article} key = {article.id} showAbstract={true}/>
+                <NormalArticleCard article = {article as Article} key = {article.id} showAbstract = {true}/>
             ))}
-            <Pagination count={articleCount || 0} limit={12} page={page} path={path} />
+            <Pagination count = {articleCount || 0} limit = {12} page = {page} path = {path}/>
           </div>
           <aside className = "pb-4 space-y-8 md:col-span-1">
             <div className = "space-y-4">

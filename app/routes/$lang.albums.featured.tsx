@@ -18,23 +18,27 @@ export default function AllFeaturedAlbums () {
 
   return (
       <>
-        <Subnav active="photography" />
-        <div className="w-full max-w-8xl mx-auto p-4 md:py-8 lg:mb-16">
+        <Subnav active = "photography"/>
+        <h1 className = "sr-only">Featured Photography</h1>
+        <div className = "w-full max-w-8xl mx-auto p-4 md:py-8 lg:mb-16">
           <ServerPhotoAlbum
               layout = "masonry"
               photos = {photos}
               breakpoints = {[480, 720, 960]}
-              spacing={0}
-              columns={(containerWidth) => {
+              spacing = {0}
+              columns = {(containerWidth) => {
                 if (containerWidth < 480) return 1;
                 if (containerWidth < 720) return 2;
                 if (containerWidth < 960) return 3;
                 return 4;
               }}
-              render={{
+              render = {{
                 // eslint-disable-next-line no-empty-pattern
-                photo: ({}, { photo}) => (
-                    <Link to={photo.href} className="group m-1 md:m-2 relative rounded-md overflow-hidden" key={photo.key}>
+                photo: ({}, {photo}) => (
+                    <Link
+                        to = {photo.href} className = "group m-1 md:m-2 relative rounded-md overflow-hidden"
+                        key = {photo.key}
+                    >
                       <div className = "z-20 absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent">
                         <div
                             className = "transform translate-y-full transition-transform duration-300 group-hover:translate-y-0 p-4"

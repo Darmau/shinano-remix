@@ -38,10 +38,11 @@ export default function Book () {
   return (
       <>
         <Subnav active = "others"/>
+        <h1 className = "sr-only">Books</h1>
         <div
             className = "w-full max-w-6xl mx-auto p-4 md:py-8 my-8 lg:my-12"
         >
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <div className = "grid grid-cols-1 gap-8 md:grid-cols-2">
             {books && books.map((book) => (
                 <div
                     key = {book.id}

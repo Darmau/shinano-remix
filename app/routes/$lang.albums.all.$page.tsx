@@ -22,13 +22,14 @@ export default function AllAlbums () {
 
   return (
       <>
-        <Subnav active="photography" />
+        <Subnav active = "photography"/>
+        <h1 className = "sr-only">Photography</h1>
         <div className = "w-full max-w-8xl mx-auto p-4 lg:mb-16 space-y-8">
           <ServerPhotoAlbum
               layout = "columns"
               photos = {photos}
               breakpoints = {[480, 720, 1080]}
-              columns={(containerWidth) => {
+              columns = {(containerWidth) => {
                 if (containerWidth < 480) return 1;
                 if (containerWidth < 720) return 2;
                 if (containerWidth < 960) return 3;
