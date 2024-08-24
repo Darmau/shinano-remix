@@ -1,11 +1,13 @@
-import { Link } from "@remix-run/react";
+import {Link, useOutletContext} from "@remix-run/react";
 
-
-interface SearchResultsProps {
+export interface SearchResultsProps {
   results: {
     indexUid: string,
     hits: Hit[]
   }[];
+  langs: {
+    [key: string]: string
+  }[]
 }
 
 interface Hit {
@@ -30,7 +32,23 @@ interface Hit {
   _rankingScore: number,
 }
 
-export default function SearchResults({ results }: SearchResultsProps) {
+// 接收一个id、语言对象数组、目标语言id、默认语言，如果目标语言id为undefined或者不存在，返回默认语言
+function languageTag(langs: { [key: string]: string }[], id: number | undefined, fallback: string) {
+  if (id === undefined) {
+    return fallback;
+  }
+  return langs[id];
+}
+
+// 将内容type转换成存在的url。接收一个字符串，对于'article', 'thought'返回值不变，如果是'photo'，返回'album'
+function typeToUrl(type: string) {
+  if (type === 'photo') {
+    return 'album';
+  }
+  return type;
+}
+
+export default function SearchResults({results, langs}: SearchResultsProps) {
   const allHits = results.flatMap(result =>
       result.hits.map((hit: Hit) => ({
         ...hit,
@@ -38,30 +56,34 @@ export default function SearchResults({ results }: SearchResultsProps) {
       }))
   );
   const sortedHits = allHits.sort((a, b) => b._rankingScore - a._rankingScore);
+  const {lang} = useOutletContext<{ lang: string }>();
 
   return (
-      <div className="search-results">
-        <h2>搜索结果</h2>
+      <div>
         {sortedHits.length === 0 ? (
-            <p>没有找到相关结果</p>
+            <p className = "text-base text-gray-600">没有找到相关结果</p>
         ) : (
-            <ul className="space-y-4">
+            <ul className = "divide-y divide-gray-200">
               {sortedHits.map((hit) => (
-                  <li key={`${hit.type}-${hit.id}`} className="search-result-item">
-                    <h3>
-                      <Link to={`/${hit.lang === 1 ? 'zh' : hit.lang === 3 ? 'ja' : 'en'}/${hit.slug}`}>
-                        {hit._formatted.title}
-                      </Link>
-                    </h3>
-                    {hit._formatted.abstract && (
-                        <p dangerouslySetInnerHTML={{ __html: hit._formatted.abstract }} />
-                    )}
-                    {hit._formatted.content_text && (
-                        <p dangerouslySetInnerHTML={{ __html: hit._formatted.content_text }} />
-                    )}
-                    <p className="search-result-meta">
-                      类型: {hit.type} | 相关度: {hit._rankingScore.toFixed(2)}
-                    </p>
+                  <li key = {`${hit.type}-${hit.id}`} className = "py-8 hover:opacity-70">
+                    <Link
+                        to = {`/${languageTag(langs, hit.lang, lang)}/${typeToUrl(hit.type)}/${hit.slug}`}
+                        className="space-y-2"
+                    >
+                      {hit._formatted.title && (
+                          <h3
+                              className="text-lg font-semibold text-gray-900"
+                              dangerouslySetInnerHTML = {{__html: hit._formatted.title}}/>
+                      )}
+                      {hit._formatted.abstract && (
+                          <p
+                              className="text-sm text-gray-600"
+                              dangerouslySetInnerHTML = {{__html: hit._formatted.abstract}}/>
+                      )}
+                      {hit._formatted.content_text && (
+                          <p dangerouslySetInnerHTML = {{__html: hit._formatted.content_text}}/>
+                      )}
+                    </Link>
                   </li>
               ))}
             </ul>
