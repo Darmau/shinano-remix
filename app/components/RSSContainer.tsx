@@ -91,7 +91,13 @@ function renderNode(node: Content): string {
 
 function renderContent(content?: ContentItem[]): string {
   if (!content) return "";
-  return content.map(renderTextNode).join("");
+  return content.map(node => {
+    if (node.type === "text" || !node.type) {
+      return renderTextNode(node);
+    } else {
+      return renderNode(node);
+    }
+  }).join("");
 }
 
 function renderTextNode(node: Content): string {
