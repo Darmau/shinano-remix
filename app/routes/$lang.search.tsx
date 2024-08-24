@@ -1,9 +1,10 @@
-import {json, LoaderFunctionArgs, ActionFunctionArgs, SerializeFrom} from "@remix-run/cloudflare";
+import {json, LoaderFunctionArgs, ActionFunctionArgs, SerializeFrom, MetaFunction} from "@remix-run/cloudflare";
 import {useLoaderData, useActionData, useSubmit, Form, useOutletContext} from "@remix-run/react";
 import SearchResults, {SearchResultsProps} from "~/components/SearchResult";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import SearchText from "~/locales/search";
 import {createClient} from "~/utils/supabase/server";
+import i18nLinks from "~/utils/i18nLinks";
 
 function createSearchBody(query: string) {
   return {
@@ -95,7 +96,12 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   }, {});
 
   if (!query) {
-    return json({ results: null, query, langs });
+    return json({
+      results: null,
+      query,
+      langs,
+      baseUrl: context.cloudflare.env.BASE_URL,
+    });
   }
 
   const MEILI_URL = context.cloudflare.env.MEILI_URL;
@@ -106,11 +112,17 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     return json({
       results: data.results,
       query,
-      langs
+      langs,
+      baseUrl: context.cloudflare.env.BASE_URL
     });
   } catch (error) {
     console.error("搜索错误:", error);
-    return json({ results: null, error: "搜索过程中发生错误", query });
+    return json({
+      esults: null,
+      error: "搜索过程中发生错误",
+      query,
+      baseUrl: context.cloudflare.env.BASE_URL,
+    });
   }
 }
 
@@ -171,3 +183,26 @@ export default function Search() {
       </div>
   );
 }
+
+export const meta: MetaFunction<typeof loader> = ({params, data}) => {
+  const lang = params.lang as string;
+  const content = getLanguageLabel(SearchText, lang);
+
+  const availableLangs = ["zh", "en", "jp"];
+
+  const baseUrl = data!.baseUrl as string;
+  const multiLangLinks = i18nLinks(baseUrl,
+      lang,
+      availableLangs,
+      "search"
+  );
+
+  return [
+    {title: content.search},
+    {
+      name: "description",
+      content: content.description,
+    },
+    ...multiLangLinks
+  ];
+};
