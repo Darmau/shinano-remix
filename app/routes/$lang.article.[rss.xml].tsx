@@ -2,7 +2,6 @@ import {LoaderFunctionArgs} from "@remix-run/cloudflare";
 import {createClient} from "~/utils/supabase/server";
 import getLanguageLabel from "~/utils/getLanguageLabel";
 import HomepageText from '~/locales/homepage';
-import {contentToHtml} from "~/components/RSSContainer";
 
 export type RssEntry = {
   title: string | null;
@@ -39,7 +38,7 @@ export function generateRss({description, entries, link, title, language}: {
         <generator>Shinano Remix</generator>
         <image>
           <title>积薪 - 文章</title>
-          <url>https://img.darmau.co/cdn-cgi/image/format=jpeg,width=720/https://img.darmau.co/a2b148a3-5799-4be0-a8d4-907f9355f20f</url>
+          <url>https://img.darmau.co/cdn-cgi/image/format=jpeg,width=720/a2b148a3-5799-4be0-a8d4-907f9355f20f</url>
           <link>https://darmau.co/${language}</link>
           <width>720</width>
           <height>432</height>
@@ -60,6 +59,10 @@ export function generateRss({description, entries, link, title, language}: {
           </item>`
       ).join("")}
       </channel>
+      <follow_challenge>
+          <feedId>42864851888759808</feedId>
+          <userId>46488520035984384</userId>
+      </follow_challenge>
     </rss>
   `;
 }
@@ -77,7 +80,6 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       slug,
       subtitle,
       abstract,
-      content_json,
       published_at,
       category (title),
       cover (alt, size, storage_key),
@@ -94,16 +96,20 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     language: lang,
     link: `https://darmau.co/${lang}`,
     entries: posts ? posts.map((post) => ({
-      description: post.abstract,
+      description: post.subtitle,
       pubDate: post.published_at,
       title: post.title,
       author: '李大毛',
       category: post.category!.title,
       link: `https://darmau.co/${lang}/article/${post.slug}`,
       guid: post.id,
-      content: appendText(post.content_json),
+      content: `
+        <p>${post.abstract}</p>
+        <p>请移步博客继续阅读。Please go to the blog to continue reading</p>
+        <p><a href="https://darmau.co/${lang}/article/${post.slug}">Continue</a></p
+      `,
       enclosure: post.cover && {
-        url: `https://img.darmau.co/cdn-cgi/image/format=jpeg,width=960/https://img.darmau.co/${post.cover.storage_key}`,
+        url: `https://img.darmau.co/cdn-cgi/image/format=jpeg,width=960/${post.cover.storage_key}`,
         type: 'image/jpeg',
         length: post.cover.size,
       },
@@ -116,10 +122,6 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
       "Cache-Control": "public, max-age=2419200",
     },
   });
-}
-
-function appendText(text) {
-  return contentToHtml(text);
 }
 
 function generateEnclosure(enclosure: {url: string, type: string, length: string} | undefined): string {

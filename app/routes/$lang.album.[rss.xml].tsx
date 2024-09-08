@@ -59,6 +59,10 @@ export function generateRss({description, entries, link, title, language}: {
           </item>`
   ).join("")}
       </channel>
+      <follow_challenge>
+          <feedId>46524720022474752</feedId>
+          <userId>46488520035984384</userId>
+      </follow_challenge>
     </rss>
   `;
 }
