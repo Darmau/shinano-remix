@@ -1,26 +1,26 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "shinano-astro",
-  "compatibility_date": "2026-05-14",
-  "compatibility_flags": ["nodejs_compat"],
-  "main": "./dist/_worker.js/index.js",
-  "assets": {
-    "directory": "./dist",
-    "binding": "ASSETS",
-    "not_found_handling": "single-page-application"
-  },
+  "name": "shinano-remix",
+  "compatibility_date": "2025-11-07",
+  "pages_build_output_dir": "./build/client",
   "ai": {
-    "binding": "AI"
+    "binding": "AI",
+    "remote": true
   },
-  "vars": {
-    "BASE_URL": "https://darmau.co",
-    "IMG_PREFIX": "https://img.darmau.co",
-    "SUPABASE_URL": "https://uvehzviuyezvgbwmghzk.supabase.co",
-    "TURNSTILE_SITE_KEY": "0x4AAAAAAAQSDVMBZ6qVF2VM"
-  },
-  "observability": {
-    "enabled": true,
-    "head_sampling_rate": 1
-  },
-  "upload_source_maps": true
+  "env": {
+    "preview": {
+      "name": "shinano-remix-preview",
+      "ai": {
+        "binding": "AI",
+        "remote": true
+      }
+    },
+    "production": {
+      "name": "shinano-remix",
+      "ai": {
+        "binding": "AI",
+        "remote": true
+      }
+    }
+  }
 }

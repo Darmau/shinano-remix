@@ -1,0 +1,65 @@
+@import 'tailwindcss';
+
+@theme {
+  --max-width-8xl: 1440px;
+}
+
+@layer base {
+  h2, h3, h4 {
+    scroll-margin-top: 96px;
+  }
+}
+
+@layer iframe-container {
+  iframe {
+    width: 100%;
+    min-height: 480px;
+  }
+}
+
+@layer components {
+  .comment-markdown {
+    @apply space-y-3 leading-relaxed text-zinc-700;
+  }
+
+  .comment-markdown h1 {
+    @apply text-2xl font-bold;
+  }
+
+  .comment-markdown h2 {
+    @apply text-xl font-bold;
+  }
+
+  .comment-markdown h3 {
+    @apply text-lg font-bold;
+  }
+
+  .comment-markdown p {
+    @apply text-base;
+  }
+
+  .comment-markdown a {
+    @apply text-violet-600 underline hover:text-violet-500;
+  }
+
+  .comment-markdown code {
+    @apply relative rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-sm text-zinc-700;
+  }
+
+  .comment-markdown pre {
+    @apply overflow-x-auto rounded-md bg-zinc-900 px-4 py-3 text-sm text-zinc-100;
+  }
+
+  .comment-markdown ul,
+  .comment-markdown ol {
+    @apply my-3 ml-6 list-disc space-y-1 text-base;
+  }
+
+  .comment-markdown ol {
+    @apply list-decimal;
+  }
+
+  .comment-markdown blockquote {
+    @apply border-l-4 border-zinc-200 pl-4 text-zinc-500;
+  }
+}
