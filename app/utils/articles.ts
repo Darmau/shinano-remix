@@ -23,6 +23,26 @@ export type CategorySummary = {
 const isRecord = (value: unknown): value is Record<string, unknown> =>
     typeof value === "object" && value !== null;
 
+/**
+ * 把嵌套查询里的评论数归一成 [{count}]。
+ *
+ * 曾经用的 `comment(count)` 会让 PostgREST 发 count(*)，需要 comment 的表级
+ * SELECT 权限；2026-08-07 把 anon 收紧成列级白名单后它一律 42501。现在改成嵌
+ * `comment(id)` 再数数组长度——RLS 保证只数得到 is_public 的评论，正是想要的口径。
+ * 仍然兼容 count 形态，方便以后权限放开了换回聚合写法。
+ */
+export const normalizeCommentCount = (value: unknown): { count: number }[] => {
+  if (!Array.isArray(value)) {
+    return [{count: 0}];
+  }
+
+  const aggregated = value
+      .map(item => (isRecord(item) && typeof item["count"] === "number" ? item["count"] : null))
+      .filter((count): count is number => count !== null);
+
+  return aggregated.length > 0 ? aggregated.map(count => ({count})) : [{count: value.length}];
+};
+
 export const normalizeArticles = (rows: unknown): Article[] => {
   if (!Array.isArray(rows)) {
     return [];
@@ -61,18 +81,7 @@ export const normalizeArticles = (rows: unknown): Article[] => {
         }
         : null;
 
-    const commentsValue = item["comments"];
-    const comments = Array.isArray(commentsValue)
-        ? commentsValue
-            .map(comment => {
-              if (!isRecord(comment)) {
-                return null;
-              }
-              const count = comment["count"];
-              return typeof count === "number" ? {count} : null;
-            })
-            .filter((comment): comment is { count: number } => comment !== null)
-        : [];
+    const comments = normalizeCommentCount(item["comments"]);
 
     const topicValue = item["topic"];
     const contentJson = item["content_json"];

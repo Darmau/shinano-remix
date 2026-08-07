@@ -39,22 +39,8 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     } satisfies LoaderData;
   }
 
-  // 验证评论是否存在
-  const { supabase } = createClient(request, context);
-  const { data: comment } = await supabase
-    .from("comment")
-    .select("id, receive_notification")
-    .eq("id", commentId)
-    .maybeSingle();
-
-  if (!comment) {
-    return {
-      valid: false,
-      commentId: null,
-      error: "评论不存在",
-    } satisfies LoaderData;
-  }
-
+  // 不再回查 comment：anon 读不到 receive_notification（列级 GRANT，42501），
+  // 待审核评论对 anon 也不可见，查了会把合法链接误判成“评论不存在”。
   return {
     valid: true,
     commentId,
@@ -171,14 +157,15 @@ export async function action({ request, context }: Route.ActionArgs) {
 
   const { supabase } = createClient(request, context);
 
-  // 更新评论的 receive_notification 字段
-  const { error } = await supabase
+  // 更新评论的 receive_notification 字段。
+  // count 用来分辨“真的改了”和“RLS 挡掉、0 行受影响”，后者不会报错。
+  const { error, count } = await supabase
     .from("comment")
-    .update({ receive_notification: false })
+    .update({ receive_notification: false }, { count: "exact" })
     .eq("id", parseInt(commentId, 10));
 
-  if (error) {
-    console.error("Failed to unsubscribe:", error);
+  if (error || !count) {
+    console.error("Failed to unsubscribe:", error ?? `0 rows affected for comment ${commentId}`);
     return {
       success: false,
       error: "取消订阅失败，请稍后重试",

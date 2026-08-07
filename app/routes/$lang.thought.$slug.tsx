@@ -23,6 +23,7 @@ import {useEffect, useState} from "react";
 import {parseTurnstileOutcome} from "~/utils/turnstile";
 import {trackPageView} from "~/utils/trackPageView";
 import {getClientIp} from "~/utils/getClientIp.server";
+import {validateCommentText} from "~/utils/commentContent";
 import type {loader as rootLoader} from "~/root";
 import {
   generateThoughtStructuredData,
@@ -241,7 +242,7 @@ export async function loader({
         content_text,
         created_at,
         is_anonymous,
-        users (id, name, role, website),
+        users (id, name, website),
         reply_to (id, content_text, is_anonymous, name, users (id, name))
       `)
       .eq('to_thought', thoughtData.id)
@@ -379,7 +380,14 @@ export async function action({request, context, params}: Route.ActionArgs) {
   const formData = await request.formData();
   const {supabase} = createClient(request, context);
   const {data: {session}} = await supabase.auth.getSession();
-  const content_text = formData.get('content_text') as string;
+  const {text: content_text, error: contentError} = validateCommentText(formData.get('content_text'));
+  if (contentError) {
+    return {
+      success: false,
+      error: contentError,
+      comment: null
+    };
+  }
   const to_thought = parseInt(formData.get('to_thought') as string);
   const reply_to = formData.get('reply_to') ? parseInt(formData.get('reply_to') as string) : null;
   const receiveNotification = formData.get('receive_notification') === 'true';
@@ -414,7 +422,9 @@ export async function action({request, context, params}: Route.ActionArgs) {
     const email = formData.get('email') as string;
     const website = formData.get('website') as string;
 
-    const { data: newComment, error } = await supabase
+    // 不要 .select() 回读：匿名评论会被 set_comment_is_public 置为
+    // is_public = false，RLS 随即把它过滤掉，回读只会拿到 0 行报错。
+    const { error } = await supabase
     .from('comment')
     .insert({
       name,
@@ -426,16 +436,7 @@ export async function action({request, context, params}: Route.ActionArgs) {
       reply_to,
       receive_notification: receiveNotification,
       ip: ipAddress
-    })
-    .select(`
-        id,
-        name,
-        content_text,
-        created_at,
-        is_anonymous,
-        reply_to (id, content_text, is_anonymous)
-      `)
-    .single();
+    });
 
     if (error) {
       return {
@@ -448,7 +449,7 @@ export async function action({request, context, params}: Route.ActionArgs) {
     return {
       success: '提交成功，请等待审核。Please wait for review.',
       error: null,
-      comment: newComment
+      comment: null
     }
   }
 

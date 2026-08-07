@@ -8,6 +8,7 @@ import Subnav from "~/components/Subnav";
 import NormalArticleCard from "~/components/NormalArticleCard";
 import HomeTopArticle from "~/components/HomeTopArticle";
 import i18nLinks from "~/utils/i18nLinks";
+import {normalizeCommentCount} from "~/utils/articles";
 
 export const meta: Route.MetaFunction = ({params, data}) => {
   const lang = params.lang as string;
@@ -153,7 +154,7 @@ export async function loader({request, context, params}: Route.LoaderArgs) {
       cover (alt, storage_key, width, height),
       category (title, slug),
       language!inner (lang),
-      comments:comment(count)
+      comments:comment(id)
       `)
   .eq('language.lang', lang)
   .filter('is_draft', 'eq', false)
@@ -164,8 +165,14 @@ export async function loader({request, context, params}: Route.LoaderArgs) {
 
   const label = getLanguageLabel(HomepageText, lang);
 
+  // comment(id) 返回的是评论行数组，卡片要的是 [{count}]
+  const articles = (articleData ?? []).map(article => ({
+    ...article,
+    comments: normalizeCommentCount(article.comments)
+  }));
+
   return {
-    articles: articleData,
+    articles,
     label,
     baseUrl: context.cloudflare.env.BASE_URL,
     prefix: context.cloudflare.env.IMG_PREFIX,

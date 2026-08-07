@@ -9,6 +9,7 @@ import i18nLinks from "~/utils/i18nLinks";
 import Subnav from "~/components/Subnav";
 import type {Json} from "~/types/supabase";
 import {isJsonValue} from "~/utils/json";
+import {normalizeCommentCount} from "~/utils/articles";
 import { trackLoadMore } from "~/utils/zaraz";
 
 export interface Thought {
@@ -48,23 +49,7 @@ const isLoadMoreThoughts = (data: unknown): data is LoadMoreResponse =>
 const isRecord = (value: unknown): value is Record<string, unknown> =>
     typeof value === "object" && value !== null;
 
-const toComments = (value: unknown): { count: number }[] => {
-  if (!Array.isArray(value)) {
-    return [{count: 0}];
-  }
-
-  const comments = value
-      .map(item => {
-        if (!isRecord(item)) {
-          return null;
-        }
-        const count = item["count"];
-        return typeof count === "number" ? {count} : null;
-      })
-      .filter((item): item is { count: number } => item !== null);
-
-  return comments.length > 0 ? comments : [{count: 0}];
-};
+const toComments = normalizeCommentCount;
 
 const toThoughtImages = (value: unknown): Thought["thought_image"] => {
   if (!Array.isArray(value)) {
@@ -164,7 +149,7 @@ export async function loader({request, context}: Route.LoaderArgs) {
       content_text,
       created_at,
       page_view,
-      comments:comment(count),
+      comments:comment(id),
       thought_image (
         image (id, alt, storage_key, width, height)
       )
@@ -246,7 +231,7 @@ export async function action({request, context}: Route.ActionArgs) {
     content_text,
     created_at,
     page_view,
-    comments:comment(count),
+    comments:comment(id),
     thought_image (
       image (id, alt, storage_key, width, height)
     )

@@ -4,6 +4,7 @@ import getLanguageLabel from "~/utils/getLanguageLabel";
 import type { Session } from "@supabase/supabase-js";
 import type { CommentProps } from "~/types/Comment";
 import { Turnstile } from '@marsidev/react-turnstile'
+import { COMMENT_MAX_LENGTH } from '~/utils/commentContent'
 
 export default function CommentEditor({ contentTable, contentId, session, replyingTo, onCancelReply }: {
   contentTable: string,
@@ -58,6 +59,8 @@ export default function CommentEditor({ contentTable, contentId, session, replyi
             <textarea
               rows={5}
               name="content_text"
+              required
+              maxLength={COMMENT_MAX_LENGTH}
               placeholder={label.add_comment}
               className="block w-full resize-y border-0 border-b border-transparent p-0 pb-2 text-gray-900 placeholder:text-gray-400 focus:border-violet-600 focus:ring-0 sm:text-sm sm:leading-6"
             />
@@ -126,6 +129,8 @@ export default function CommentEditor({ contentTable, contentId, session, replyi
           <textarea
             rows={5}
             name="content_text"
+            required
+            maxLength={COMMENT_MAX_LENGTH}
             placeholder={label.add_comment}
             className="block w-full resize-y border-0 border-b border-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:border-violet-600 focus:ring-0 sm:text-sm sm:leading-6"
           />

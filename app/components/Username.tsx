@@ -1,5 +1,5 @@
 import type { CommentProps } from "~/types/Comment.tsx";
-import { CheckBadgeIcon, IdentificationIcon } from "@heroicons/react/20/solid";
+import { CheckBadgeIcon } from "@heroicons/react/20/solid";
 
 export default function Username({ comment }: { comment: CommentProps }) {
   if (comment.is_anonymous) {
@@ -31,12 +31,9 @@ export default function Username({ comment }: { comment: CommentProps }) {
             {comment.users?.name}
           </a>
         ) : (<span>{comment.users?.name}</span>)}
-        {comment.users?.role === 'admin' ?
-          <IdentificationIcon
-            className="w-4 h-4 inline-block text-violet-700"
-          />
-          : <CheckBadgeIcon className="w-4 h-4 inline-block text-violet-700" />
-        }
+        {/* users.role 对 anon 已不可读（2026-08-07 列级 GRANT），
+            登录用户统一显示认证标记，不再区分管理员 */}
+        <CheckBadgeIcon className="w-4 h-4 inline-block text-violet-700" />
       </h4>
     )
   }

@@ -146,7 +146,7 @@ export async function loader({request, context, params}: Route.LoaderArgs) {
       category (title, slug),
       cover (alt, storage_key, width, height),
       language!inner (lang),
-      comments:comment(count)
+      comments:comment(id)
     `)
   .eq('language.lang', lang)
   .limit(12)

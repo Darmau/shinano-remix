@@ -16,11 +16,12 @@ export type CommentProps = {
       name: string;
     }
   }
+  // anon 只能读到 users 的白名单列，role 不在其中
   users: {
     id: number,
     name: string,
-    website: string | null,
-    role: string
+    website: string | null
   } | null;
-  receive_notification: boolean;
+  // 只有登录用户在个人页读得到，公开评论列表不会带这一列
+  receive_notification?: boolean;
 }

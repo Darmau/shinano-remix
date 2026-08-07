@@ -217,7 +217,7 @@ export async function loader({request, context, params}: Route.LoaderArgs) {
       published_at,
       category (title, slug),
       language!inner (lang),
-      comments:comment(count)
+      comments:comment(id)
       `)
   .eq('language.lang', lang)
   .eq('is_draft', false)

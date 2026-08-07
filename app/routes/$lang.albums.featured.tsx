@@ -200,6 +200,9 @@ export async function loader({request, context, params}: Route.LoaderArgs) {
       language!inner (lang),
       cover (id, alt, storage_key, width, height)
       `)
+    // random_*_photos 是历史遗留视图，select 的是 photo.*（含 is_draft）且不受
+    // RLS 保护，草稿要靠这里显式挡掉。
+    .eq('is_draft', false)
     .limit(32);
 
   if (error) {

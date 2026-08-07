@@ -137,6 +137,36 @@ export function generateArticleStructuredData(params: {
   return structuredData;
 }
 
+// 前台 EXIF 组件实际展示的键，也是唯一允许出现在公开 JSON-LD 里的键。
+// exif 列里还有 GPS、机身/镜头序列号一类不该公开的字段。
+const PUBLIC_EXIF_KEYS = [
+  'Make',
+  'Model',
+  'LensModel',
+  'FNumber',
+  'ExposureTime',
+  'ISO',
+  'FocalLength'
+] as const;
+
+function pickPublicExif(exif: unknown): Record<string, unknown> | null {
+  if (!exif || typeof exif !== 'object' || Array.isArray(exif)) {
+    return null;
+  }
+
+  const source = exif as Record<string, unknown>;
+  const picked: Record<string, unknown> = {};
+
+  PUBLIC_EXIF_KEYS.forEach((key) => {
+    const value = source[key];
+    if (value !== undefined && value !== null && value !== '') {
+      picked[key] = value;
+    }
+  });
+
+  return Object.keys(picked).length > 0 ? picked : null;
+}
+
 /**
  * 生成相册的结构化数据
  * Generate structured data for an album (photo gallery)
@@ -216,9 +246,11 @@ export function generateAlbumStructuredData(params: {
         imageObject.dateCreated = image.taken_at || image.date;
       }
 
-      // 添加 EXIF 数据
-      if (image.exif) {
-        imageObject.exifData = image.exif;
+      // 添加 EXIF 数据。只挑前台真正展示的那几个键：image.exif 对 anon 全字段
+      // 可读，整块塞进 JSON-LD 会把 GPS、机身序列号一起发布出去。
+      const exifData = pickPublicExif(image.exif);
+      if (exifData) {
+        imageObject.exifData = exifData;
       }
 
       // 添加地理位置信息

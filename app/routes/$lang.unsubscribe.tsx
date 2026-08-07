@@ -8,7 +8,9 @@ import UnsubscribeText from "~/locales/unsubscribe";
 import i18nLinks from "~/utils/i18nLinks";
 
 type LoaderData = {
-  state: "error" | "ready" | "already";
+  // "already"（此前已退订）需要回读 receive_notification 才能判断，
+  // 而该列对 anon 已不可读，因此这个状态不再产生
+  state: "error" | "ready";
   message?: string;
   token?: string;
   availableLangs: string[];
@@ -66,45 +68,10 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
     } satisfies LoaderData;
   }
 
-  const { supabase } = createClient(request, context);
-  const { data: comment, error } = await supabase
-    .from("comment")
-    .select("id, receive_notification")
-    .eq("id", commentId)
-    .maybeSingle();
-
-  if (error) {
-    console.error("Failed to load comment for unsubscribe:", error);
-    return {
-      state: "error",
-      message: labels.error_generic,
-      availableLangs,
-      baseUrl,
-      lang,
-    } satisfies LoaderData;
-  }
-
-  if (!comment) {
-    return {
-      state: "error",
-      message: labels.error_not_found,
-      availableLangs,
-      baseUrl,
-      lang,
-    } satisfies LoaderData;
-  }
-
-  if (comment.receive_notification === false) {
-    return {
-      state: "already",
-      message: labels.already_description,
-      token,
-      availableLangs,
-      baseUrl,
-      lang,
-    } satisfies LoaderData;
-  }
-
+  // 这里不再回查 comment：2026-08-07 起 anon 读不到 receive_notification 列
+  // （列级 GRANT，会直接 42501），而且待审核的评论对 anon 根本不可见，
+  // 查了只会把合法链接误判成“评论不存在”。token 有效即展示确认按钮，
+  // 真正的幂等性交给 action 里的更新去保证。
   return {
     state: "ready",
     token,
@@ -150,13 +117,23 @@ export async function action({ request, params, context }: Route.ActionArgs) {
   }
 
   const { supabase } = createClient(request, context);
-  const { error } = await supabase
+  // count 用来分辨“更新成功”和“RLS 把行挡掉了、一行都没改”——
+  // 后者不报错，只返回 0 行，不检查的话会给访客一个假的成功提示。
+  const { error, count } = await supabase
     .from("comment")
-    .update({ receive_notification: false })
+    .update({ receive_notification: false }, { count: "exact" })
     .eq("id", commentId);
 
   if (error) {
     console.error("Failed to unsubscribe comment notifications:", error);
+    return {
+      success: false,
+      error: labels.error_generic,
+    } satisfies ActionData;
+  }
+
+  if (!count) {
+    console.error("Unsubscribe affected 0 rows (RLS?) for comment", commentId);
     return {
       success: false,
       error: labels.error_generic,
@@ -177,7 +154,6 @@ export default function UnsubscribePage() {
 
   const isSubmitting = navigation.state === "submitting";
   const submissionSuccess = actionData?.success === true;
-  const alreadyUnsubscribed = loaderData.state === "already";
 
   if (loaderData.state === "error") {
     return (
@@ -197,13 +173,9 @@ export default function UnsubscribePage() {
     );
   }
 
-  if (submissionSuccess || alreadyUnsubscribed) {
-    const title = alreadyUnsubscribed
-      ? labels.already_title
-      : labels.success_title;
-    const description = alreadyUnsubscribed
-      ? labels.already_description
-      : labels.success_description;
+  if (submissionSuccess) {
+    const title = labels.success_title;
+    const description = labels.success_description;
 
     return (
       <div className="min-h-screen bg-zinc-50 flex items-center justify-center px-4 py-12">
